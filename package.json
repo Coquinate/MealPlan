@@ -18,8 +18,7 @@
     "format": "pnpm --filter './apps/**' --filter './packages/**' format",
     "clean": "pnpm --filter './apps/**' --filter './packages/**' clean && rm -rf node_modules",
     "history:watch": "node watch-backup.mjs",
-    "history:purge": "node -e \"import('fs').then(fs=>fs.rmSync('.history',{recursive:true,force:true}))\"",
-    "prepare": "node -e \"process.exit(process.env.VERCEL || process.env.CI ? 0 : 1)\" && exit 0 || husky"
+    "history:purge": "node -e \"import('fs').then(fs=>fs.rmSync('.history',{recursive:true,force:true}))\""
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -40,14 +39,5 @@
     "prettier": "^3.6.2",
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.39.0"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,yml,yaml}": [
-      "prettier --write"
-    ]
   }
 }
