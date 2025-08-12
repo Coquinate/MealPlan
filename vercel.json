@@ -3,6 +3,7 @@
   "buildCommand": "pnpm build",
   "framework": "nextjs",
   "outputDirectory": "apps/web/.next",
+  "ignoreCommand": "exit 0",
   "env": {
     "HUSKY": "0",
     "CI": "1",
