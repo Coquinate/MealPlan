@@ -2,5 +2,8 @@
   "buildCommand": "pnpm build",
   "framework": "nextjs",
   "outputDirectory": "apps/web/.next",
-  "ignoreCommand": "exit 1"
+  "ignoreCommand": "exit 1",
+  "env": {
+    "ENABLE_EXPERIMENTAL_COREPACK": "1"
+  }
 }
