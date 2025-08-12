@@ -1,0 +1,39 @@
+{
+  "button": {
+    "save": "",
+    "cancel": "",
+    "delete": "",
+    "edit": "",
+    "add": "",
+    "submit": "",
+    "close": "",
+    "back": "",
+    "next": "",
+    "previous": "",
+    "confirm": "",
+    "loading": ""
+  },
+  "label": {
+    "required": "",
+    "optional": "",
+    "search": "",
+    "filter": "",
+    "sort": "",
+    "actions": "",
+    "status": "",
+    "date": "",
+    "time": "",
+    "name": "",
+    "description": ""
+  },
+  "message": {
+    "loading": "",
+    "error": "",
+    "success": "",
+    "noData": "",
+    "notFound": "",
+    "unauthorized": "",
+    "forbidden": "",
+    "serverError": ""
+  }
+}

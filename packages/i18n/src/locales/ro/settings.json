@@ -1,0 +1,31 @@
+{
+  "title": "Setări",
+  "sections": {
+    "profile": "Profil",
+    "preferences": "Preferințe",
+    "household": "Gospodărie",
+    "notifications": "Notificări",
+    "privacy": "Confidențialitate",
+    "subscription": "Abonament"
+  },
+  "profile": {
+    "name": "Nume complet",
+    "email": "Adresa de email",
+    "phone": "Număr de telefon",
+    "avatar": "Imagine de profil",
+    "save": "Salvează modificările"
+  },
+  "preferences": {
+    "language": "Limba",
+    "timezone": "Fus orar",
+    "dietary": "Preferințe alimentare",
+    "allergies": "Alergii",
+    "cuisineTypes": "Tipuri de bucătărie preferate"
+  },
+  "notifications": {
+    "email": "Notificări email",
+    "push": "Notificări push",
+    "mealReminders": "Amintiri pentru mese",
+    "shoppingReminders": "Amintiri pentru cumpărături"
+  }
+}

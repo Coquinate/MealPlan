@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "incremental": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@shared/*": ["./packages/shared/src/*"],
+      "@ui/*": ["./packages/ui/src/*"],
+      "@database/*": ["./packages/database/src/*"],
+      "@config/*": ["./packages/config/*"],
+      "@i18n/*": ["./packages/i18n/src/*"],
+      "@coquinate/shared": ["./packages/shared/src"],
+      "@coquinate/ui": ["./packages/ui/src"],
+      "@coquinate/database": ["./packages/database/src"],
+      "@coquinate/config": ["./packages/config"],
+      "@coquinate/i18n": ["./packages/i18n/src"]
+    }
+  },
+  "references": [
+    { "path": "./apps/web" },
+    { "path": "./apps/admin" },
+    { "path": "./packages/shared" },
+    { "path": "./packages/ui" },
+    { "path": "./packages/database" },
+    { "path": "./packages/config" },
+    { "path": "./packages/i18n" }
+  ],
+  "exclude": ["node_modules", "dist", "build", ".next", ".turbo"]
+}

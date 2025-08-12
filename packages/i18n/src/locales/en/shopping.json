@@ -1,0 +1,26 @@
+{
+  "title": "",
+  "categories": {
+    "vegetables": "",
+    "fruits": "",
+    "meat": "",
+    "dairy": "",
+    "grains": "",
+    "spices": "",
+    "other": ""
+  },
+  "item": {
+    "add": "",
+    "edit": "",
+    "delete": "",
+    "checked": "",
+    "unchecked": "",
+    "quantity": "",
+    "unit": ""
+  },
+  "actions": {
+    "clearCompleted": "",
+    "checkAll": "",
+    "uncheckAll": ""
+  }
+}

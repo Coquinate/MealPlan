@@ -1,0 +1,58 @@
+{
+  "button": {
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "delete": "Șterge",
+    "edit": "Editează",
+    "add": "Adaugă",
+    "submit": "Trimite",
+    "close": "Închide",
+    "back": "Înapoi",
+    "next": "Următorul",
+    "previous": "Precedentul",
+    "confirm": "Confirmă",
+    "loading": "Se încarcă..."
+  },
+  "label": {
+    "required": "Obligatoriu",
+    "optional": "Opțional",
+    "search": "Caută",
+    "filter": "Filtrează",
+    "sort": "Sortează",
+    "actions": "Acțiuni",
+    "status": "Status",
+    "date": "Data",
+    "time": "Ora",
+    "name": "Nume",
+    "description": "Descriere",
+    "select": "Selectează..."
+  },
+  "message": {
+    "loading": "Se încarcă...",
+    "error": "A apărut o eroare",
+    "success": "Operațiune reușită",
+    "noData": "Nu există date",
+    "notFound": "Nu s-a găsit",
+    "unauthorized": "Acces neautorizat",
+    "forbidden": "Acces interzis",
+    "serverError": "Eroare de server"
+  },
+  "time": {
+    "today": "Azi"
+  },
+  "dayOfWeek": {
+    "monday": "Luni",
+    "tuesday": "Marți",
+    "wednesday": "Miercuri",
+    "thursday": "Joi",
+    "friday": "Vineri",
+    "saturday": "Sâmbătă",
+    "sunday": "Duminică"
+  },
+  "mealType": {
+    "breakfast": "Mic dejun",
+    "lunch": "Prânz",
+    "dinner": "Cină",
+    "snack": "Gustare"
+  }
+}

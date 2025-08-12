@@ -1,0 +1,76 @@
+{
+  "name": "@coquinate/i18n",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.mjs",
+      "require": "./dist/config/index.js"
+    },
+    "./formatters": {
+      "types": "./dist/formatters/index.d.ts",
+      "import": "./dist/formatters/index.mjs",
+      "require": "./dist/formatters/index.js"
+    },
+    "./locales": {
+      "types": "./dist/locales/index.d.ts",
+      "import": "./dist/locales/index.mjs",
+      "require": "./dist/locales/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.mjs",
+      "require": "./dist/types/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src/",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "extract-keys": "tsx scripts/extract-keys.ts",
+    "extract-keys:json": "tsx scripts/extract-keys.ts --format=json --output=extracted-keys.json",
+    "extract-keys:missing": "tsx scripts/extract-keys.ts --missing-only",
+    "detect-missing": "tsx scripts/detect-missing.ts",
+    "detect-missing:fix": "tsx scripts/detect-missing.ts --fix",
+    "hot-reload": "tsx scripts/hot-reload-dev.ts",
+    "hot-reload:debug": "tsx scripts/hot-reload-dev.ts --debug --verbose",
+    "generate-types": "tsx scripts/generate-types.ts",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "i18next": "^24.0.0",
+    "react-i18next": "^15.6.1"
+  },
+  "devDependencies": {
+    "@coquinate/config": "workspace:*",
+    "@coquinate/shared": "workspace:*",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "glob": "^11.0.0",
+    "i18next-scanner": "^4.5.0",
+    "ws": "^8.18.0",
+    "@types/ws": "^8.5.12",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

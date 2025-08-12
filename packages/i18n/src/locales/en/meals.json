@@ -1,0 +1,27 @@
+{
+  "title": "",
+  "weekView": {
+    "title": "",
+    "today": "",
+    "tomorrow": "",
+    "yesterday": ""
+  },
+  "mealCard": {
+    "breakfast": "",
+    "lunch": "",
+    "dinner": "",
+    "snack": "",
+    "servings": "",
+    "servings_other": "",
+    "cookTime": "",
+    "addMeal": "",
+    "editMeal": "",
+    "removeMeal": ""
+  },
+  "planning": {
+    "addToWeek": "",
+    "removeFromWeek": "",
+    "moveMeal": "",
+    "duplicateMeal": ""
+  }
+}

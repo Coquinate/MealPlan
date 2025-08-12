@@ -1,0 +1,25 @@
+{
+  "title": "",
+  "details": {
+    "ingredients": "",
+    "instructions": "",
+    "nutrition": "",
+    "servings": "",
+    "prepTime": "",
+    "cookTime": "",
+    "totalTime": "",
+    "difficulty": ""
+  },
+  "difficulty": {
+    "easy": "",
+    "medium": "",
+    "hard": ""
+  },
+  "actions": {
+    "favorite": "",
+    "unfavorite": "",
+    "share": "",
+    "print": "",
+    "addToMealPlan": ""
+  }
+}

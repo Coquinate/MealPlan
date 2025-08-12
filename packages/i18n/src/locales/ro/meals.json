@@ -1,0 +1,27 @@
+{
+  "title": "Planificarea meselor",
+  "weekView": {
+    "title": "Săptămâna aceasta",
+    "today": "Astăzi",
+    "tomorrow": "Mâine",
+    "yesterday": "Ieri"
+  },
+  "mealCard": {
+    "breakfast": "Mic dejun",
+    "lunch": "Prânz",
+    "dinner": "Cină",
+    "snack": "Gustare",
+    "servings": "{{count}} porție",
+    "servings_other": "{{count}} porții",
+    "cookTime": "{{time}} min",
+    "addMeal": "Adaugă mâncare",
+    "editMeal": "Editează mâncarea",
+    "removeMeal": "Elimină mâncarea"
+  },
+  "planning": {
+    "addToWeek": "Adaugă în săptămână",
+    "removeFromWeek": "Elimină din săptămână",
+    "moveMeal": "Mută mâncarea",
+    "duplicateMeal": "Duplică mâncarea"
+  }
+}

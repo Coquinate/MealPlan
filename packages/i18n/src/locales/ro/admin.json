@@ -1,0 +1,25 @@
+{
+  "title": "Panou de administrare",
+  "navigation": {
+    "dashboard": "Tablou de bord",
+    "recipes": "Rețete",
+    "mealPlans": "Planuri de mese",
+    "users": "Utilizatori",
+    "settings": "Setări"
+  },
+  "recipes": {
+    "title": "Gestionare rețete",
+    "add": "Adaugă rețetă nouă",
+    "edit": "Editează rețeta",
+    "delete": "Șterge rețeta",
+    "publish": "Publică",
+    "unpublish": "Anulează publicarea"
+  },
+  "mealPlans": {
+    "title": "Planuri de mese",
+    "create": "Creează plan nou",
+    "edit": "Editează planul",
+    "delete": "Șterge planul",
+    "assign": "Atribuie utilizatorului"
+  }
+}

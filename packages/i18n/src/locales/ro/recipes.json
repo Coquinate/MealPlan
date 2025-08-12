@@ -1,0 +1,25 @@
+{
+  "title": "Rețete",
+  "details": {
+    "ingredients": "Ingrediente",
+    "instructions": "Instrucțiuni",
+    "nutrition": "Informații nutriționale",
+    "servings": "Porții",
+    "prepTime": "Timp de pregătire",
+    "cookTime": "Timp de gătit",
+    "totalTime": "Timp total",
+    "difficulty": "Dificultate"
+  },
+  "difficulty": {
+    "easy": "Ușor",
+    "medium": "Mediu",
+    "hard": "Dificil"
+  },
+  "actions": {
+    "favorite": "Adaugă la favorite",
+    "unfavorite": "Elimină din favorite",
+    "share": "Distribuie",
+    "print": "Tipărește",
+    "addToMealPlan": "Adaugă în planul de mese"
+  }
+}

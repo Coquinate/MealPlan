@@ -1,0 +1,24 @@
+{
+  "name": "@coquinate/config",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    "./eslint": "./eslint/index.js",
+    "./typescript": "./typescript/base.json",
+    "./tailwind": "./tailwind/index.js",
+    "./tailwind/design-tokens": "./tailwind/design-tokens.js",
+    "./tailwind/config": "./tailwind/tailwind.config.js",
+    "./tailwind/context-variables.css": "./tailwind/context-variables.css",
+    "./tailwind/romanian-utils": "./tailwind/romanian-utils.js"
+  },
+  "scripts": {
+    "lint": "echo 'To be configured'",
+    "format": "echo 'To be configured'",
+    "clean": "rm -rf node_modules"
+  },
+  "devDependencies": {
+    "tailwindcss": "4.1.11"
+  }
+}

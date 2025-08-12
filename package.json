@@ -1,0 +1,53 @@
+{
+  "name": "coquinate",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Meal planning and nutrition tracking application",
+  "author": "Coquinate Team",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=10.14.0"
+  },
+  "packageManager": "pnpm@10.14.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter './apps/**' dev",
+    "build": "pnpm --filter './apps/**' build",
+    "test": "pnpm --filter './apps/**' test",
+    "lint": "pnpm --filter './apps/**' --filter './packages/**' lint",
+    "format": "pnpm --filter './apps/**' --filter './packages/**' format",
+    "clean": "pnpm --filter './apps/**' --filter './packages/**' clean && rm -rf node_modules",
+    "history:watch": "node watch-backup.mjs",
+    "history:purge": "node -e \"import('fs').then(fs=>fs.rmSync('.history',{recursive:true,force:true}))\"",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@eslint/js": "^9.33.0",
+    "@types/node": "^22.10.5",
+    "chokidar": "^4.0.3",
+    "dotenv": "^17.2.1",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "fast-glob": "^3.3.3",
+    "fs-extra": "^11.3.1",
+    "globals": "^15.15.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.39.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
+}

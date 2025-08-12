@@ -1,0 +1,24 @@
+{
+  "name": "@coquinate/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo 'To be configured'",
+    "lint": "echo 'To be configured'",
+    "format": "echo 'To be configured'",
+    "clean": "rm -rf dist node_modules"
+  },
+  "devDependencies": {
+    "@coquinate/config": "workspace:*"
+  }
+}

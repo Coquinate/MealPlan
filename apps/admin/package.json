@@ -1,0 +1,23 @@
+{
+  "name": "@coquinate/admin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'To be configured'",
+    "build": "echo 'To be configured'",
+    "test": "echo 'To be configured'",
+    "lint": "echo 'To be configured'",
+    "format": "echo 'To be configured'",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@coquinate/shared": "workspace:*",
+    "@coquinate/ui": "workspace:*",
+    "@coquinate/database": "workspace:*",
+    "@coquinate/i18n": "workspace:*"
+  },
+  "devDependencies": {
+    "@coquinate/config": "workspace:*"
+  }
+}

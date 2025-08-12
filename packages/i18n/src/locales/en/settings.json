@@ -1,0 +1,31 @@
+{
+  "title": "",
+  "sections": {
+    "profile": "",
+    "preferences": "",
+    "household": "",
+    "notifications": "",
+    "privacy": "",
+    "subscription": ""
+  },
+  "profile": {
+    "name": "",
+    "email": "",
+    "phone": "",
+    "avatar": "",
+    "save": ""
+  },
+  "preferences": {
+    "language": "",
+    "timezone": "",
+    "dietary": "",
+    "allergies": "",
+    "cuisineTypes": ""
+  },
+  "notifications": {
+    "email": "",
+    "push": "",
+    "mealReminders": "",
+    "shoppingReminders": ""
+  }
+}

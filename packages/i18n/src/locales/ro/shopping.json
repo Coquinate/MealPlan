@@ -1,0 +1,35 @@
+{
+  "title": "Lista de cumpărături",
+  "categories": {
+    "vegetables": "Legume",
+    "fruits": "Fructe",
+    "meat": "Carne",
+    "dairy": "Lactate",
+    "grains": "Cereale",
+    "spices": "Condimente",
+    "other": "Altele"
+  },
+  "item": {
+    "add": "Adaugă ingredient",
+    "edit": "Editează ingredient",
+    "delete": "Șterge ingredient",
+    "checked": "Bifat",
+    "unchecked": "Nebifat",
+    "quantity": "Cantitate",
+    "unit": "Unitate",
+    "markAs": "Marchează {{name}} ca {{status}}",
+    "markAsChecked": "bifat",
+    "markAsUnchecked": "nebifat"
+  },
+  "actions": {
+    "clearCompleted": "Șterge bifate",
+    "checkAll": "Bifează toate",
+    "uncheckAll": "Debifează toate"
+  },
+  "expiry": {
+    "today": "Azi",
+    "tomorrow": "Mâine",
+    "days": "zile",
+    "daysCount": "{{count}} zile"
+  }
+}

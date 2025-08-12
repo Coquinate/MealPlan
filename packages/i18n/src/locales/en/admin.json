@@ -1,0 +1,25 @@
+{
+  "title": "",
+  "navigation": {
+    "dashboard": "",
+    "recipes": "",
+    "mealPlans": "",
+    "users": "",
+    "settings": ""
+  },
+  "recipes": {
+    "title": "",
+    "add": "",
+    "edit": "",
+    "delete": "",
+    "publish": "",
+    "unpublish": ""
+  },
+  "mealPlans": {
+    "title": "",
+    "create": "",
+    "edit": "",
+    "delete": "",
+    "assign": ""
+  }
+}
