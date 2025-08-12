@@ -6,10 +6,8 @@
   "author": "Coquinate Team",
   "license": "UNLICENSED",
   "engines": {
-    "node": ">=20.0.0",
-    "pnpm": ">=10.14.0"
+    "node": ">=20.0.0"
   },
-  "packageManager": "pnpm@10.14.0",
   "scripts": {
     "dev": "pnpm --parallel --filter './apps/**' dev",
     "build": "pnpm --filter './apps/**' build",

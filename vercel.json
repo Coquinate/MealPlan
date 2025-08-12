@@ -2,5 +2,6 @@
   "buildCommand": "pnpm build",
   "framework": "nextjs",
   "outputDirectory": "apps/web/.next",
-  "ignoreCommand": "exit 1"
+  "ignoreCommand": "exit 1",
+  "installCommand": "corepack enable && corepack prepare pnpm@latest --activate && pnpm install"
 }
