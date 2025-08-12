@@ -1,25 +1,24 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { Button, Input, Select, Card } from '@coquinate/ui'
-import { useTranslation } from '@coquinate/i18n'
-import { cn } from '@coquinate/ui'
+import React, { useState } from 'react';
+import { Button, Input, Select, Card, cn } from '@coquinate/ui';
+import { useTranslation } from '@coquinate/i18n';
 
 export interface RegistrationData {
-  email: string
-  password: string
-  confirmPassword: string
-  household_size: number
-  menu_type: 'vegetarian' | 'omnivore'
-  default_view_preference?: 'week' | 'today'
+  email: string;
+  password: string;
+  confirmPassword: string;
+  household_size: number;
+  menu_type: 'vegetarian' | 'omnivore';
+  default_view_preference?: 'week' | 'today';
 }
 
 export interface RegistrationFormProps {
-  onSubmit: (data: RegistrationData) => Promise<void>
-  onBackToLogin: () => void
-  loading?: boolean
-  error?: string
-  className?: string
+  onSubmit: (data: RegistrationData) => Promise<void>;
+  onBackToLogin: () => void;
+  loading?: boolean;
+  error?: string;
+  className?: string;
 }
 
 /**
@@ -27,110 +26,101 @@ export interface RegistrationFormProps {
  * Implements Romanian translations and comprehensive validation
  */
 export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFormProps>(
-  ({ 
-    onSubmit, 
-    onBackToLogin, 
-    loading = false, 
-    error, 
-    className 
-  }, ref) => {
-    const { t } = useTranslation('auth')
+  ({ onSubmit, onBackToLogin, loading = false, error, className }, ref) => {
+    const { t } = useTranslation('auth');
     const [formData, setFormData] = useState<RegistrationData>({
       email: '',
       password: '',
       confirmPassword: '',
       household_size: 2,
       menu_type: 'omnivore',
-      default_view_preference: 'week'
-    })
-    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+      default_view_preference: 'week',
+    });
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
     // Household size options (1-6 members)
     const householdOptions = Array.from({ length: 6 }, (_, i) => ({
       value: (i + 1).toString(),
-      label: i === 0 ? '1 persoană' : `${i + 1} persoane`
-    }))
+      label: i === 0 ? '1 persoană' : `${i + 1} persoane`,
+    }));
 
     // Menu type options
     const menuTypeOptions = [
       { value: 'omnivore', label: 'Omnivore (incluzând carne)' },
-      { value: 'vegetarian', label: 'Vegetarian (fără carne)' }
-    ]
+      { value: 'vegetarian', label: 'Vegetarian (fără carne)' },
+    ];
 
     const validateForm = () => {
-      const errors: Record<string, string> = {}
-      
+      const errors: Record<string, string> = {};
+
       if (!formData.email) {
-        errors.email = t('errors.emailRequired')
+        errors.email = t('errors.emailRequired');
       } else if (!formData.email.includes('@')) {
-        errors.email = 'Email invalid'
+        errors.email = 'Email invalid';
       }
-      
+
       if (!formData.password) {
-        errors.password = t('errors.passwordRequired')
+        errors.password = t('errors.passwordRequired');
       } else if (formData.password.length < 8) {
-        errors.password = t('errors.passwordTooShort')
+        errors.password = t('errors.passwordTooShort');
       }
-      
+
       if (!formData.confirmPassword) {
-        errors.confirmPassword = 'Confirmarea parolei este obligatorie'
+        errors.confirmPassword = 'Confirmarea parolei este obligatorie';
       } else if (formData.password !== formData.confirmPassword) {
-        errors.confirmPassword = t('errors.passwordMismatch')
+        errors.confirmPassword = t('errors.passwordMismatch');
       }
-      
+
       if (!formData.household_size || formData.household_size < 1 || formData.household_size > 6) {
-        errors.household_size = 'Mărimea gospodăriei trebuie să fie între 1 și 6'
+        errors.household_size = 'Mărimea gospodăriei trebuie să fie între 1 și 6';
       }
-      
+
       if (!formData.menu_type || !['vegetarian', 'omnivore'].includes(formData.menu_type)) {
-        errors.menu_type = 'Tipul meniului este obligatoriu'
+        errors.menu_type = 'Tipul meniului este obligatoriu';
       }
-      
-      setFieldErrors(errors)
-      return Object.keys(errors).length === 0
-    }
+
+      setFieldErrors(errors);
+      return Object.keys(errors).length === 0;
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault()
-      
-      if (!validateForm()) {
-        return
-      }
-      
-      try {
-        await onSubmit(formData)
-      } catch (error) {
-        console.error('Registration error:', error)
-      }
-    }
+      e.preventDefault();
 
-    const handleInputChange = (field: keyof RegistrationData) => 
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData(prev => ({ ...prev, [field]: e.target.value }))
+      if (!validateForm()) {
+        return;
+      }
+
+      try {
+        await onSubmit(formData);
+      } catch (error) {
+        console.error('Registration error:', error);
+      }
+    };
+
+    const handleInputChange =
+      (field: keyof RegistrationData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData((prev) => ({ ...prev, [field]: e.target.value }));
         // Clear field error when user starts typing
         if (fieldErrors[field]) {
-          setFieldErrors(prev => ({ ...prev, [field]: '' }))
+          setFieldErrors((prev) => ({ ...prev, [field]: '' }));
         }
-      }
+      };
 
-    const handleSelectChange = (field: keyof RegistrationData) => 
-      (value: string) => {
-        const parsedValue = field === 'household_size' ? parseInt(value, 10) : value
-        setFormData(prev => ({ ...prev, [field]: parsedValue }))
-        // Clear field error when user selects
-        if (fieldErrors[field]) {
-          setFieldErrors(prev => ({ ...prev, [field]: '' }))
-        }
+    const handleSelectChange = (field: keyof RegistrationData) => (value: string) => {
+      const parsedValue = field === 'household_size' ? parseInt(value, 10) : value;
+      setFormData((prev) => ({ ...prev, [field]: parsedValue }));
+      // Clear field error when user selects
+      if (fieldErrors[field]) {
+        setFieldErrors((prev) => ({ ...prev, [field]: '' }));
       }
+    };
 
     return (
       <Card className={cn('w-full max-w-md mx-auto p-space-lg', className)}>
         <form ref={ref} onSubmit={handleSubmit} className="space-y-space-md">
           {/* Header */}
           <div className="text-center space-y-space-xs">
-            <h1 className="text-2xl font-bold text-text">
-              {t('register.title')}
-            </h1>
+            <h1 className="text-2xl font-bold text-text">{t('register.title')}</h1>
           </div>
 
           {/* Global error message */}
@@ -227,13 +217,7 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
           </div>
 
           {/* Submit button */}
-          <Button
-            type="submit"
-            loading={loading}
-            disabled={loading}
-            className="w-full"
-            size="lg"
-          >
+          <Button type="submit" loading={loading} disabled={loading} className="w-full" size="lg">
             {t('register.submit')}
           </Button>
 
@@ -253,8 +237,8 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
           </div>
         </form>
       </Card>
-    )
+    );
   }
-)
+);
 
-RegistrationForm.displayName = 'RegistrationForm'
+RegistrationForm.displayName = 'RegistrationForm';

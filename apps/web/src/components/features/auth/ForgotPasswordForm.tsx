@@ -1,17 +1,16 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { Button, Input, Card } from '@coquinate/ui'
-import { useTranslation } from '@coquinate/i18n'
-import { cn } from '@coquinate/ui'
+import React, { useState } from 'react';
+import { Button, Input, Card, cn } from '@coquinate/ui';
+import { useTranslation } from '@coquinate/i18n';
 
 export interface ForgotPasswordFormProps {
-  onSubmit: (email: string) => Promise<void>
-  onBackToLogin: () => void
-  loading?: boolean
-  error?: string
-  success?: boolean
-  className?: string
+  onSubmit: (email: string) => Promise<void>;
+  onBackToLogin: () => void;
+  loading?: boolean;
+  error?: string;
+  success?: boolean;
+  className?: string;
 }
 
 /**
@@ -19,64 +18,55 @@ export interface ForgotPasswordFormProps {
  * Implements Romanian translations and proper validation
  */
 export const ForgotPasswordForm = React.forwardRef<HTMLFormElement, ForgotPasswordFormProps>(
-  ({ 
-    onSubmit, 
-    onBackToLogin, 
-    loading = false, 
-    error, 
-    success = false,
-    className 
-  }, ref) => {
-    const { t } = useTranslation('auth')
-    const [email, setEmail] = useState('')
-    const [emailError, setEmailError] = useState('')
+  ({ onSubmit, onBackToLogin, loading = false, error, success = false, className }, ref) => {
+    const { t } = useTranslation('auth');
+    const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
 
     const validateEmail = () => {
-      let isValid = true
-      
+      let isValid = true;
+
       if (!email) {
-        setEmailError(t('errors.emailRequired'))
-        isValid = false
+        setEmailError(t('errors.emailRequired'));
+        isValid = false;
       } else if (!email.includes('@')) {
-        setEmailError('Email invalid')
-        isValid = false
+        setEmailError('Email invalid');
+        isValid = false;
       } else {
-        setEmailError('')
+        setEmailError('');
       }
-      
-      return isValid
-    }
+
+      return isValid;
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault()
-      
+      e.preventDefault();
+
       if (!validateEmail()) {
-        return
+        return;
       }
-      
+
       try {
-        await onSubmit(email)
+        await onSubmit(email);
       } catch (error) {
-        console.error('Forgot password error:', error)
+        console.error('Forgot password error:', error);
       }
-    }
+    };
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setEmail(e.target.value)
+      setEmail(e.target.value);
       // Clear error when user starts typing
       if (emailError) {
-        setEmailError('')
+        setEmailError('');
       }
-    }
+    };
 
     return (
       <Card className={cn('w-full max-w-md mx-auto p-space-lg', className)}>
         <form ref={ref} onSubmit={handleSubmit} className="space-y-space-md">
           {/* Header */}
           <div className="text-center space-y-space-xs">
-            <h1 className="text-2xl font-bold text-text">
-              Resetare parolă
-            </h1>
+            <h1 className="text-2xl font-bold text-text">Resetare parolă</h1>
             <p className="text-sm text-text-secondary">
               Introduceți adresa de email pentru a primi instrucțiunile de resetare a parolei
             </p>
@@ -86,8 +76,8 @@ export const ForgotPasswordForm = React.forwardRef<HTMLFormElement, ForgotPasswo
           {success && (
             <div className="bg-success-50 border border-success-200 rounded-md p-space-sm">
               <p className="text-sm text-success-600">
-                Am trimis instrucțiunile de resetare la adresa de email specificată. 
-                Verificați folderul de inbox și spam.
+                Am trimis instrucțiunile de resetare la adresa de email specificată. Verificați
+                folderul de inbox și spam.
               </p>
             </div>
           )}
@@ -164,8 +154,8 @@ export const ForgotPasswordForm = React.forwardRef<HTMLFormElement, ForgotPasswo
           )}
         </form>
       </Card>
-    )
+    );
   }
-)
+);
 
-ForgotPasswordForm.displayName = 'ForgotPasswordForm'
+ForgotPasswordForm.displayName = 'ForgotPasswordForm';

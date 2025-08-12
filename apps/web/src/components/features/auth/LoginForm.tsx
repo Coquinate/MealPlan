@@ -1,17 +1,16 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { Button, Input, Card } from '@coquinate/ui'
-import { useTranslation } from '@coquinate/i18n'
-import { cn } from '@coquinate/ui'
+import React, { useState } from 'react';
+import { Button, Input, Card, cn } from '@coquinate/ui';
+import { useTranslation } from '@coquinate/i18n';
 
 export interface LoginFormProps {
-  onSubmit: (credentials: { email: string; password: string }) => Promise<void>
-  onForgotPassword: () => void
-  onCreateAccount: () => void
-  loading?: boolean
-  error?: string
-  className?: string
+  onSubmit: (credentials: { email: string; password: string }) => Promise<void>;
+  onForgotPassword: () => void;
+  onCreateAccount: () => void;
+  loading?: boolean;
+  error?: string;
+  className?: string;
 }
 
 /**
@@ -19,69 +18,60 @@ export interface LoginFormProps {
  * Implements Romanian translations and proper error handling
  */
 export const LoginForm = React.forwardRef<HTMLFormElement, LoginFormProps>(
-  ({ 
-    onSubmit, 
-    onForgotPassword, 
-    onCreateAccount, 
-    loading = false, 
-    error, 
-    className 
-  }, ref) => {
-    const { t } = useTranslation('auth')
-    const [formData, setFormData] = useState({ email: '', password: '' })
-    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+  ({ onSubmit, onForgotPassword, onCreateAccount, loading = false, error, className }, ref) => {
+    const { t } = useTranslation('auth');
+    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
     const validateForm = () => {
-      const errors: Record<string, string> = {}
-      
+      const errors: Record<string, string> = {};
+
       if (!formData.email) {
-        errors.email = t('errors.emailRequired')
+        errors.email = t('errors.emailRequired');
       } else if (!formData.email.includes('@')) {
-        errors.email = 'Email invalid'
+        errors.email = 'Email invalid';
       }
-      
+
       if (!formData.password) {
-        errors.password = t('errors.passwordRequired')
+        errors.password = t('errors.passwordRequired');
       } else if (formData.password.length < 8) {
-        errors.password = t('errors.passwordTooShort')
+        errors.password = t('errors.passwordTooShort');
       }
-      
-      setFieldErrors(errors)
-      return Object.keys(errors).length === 0
-    }
+
+      setFieldErrors(errors);
+      return Object.keys(errors).length === 0;
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault()
-      
+      e.preventDefault();
+
       if (!validateForm()) {
-        return
+        return;
       }
-      
+
       try {
-        await onSubmit(formData)
+        await onSubmit(formData);
       } catch (error) {
         // Error handling is managed by parent component
-        console.error('Login error:', error)
+        console.error('Login error:', error);
       }
-    }
+    };
 
-    const handleInputChange = (field: keyof typeof formData) => 
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData(prev => ({ ...prev, [field]: e.target.value }))
+    const handleInputChange =
+      (field: keyof typeof formData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData((prev) => ({ ...prev, [field]: e.target.value }));
         // Clear field error when user starts typing
         if (fieldErrors[field]) {
-          setFieldErrors(prev => ({ ...prev, [field]: '' }))
+          setFieldErrors((prev) => ({ ...prev, [field]: '' }));
         }
-      }
+      };
 
     return (
       <Card className={cn('w-full max-w-md mx-auto p-space-lg', className)}>
         <form ref={ref} onSubmit={handleSubmit} className="space-y-space-md">
           {/* Header */}
           <div className="text-center space-y-space-xs">
-            <h1 className="text-2xl font-bold text-text">
-              {t('login.title')}
-            </h1>
+            <h1 className="text-2xl font-bold text-text">{t('login.title')}</h1>
           </div>
 
           {/* Global error message */}
@@ -121,13 +111,7 @@ export const LoginForm = React.forwardRef<HTMLFormElement, LoginFormProps>(
           </div>
 
           {/* Submit button */}
-          <Button
-            type="submit"
-            loading={loading}
-            disabled={loading}
-            className="w-full"
-            size="lg"
-          >
+          <Button type="submit" loading={loading} disabled={loading} className="w-full" size="lg">
             {t('login.submit')}
           </Button>
 
@@ -159,8 +143,8 @@ export const LoginForm = React.forwardRef<HTMLFormElement, LoginFormProps>(
           </div>
         </form>
       </Card>
-    )
+    );
   }
-)
+);
 
-LoginForm.displayName = 'LoginForm'
+LoginForm.displayName = 'LoginForm';

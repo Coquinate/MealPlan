@@ -1,40 +1,39 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { Button, Input, Select, Card } from '@coquinate/ui'
-import { useTranslation } from '@coquinate/i18n'
-import { cn } from '@coquinate/ui'
+import React, { useState } from 'react';
+import { Button, Select, Card, cn } from '@coquinate/ui';
+import { useTranslation } from '@coquinate/i18n';
 
 export interface UserProfileData {
-  id: string
-  email: string
-  household_size: number
-  menu_type: 'vegetarian' | 'omnivore'
-  subscription_status: string
-  has_active_trial: boolean
-  has_trial_gift_access: boolean
-  stripe_customer_id?: string
-  trial_ends_at?: string
-  created_at: string
-  updated_at: string
+  id: string;
+  email: string;
+  household_size: number;
+  menu_type: 'vegetarian' | 'omnivore';
+  subscription_status: string;
+  has_active_trial: boolean;
+  has_trial_gift_access: boolean;
+  stripe_customer_id?: string;
+  trial_ends_at?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface UserProfileUpdateData {
-  household_size?: number
-  menu_type?: 'vegetarian' | 'omnivore'
-  default_view_preference?: 'week' | 'today'
+  household_size?: number;
+  menu_type?: 'vegetarian' | 'omnivore';
+  default_view_preference?: 'week' | 'today';
 }
 
 export interface UserProfileProps {
-  profile: UserProfileData
-  onUpdate: (data: UserProfileUpdateData) => Promise<void>
-  onChangePassword: () => void
-  onDeleteAccount: () => void
-  loading?: boolean
-  updateLoading?: boolean
-  error?: string
-  success?: string
-  className?: string
+  profile: UserProfileData;
+  onUpdate: (data: UserProfileUpdateData) => Promise<void>;
+  onChangePassword: () => void;
+  onDeleteAccount: () => void;
+  loading?: boolean;
+  updateLoading?: boolean;
+  error?: string;
+  success?: string;
+  className?: string;
 }
 
 /**
@@ -42,95 +41,97 @@ export interface UserProfileProps {
  * Allows users to update household preferences and manage account
  */
 export const UserProfile = React.forwardRef<HTMLDivElement, UserProfileProps>(
-  ({ 
-    profile,
-    onUpdate,
-    onChangePassword,
-    onDeleteAccount,
-    loading = false,
-    updateLoading = false,
-    error,
-    success,
-    className 
-  }, ref) => {
-    const { t } = useTranslation('auth')
-    const [isEditing, setIsEditing] = useState(false)
+  (
+    {
+      profile,
+      onUpdate,
+      onChangePassword,
+      onDeleteAccount,
+      loading = false,
+      updateLoading = false,
+      error,
+      success,
+      className,
+    },
+    ref
+  ) => {
+    useTranslation('auth'); // Setup translation context
+    const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState<UserProfileUpdateData>({
       household_size: profile.household_size,
       menu_type: profile.menu_type,
-      default_view_preference: 'week'
-    })
-    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+      default_view_preference: 'week',
+    });
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
     // Household size options (1-6 members)
     const householdOptions = Array.from({ length: 6 }, (_, i) => ({
       value: (i + 1).toString(),
-      label: i === 0 ? '1 persoană' : `${i + 1} persoane`
-    }))
+      label: i === 0 ? '1 persoană' : `${i + 1} persoane`,
+    }));
 
     // Menu type options
     const menuTypeOptions = [
       { value: 'omnivore', label: 'Omnivore (incluzând carne)' },
-      { value: 'vegetarian', label: 'Vegetarian (fără carne)' }
-    ]
+      { value: 'vegetarian', label: 'Vegetarian (fără carne)' },
+    ];
 
     const subscriptionStatusLabels: Record<string, string> = {
-      'none': 'Fără abonament',
-      'trial': 'Perioada de probă',
-      'active': 'Abonament activ',
-      'expired': 'Abonament expirat',
-      'cancelled': 'Abonament anulat'
-    }
+      none: 'Fără abonament',
+      trial: 'Perioada de probă',
+      active: 'Abonament activ',
+      expired: 'Abonament expirat',
+      cancelled: 'Abonament anulat',
+    };
 
     const validateForm = () => {
-      const errors: Record<string, string> = {}
-      
+      const errors: Record<string, string> = {};
+
       if (!formData.household_size || formData.household_size < 1 || formData.household_size > 6) {
-        errors.household_size = 'Mărimea gospodăriei trebuie să fie între 1 și 6'
+        errors.household_size = 'Mărimea gospodăriei trebuie să fie între 1 și 6';
       }
-      
+
       if (!formData.menu_type || !['vegetarian', 'omnivore'].includes(formData.menu_type)) {
-        errors.menu_type = 'Tipul meniului este obligatoriu'
+        errors.menu_type = 'Tipul meniului este obligatoriu';
       }
-      
-      setFieldErrors(errors)
-      return Object.keys(errors).length === 0
-    }
+
+      setFieldErrors(errors);
+      return Object.keys(errors).length === 0;
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault()
-      
+      e.preventDefault();
+
       if (!validateForm()) {
-        return
+        return;
       }
-      
+
       try {
-        await onUpdate(formData)
-        setIsEditing(false)
+        await onUpdate(formData);
+        setIsEditing(false);
       } catch (error) {
-        console.error('Profile update error:', error)
+        console.error('Profile update error:', error);
       }
-    }
+    };
 
     const handleCancel = () => {
       setFormData({
         household_size: profile.household_size,
         menu_type: profile.menu_type,
-        default_view_preference: 'week'
-      })
-      setFieldErrors({})
-      setIsEditing(false)
-    }
+        default_view_preference: 'week',
+      });
+      setFieldErrors({});
+      setIsEditing(false);
+    };
 
-    const handleSelectChange = (field: keyof UserProfileUpdateData) => 
-      (value: string) => {
-        const parsedValue = field === 'household_size' ? parseInt(value, 10) : value
-        setFormData(prev => ({ ...prev, [field]: parsedValue }))
-        // Clear field error when user selects
-        if (fieldErrors[field]) {
-          setFieldErrors(prev => ({ ...prev, [field]: '' }))
-        }
+    const handleSelectChange = (field: keyof UserProfileUpdateData) => (value: string) => {
+      const parsedValue = field === 'household_size' ? parseInt(value, 10) : value;
+      setFormData((prev) => ({ ...prev, [field]: parsedValue }));
+      // Clear field error when user selects
+      if (fieldErrors[field]) {
+        setFieldErrors((prev) => ({ ...prev, [field]: '' }));
       }
+    };
 
     const formatDate = (dateString: string) => {
       return new Date(dateString).toLocaleDateString('ro-RO', {
@@ -138,9 +139,9 @@ export const UserProfile = React.forwardRef<HTMLDivElement, UserProfileProps>(
         month: 'long',
         day: 'numeric',
         hour: '2-digit',
-        minute: '2-digit'
-      })
-    }
+        minute: '2-digit',
+      });
+    };
 
     return (
       <Card ref={ref} className={cn('w-full max-w-2xl mx-auto p-space-lg', className)}>
@@ -148,19 +149,13 @@ export const UserProfile = React.forwardRef<HTMLDivElement, UserProfileProps>(
           {/* Header */}
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-text">
-                Profilul meu
-              </h1>
+              <h1 className="text-2xl font-bold text-text">Profilul meu</h1>
               <p className="text-sm text-text-secondary">
                 Gestionați informațiile contului și preferințele
               </p>
             </div>
             {!isEditing && (
-              <Button
-                onClick={() => setIsEditing(true)}
-                disabled={loading}
-                variant="secondary"
-              >
+              <Button onClick={() => setIsEditing(true)} disabled={loading} variant="secondary">
                 Editează
               </Button>
             )}
@@ -186,29 +181,36 @@ export const UserProfile = React.forwardRef<HTMLDivElement, UserProfileProps>(
               <h2 className="text-lg font-semibold text-text border-b border-border pb-space-xs">
                 Informații cont
               </h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md">
                 <div>
                   <label className="text-sm font-medium text-text">Email</label>
                   <p className="text-sm text-text-secondary mt-1">{profile.email}</p>
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-medium text-text">Status abonament</label>
                   <p className="text-sm text-text-secondary mt-1">
-                    {subscriptionStatusLabels[profile.subscription_status] || profile.subscription_status}
+                    {subscriptionStatusLabels[profile.subscription_status] ||
+                      profile.subscription_status}
                   </p>
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-medium text-text">Cont creat la</label>
-                  <p className="text-sm text-text-secondary mt-1">{formatDate(profile.created_at)}</p>
+                  <p className="text-sm text-text-secondary mt-1">
+                    {formatDate(profile.created_at)}
+                  </p>
                 </div>
-                
+
                 {profile.trial_ends_at && (
                   <div>
-                    <label className="text-sm font-medium text-text">Perioada de probă expiră</label>
-                    <p className="text-sm text-text-secondary mt-1">{formatDate(profile.trial_ends_at)}</p>
+                    <label className="text-sm font-medium text-text">
+                      Perioada de probă expiră
+                    </label>
+                    <p className="text-sm text-text-secondary mt-1">
+                      {formatDate(profile.trial_ends_at)}
+                    </p>
                   </div>
                 )}
               </div>
@@ -219,13 +221,11 @@ export const UserProfile = React.forwardRef<HTMLDivElement, UserProfileProps>(
               <h2 className="text-lg font-semibold text-text border-b border-border pb-space-xs">
                 Preferințe gospodărie
               </h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md">
                 {/* Household Size */}
                 <div className="space-y-space-xs">
-                  <label className="text-sm font-medium text-text">
-                    Mărimea gospodăriei
-                  </label>
+                  <label className="text-sm font-medium text-text">Mărimea gospodăriei</label>
                   {isEditing ? (
                     <Select
                       options={householdOptions}
@@ -236,7 +236,9 @@ export const UserProfile = React.forwardRef<HTMLDivElement, UserProfileProps>(
                     />
                   ) : (
                     <p className="text-sm text-text-secondary mt-1">
-                      {profile.household_size === 1 ? '1 persoană' : `${profile.household_size} persoane`}
+                      {profile.household_size === 1
+                        ? '1 persoană'
+                        : `${profile.household_size} persoane`}
                     </p>
                   )}
                   {fieldErrors.household_size && (
@@ -246,9 +248,7 @@ export const UserProfile = React.forwardRef<HTMLDivElement, UserProfileProps>(
 
                 {/* Menu Type */}
                 <div className="space-y-space-xs">
-                  <label className="text-sm font-medium text-text">
-                    Tipul de meniu
-                  </label>
+                  <label className="text-sm font-medium text-text">Tipul de meniu</label>
                   {isEditing ? (
                     <Select
                       options={menuTypeOptions}
@@ -316,8 +316,8 @@ export const UserProfile = React.forwardRef<HTMLDivElement, UserProfileProps>(
           </form>
         </div>
       </Card>
-    )
+    );
   }
-)
+);
 
-UserProfile.displayName = 'UserProfile'
+UserProfile.displayName = 'UserProfile';
