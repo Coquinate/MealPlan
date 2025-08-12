@@ -1,0 +1,134 @@
+# Vercel Ignore File
+# Prevents unnecessary files from being uploaded to Vercel
+
+# Development and test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+**/*.test.js
+**/*.test.jsx
+**/*.spec.js
+**/*.spec.jsx
+__tests__
+__mocks__
+*.stories.tsx
+*.stories.ts
+*.stories.jsx
+*.stories.js
+coverage
+.nyc_output
+
+# Documentation
+*.md
+!README.md
+docs
+DEPLOYMENT_FIXES_REPORT.md
+
+# Development configs
+.env.local
+.env.development
+.env.test
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Git and CI/CD
+.git
+.github
+.gitlab
+.gitignore
+.husky
+.prettierignore
+.eslintignore
+
+# Build tools and configs
+.turbo
+.next
+.cache
+dist
+build
+out
+.vercel
+node_modules
+.pnp
+.pnp.js
+
+# Package manager files
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+
+# Task Master files (development only)
+.taskmaster/docs
+.taskmaster/reports
+.taskmaster/templates
+.taskmaster/tasks/*.md
+.taskmaster/tasks/*.txt
+.taskmaster/CLAUDE.md
+
+# Scripts and development utilities
+scripts
+bin
+tools
+
+# Temporary files
+tmp
+temp
+*.tmp
+*.temp
+
+# Source control
+.svn
+.hg
+
+# Debug files
+*.map
+*.map.js
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Example and template files
+examples
+templates
+*.example
+*.template
+
+# Storybook
+.storybook
+storybook-static
+
+# Testing
+cypress
+e2e
+playwright
+jest.config.*
+vitest.config.*
+playwright.config.*
+cypress.config.*
+
+# Monorepo packages not needed for deployment
+packages/*/src/**/*.test.*
+packages/*/src/**/*.spec.*
+packages/*/src/**/*.stories.*
+packages/*/__tests__
+packages/*/__mocks__
+
+# Database migrations and seeds (if not needed in production)
+migrations/*.test.*
+seeds/*.test.*

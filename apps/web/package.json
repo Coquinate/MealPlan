@@ -4,17 +4,21 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "echo 'To be configured'",
-    "build": "echo 'To be configured'",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "test": "echo 'To be configured'",
-    "lint": "echo 'To be configured'",
+    "lint": "next lint",
     "format": "echo 'To be configured'",
-    "clean": "rm -rf dist node_modules"
+    "clean": "rm -rf .next dist node_modules"
   },
   "dependencies": {
+    "@coquinate/i18n": "workspace:*",
     "@coquinate/shared": "workspace:*",
     "@coquinate/ui": "workspace:*",
-    "@coquinate/i18n": "workspace:*"
+    "next": "^15.4.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@coquinate/config": "workspace:*"

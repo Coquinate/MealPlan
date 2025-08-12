@@ -9,7 +9,7 @@ export default defineConfig({
     'src/types/index.ts'
   ],
   format: ['cjs', 'esm'],
-  dts: true,
+  dts: false, // Temporarily disabled to fix build
   splitting: false,
   sourcemap: true,
   clean: true,

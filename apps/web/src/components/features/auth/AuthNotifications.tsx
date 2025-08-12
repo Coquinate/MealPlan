@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { cn } from '@coquinate/ui/utils/cn'
+import { cn } from '@coquinate/ui'
 
 export interface NotificationProps {
   type: 'success' | 'error' | 'warning' | 'info'

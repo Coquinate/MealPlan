@@ -20,5 +20,8 @@
   },
   "devDependencies": {
     "@coquinate/config": "workspace:*"
+  },
+  "dependencies": {
+    "immer": "^10.1.1"
   }
 }

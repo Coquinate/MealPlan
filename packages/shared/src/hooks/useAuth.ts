@@ -5,28 +5,14 @@
 
 import { useEffect, useCallback, useRef } from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { useAuthStore, useAuthActions, type UserProfile } from '../stores/authStore'
+import { useAuthStore, useAuthActions } from '../stores/authStore'
 import type { AuthError, AuthResponse, User, Session } from '@supabase/supabase-js'
-
-// Types for authentication operations
-export interface LoginCredentials {
-  email: string
-  password: string
-}
-
-export interface RegisterData {
-  email: string
-  password: string
-  household_size: number
-  menu_type: 'vegetarian' | 'omnivore'
-  default_view_preference?: 'week' | 'today'
-}
-
-export interface UpdateProfileData {
-  household_size?: number
-  menu_type?: 'vegetarian' | 'omnivore'
-  default_view_preference?: 'week' | 'today'
-}
+import type { 
+  UserProfile,
+  LoginCredentials,
+  RegisterData,
+  UpdateProfileData
+} from '../types/auth'
 
 export interface AuthHookResult {
   // State
@@ -134,7 +120,7 @@ export function useAuth(): AuthHookResult {
         if (session?.user) {
           // Fetch user profile
           const profile = await fetchUserProfile(session.user.id)
-          actions.signIn(session.user, session, profile)
+          actions.signIn(session.user, session, profile || undefined)
         } else {
           actions.signOut()
         }
@@ -161,7 +147,7 @@ export function useAuth(): AuthHookResult {
         case 'SIGNED_IN':
           if (session?.user) {
             const profile = await fetchUserProfile(session.user.id)
-            actions.signIn(session.user, session, profile)
+            actions.signIn(session.user, session, profile || undefined)
           }
           break
         

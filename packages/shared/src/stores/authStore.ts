@@ -7,45 +7,23 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import type { User, Session } from '@supabase/supabase-js'
+import type { 
+  UserProfile, 
+  AuthState as BaseAuthState,
+  AuthStoreActions,
+  AuthErrorInfo
+} from '../types/auth'
 
-export interface UserProfile {
-  id: string
-  email: string
-  household_size: number
-  menu_type: 'vegetarian' | 'omnivore'
-  subscription_status: string
-  has_active_trial: boolean
-  has_trial_gift_access: boolean
-  stripe_customer_id?: string
-  trial_ends_at?: string
-  default_view_preference?: 'week' | 'today'
-  created_at: string
-  updated_at: string
-}
-
-export interface AuthState {
-  // Authentication state
-  user: User | null
-  profile: UserProfile | null
-  session: Session | null
-  isLoading: boolean
-  isInitialized: boolean
-  
-  // Error handling
-  error: string | null
-  lastError: {
-    type: 'login' | 'register' | 'profile' | 'session' | 'general'
-    message: string
-    timestamp: number
-  } | null
-  
-  // Session management
+// Extend the base AuthState from types to add store-specific properties
+interface AuthState extends BaseAuthState {
+  // Session management - store-specific
   sessionRefreshTimeout: NodeJS.Timeout | null
   refreshAttempts: number
   maxRefreshAttempts: number
+  lastError: AuthErrorInfo | null
 }
 
-export interface AuthActions {
+interface AuthActions extends AuthStoreActions {
   // Authentication actions
   setUser: (user: User | null) => void
   setProfile: (profile: UserProfile | null) => void
@@ -54,7 +32,7 @@ export interface AuthActions {
   setInitialized: (initialized: boolean) => void
   
   // Error management
-  setError: (error: string | null, type?: AuthState['lastError']['type']) => void
+  setError: (error: string | null, type?: AuthErrorInfo['type']) => void
   clearError: () => void
   
   // Session management
@@ -74,7 +52,7 @@ export interface AuthActions {
   reset: () => void
 }
 
-export type AuthStore = AuthState & AuthActions
+type StoreType = AuthState & AuthActions
 
 const initialState: AuthState = {
   user: null,
@@ -98,7 +76,7 @@ const calculateRefreshTime = (session: Session): number => {
   return Math.max(0, (refreshAt - now) * 1000) // Convert to milliseconds
 }
 
-export const useAuthStore = create<AuthStore>()(
+export const useAuthStore = create<StoreType>()(
   persist(
     immer((set, get) => ({
       ...initialState,
@@ -292,7 +270,7 @@ export const useAuthStore = create<AuthStore>()(
       // Custom merge function to handle rehydration properly
       merge: (persistedState, currentState) => ({
         ...currentState,
-        ...persistedState,
+        ...(persistedState as Partial<AuthState>),
         // Reset loading states and timeouts on rehydration
         isLoading: true,
         isInitialized: false,
@@ -324,5 +302,9 @@ export const useAuthActions = () => useAuthStore((state) => ({
   updateProfile: state.updateProfile,
   signIn: state.signIn,
   signOut: state.signOut,
-  reset: state.reset
+  reset: state.reset,
+  resetRefreshAttempts: state.resetRefreshAttempts,
+  incrementRefreshAttempts: state.incrementRefreshAttempts,
+  scheduleSessionRefresh: state.scheduleSessionRefresh,
+  clearSessionRefresh: state.clearSessionRefresh
 }))

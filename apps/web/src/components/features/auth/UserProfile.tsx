@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Button, Input, Select, Card } from '@coquinate/ui'
 import { useTranslation } from '@coquinate/i18n'
-import { cn } from '@coquinate/ui/utils/cn'
+import { cn } from '@coquinate/ui'
 
 export interface UserProfileData {
   id: string
@@ -230,7 +230,7 @@ export const UserProfile = React.forwardRef<HTMLDivElement, UserProfileProps>(
                     <Select
                       options={householdOptions}
                       value={formData.household_size?.toString() || ''}
-                      onValueChange={handleSelectChange('household_size')}
+                      onChange={handleSelectChange('household_size')}
                       disabled={updateLoading}
                       placeholder="Selectează mărimea gospodăriei"
                     />
@@ -253,7 +253,7 @@ export const UserProfile = React.forwardRef<HTMLDivElement, UserProfileProps>(
                     <Select
                       options={menuTypeOptions}
                       value={formData.menu_type || ''}
-                      onValueChange={handleSelectChange('menu_type')}
+                      onChange={handleSelectChange('menu_type')}
                       disabled={updateLoading}
                       placeholder="Selectează tipul de meniu"
                     />

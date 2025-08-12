@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Button, Input, Card } from '@coquinate/ui'
 import { useTranslation } from '@coquinate/i18n'
-import { cn } from '@coquinate/ui/utils/cn'
+import { cn } from '@coquinate/ui'
 
 export interface PasswordResetData {
   newPassword: string

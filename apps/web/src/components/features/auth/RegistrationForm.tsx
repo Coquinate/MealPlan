@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Button, Input, Select, Card } from '@coquinate/ui'
 import { useTranslation } from '@coquinate/i18n'
-import { cn } from '@coquinate/ui/utils/cn'
+import { cn } from '@coquinate/ui'
 
 export interface RegistrationData {
   email: string
@@ -193,7 +193,7 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
               <Select
                 options={householdOptions}
                 value={formData.household_size.toString()}
-                onValueChange={handleSelectChange('household_size')}
+                onChange={handleSelectChange('household_size')}
                 disabled={loading}
                 placeholder="Selectează mărimea gospodăriei"
               />
@@ -213,7 +213,7 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
               <Select
                 options={menuTypeOptions}
                 value={formData.menu_type}
-                onValueChange={handleSelectChange('menu_type')}
+                onChange={handleSelectChange('menu_type')}
                 disabled={loading}
                 placeholder="Selectează tipul de meniu"
               />
