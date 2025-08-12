@@ -22,6 +22,7 @@
     "@coquinate/config": "workspace:*"
   },
   "dependencies": {
-    "immer": "^10.1.1"
+    "immer": "^10.1.1",
+    "zustand": "^5.0.2"
   }
 }
