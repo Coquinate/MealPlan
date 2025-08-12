@@ -1,0 +1,10 @@
+{
+  "installCommand": "pnpm install --frozen-lockfile --prod=false",
+  "buildCommand": "pnpm build",
+  "framework": "nextjs",
+  "outputDirectory": "apps/web/.next",
+  "env": {
+    "HUSKY": "0",
+    "CI": "1"
+  }
+}

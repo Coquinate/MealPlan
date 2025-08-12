@@ -19,7 +19,7 @@
     "clean": "pnpm --filter './apps/**' --filter './packages/**' clean && rm -rf node_modules",
     "history:watch": "node watch-backup.mjs",
     "history:purge": "node -e \"import('fs').then(fs=>fs.rmSync('.history',{recursive:true,force:true}))\"",
-    "prepare": "is-ci || husky || true"
+    "prepare": "node -e \"process.exit(process.env.VERCEL || process.env.CI ? 0 : 1)\" && exit 0 || husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
