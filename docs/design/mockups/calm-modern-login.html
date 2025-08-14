@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealPlan - Autentificare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Calm Modern Palette - Much more subtle */
+            --primary: oklch(58% 0.08 230);        /* Calm blue-gray */
+            --primary-hover: oklch(52% 0.10 230);  /* Slightly darker */
+            --primary-light: oklch(58% 0.08 230 / 0.08); /* Very subtle */
+            
+            --accent: oklch(62% 0.12 150);         /* Soft sage green */
+            --accent-light: oklch(62% 0.12 150 / 0.1);
+            
+            --success: oklch(60% 0.12 145);        /* Muted green */
+            --warning: oklch(70% 0.10 85);         /* Soft yellow */
+            --error: oklch(58% 0.15 25);           /* Soft red */
+            
+            --text: oklch(22% 0 0);                /* Almost black */
+            --text-secondary: oklch(48% 0 0);      /* Mid gray */
+            --text-muted: oklch(68% 0 0);          /* Light gray */
+            
+            --surface: oklch(99% 0 0);             /* Off white */
+            --surface-raised: oklch(100% 0 0);     /* Pure white */
+            --background: oklch(98% 0 0);          /* Very light gray */
+            
+            --border: oklch(94% 0 0);              /* Subtle border */
+            
+            /* Softer shadows */
+            --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.04);
+            --shadow-md: 0 3px 8px oklch(0% 0 0 / 0.06);
+            --shadow-lg: 0 6px 16px oklch(0% 0 0 / 0.08);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+        }
+
+        /* Very subtle gradient */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, 
+                oklch(98% 0 0) 0%, 
+                oklch(96% 0.01 230) 100%
+            );
+            z-index: -1;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-card {
+            background: var(--surface-raised);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            font-size: 24px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .value-prop {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.5rem 0.875rem;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.625rem 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 200ms ease;
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.875rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .password-toggle:hover {
+            color: var(--text-secondary);
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: opacity 200ms ease;
+        }
+
+        .forgot-password:hover {
+            opacity: 0.8;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 200ms ease;
+            position: relative;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 400;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 0.625rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 200ms ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text);
+        }
+
+        .social-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+
+        .signup-prompt {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .signup-prompt a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        /* Trust badges - more subtle */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            opacity: 0.7;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 400;
+        }
+
+        .trust-badge svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.8;
+        }
+
+        /* Minimal animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-card {
+            animation: fadeIn 500ms ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-section">
+                <div class="logo">🍃</div>
+                <h1>Bine ai revenit</h1>
+                <p class="subtitle">Continuă planificarea meselor tale</p>
+                <span class="value-prop">
+                    ⏱ Economisește timp săptămânal
+                </span>
+            </div>
+
+            <form>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="nume@exemplu.ro" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Parolă</label>
+                    <div class="password-input">
+                        <input type="password" id="password" placeholder="Introdu parola" required>
+                        <button type="button" class="password-toggle">Arată</button>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Ține-mă minte</label>
+                    </div>
+                    <a href="#" class="forgot-password">Ai uitat parola?</a>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Intră în cont
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>sau</span>
+            </div>
+
+            <div class="social-login">
+                <button class="social-btn">
+                    <span>G</span>
+                </button>
+                <button class="social-btn">
+                    <span></span>
+                </button>
+                <button class="social-btn">
+                    <span>f</span>
+                </button>
+            </div>
+
+            <div class="signup-prompt">
+                Nu ai cont? <a href="#">Începe gratuit</a>
+            </div>
+        </div>
+
+        <div class="trust-badges">
+            <div class="trust-badge">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z"/>
+                </svg>
+                Securizat
+            </div>
+            <div class="trust-badge">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                    <path d="M4 5a2 2 0 012-2 1 1 0 000 2H6a2 2 0 00-2 2v6a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-3a1 1 0 100-2h3a4 4 0 014 4v6a4 4 0 01-4 4H6a4 4 0 01-4-4V7a4 4 0 014-4z"/>
+                </svg>
+                GDPR
+            </div>
+            <div class="trust-badge">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                </svg>
+                SSL
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password toggle - minimal
+        const passwordToggle = document.querySelector('.password-toggle');
+        const passwordInput = document.getElementById('password');
+        
+        passwordToggle.addEventListener('click', () => {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            passwordToggle.textContent = type === 'password' ? 'Arată' : 'Ascunde';
+        });
+
+        // Form submission - subtle
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const button = form.querySelector('.btn-primary');
+            button.textContent = 'Se conectează...';
+            button.style.opacity = '0.8';
+            
+            setTimeout(() => {
+                button.textContent = '✓ Conectat';
+                button.style.background = 'var(--success)';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

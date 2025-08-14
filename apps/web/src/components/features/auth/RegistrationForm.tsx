@@ -10,7 +10,7 @@ export interface RegistrationData {
   confirmPassword: string;
   household_size: number;
   menu_type: 'vegetarian' | 'omnivore';
-  default_view_preference?: 'week' | 'today';
+  default_view_preference?: 'RO' | 'EN';
 }
 
 export interface RegistrationFormProps {
@@ -34,7 +34,7 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
       confirmPassword: '',
       household_size: 2,
       menu_type: 'omnivore',
-      default_view_preference: 'week',
+      default_view_preference: 'RO',
     });
     const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
@@ -125,8 +125,19 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
 
           {/* Global error message */}
           {error && (
-            <div className="bg-error-50 border border-error-200 rounded-md p-space-sm">
-              <p className="text-sm text-error-600">{error}</p>
+            <div
+              className="bg-error-50 border border-error-200 rounded-md p-space-sm"
+              data-testid="registration-error-message"
+            >
+              <p className="text-sm text-error-600">
+                {error === 'email_exists'
+                  ? t('errors.emailExists')
+                  : error === 'registration_failed'
+                    ? t('errors.registrationFailed')
+                    : error === 'validation_error'
+                      ? t('errors.registrationFailed')
+                      : error}
+              </p>
             </div>
           )}
 
@@ -186,6 +197,7 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
                 onChange={handleSelectChange('household_size')}
                 disabled={loading}
                 placeholder="Selectează mărimea gospodăriei"
+                data-testid="household-size-select"
               />
               {fieldErrors.household_size && (
                 <p className="text-sm text-error">{fieldErrors.household_size}</p>
@@ -206,6 +218,7 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
                 onChange={handleSelectChange('menu_type')}
                 disabled={loading}
                 placeholder="Selectează tipul de meniu"
+                data-testid="menu-type-select"
               />
               {fieldErrors.menu_type && (
                 <p className="text-sm text-error">{fieldErrors.menu_type}</p>
@@ -217,7 +230,14 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
           </div>
 
           {/* Submit button */}
-          <Button type="submit" loading={loading} disabled={loading} className="w-full" size="lg">
+          <Button
+            type="submit"
+            loading={loading}
+            disabled={loading}
+            className="w-full"
+            size="lg"
+            data-testid="registration-submit-button"
+          >
             {t('register.submit')}
           </Button>
 
@@ -230,6 +250,7 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
                 onClick={onBackToLogin}
                 disabled={loading}
                 className="text-primary hover:text-primary-600 hover:underline font-medium focus:outline-none focus:underline disabled:opacity-50"
+                data-testid="back-to-login-link"
               >
                 {t('register.backToLogin')}
               </button>

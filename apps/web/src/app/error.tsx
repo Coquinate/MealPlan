@@ -1,0 +1,120 @@
+'use client';
+
+import React from 'react';
+import { Button, Card } from '@coquinate/ui';
+
+interface ErrorProps {
+  error: Error & { digest?: string };
+  reset: () => void;
+}
+
+/**
+ * 500 Server Error Page
+ *
+ * Catches server-side errors and displays user-friendly error message in Romanian
+ * Includes recovery options and support contact information
+ */
+export default function ErrorPage({ error, reset }: ErrorProps) {
+  // Log error for debugging
+  React.useEffect(() => {
+    console.error('Server error caught by error boundary:', error);
+  }, [error]);
+
+  const handleReload = () => {
+    window.location.reload();
+  };
+
+  const handleGoHome = () => {
+    window.location.href = '/';
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-surface flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <Card className="p-8 text-center space-y-6">
+          <div className="space-y-4">
+            <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-error-100">
+              <svg
+                className="h-10 w-10 text-error-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+            </div>
+
+            <div>
+              <h1 className="text-2xl font-bold text-text mb-2">Eroare de server</h1>
+              <p className="text-text-secondary">
+                Ceva nu a mers bine pe serverele noastre. Încearcă din nou în câteva momente.
+              </p>
+            </div>
+
+            <div className="bg-surface-elevated p-4 rounded-lg space-y-2">
+              <p className="text-sm text-text-secondary">
+                <strong>Cod eroare:</strong> 500
+              </p>
+              {error.digest && (
+                <p className="text-xs font-mono text-text-secondary break-all">
+                  <strong>ID eroare:</strong> {error.digest}
+                </p>
+              )}
+
+              {/* Show error details in development */}
+              {process.env.NODE_ENV === 'development' && (
+                <div className="text-left mt-3 p-3 bg-error-50 rounded border">
+                  <p className="text-xs font-mono text-error-700 break-all">{error.message}</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <Button onClick={reset} className="w-full" size="lg">
+              Încearcă din nou
+            </Button>
+
+            <div className="flex space-x-3">
+              <Button onClick={handleReload} variant="secondary" className="flex-1">
+                Reîncarcă pagina
+              </Button>
+
+              <Button onClick={handleGoHome} variant="secondary" className="flex-1">
+                Înapoi acasă
+              </Button>
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-border">
+            <div className="flex items-center justify-center space-x-2 mb-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-600 rounded-lg flex items-center justify-center">
+                <span className="text-sm font-bold text-white">🥘</span>
+              </div>
+              <span className="text-sm font-semibold text-primary">Coquinate</span>
+            </div>
+
+            <div className="text-xs text-text-secondary space-y-1">
+              <p>Dacă problema persistă, contactează suportul:</p>
+              <div className="space-y-1">
+                <p>
+                  <a href="mailto:support@coquinate.com" className="text-primary hover:underline">
+                    support@coquinate.com
+                  </a>
+                </p>
+                <p>
+                  Telefon: <span className="text-text">+40 XXX XXX XXX</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}

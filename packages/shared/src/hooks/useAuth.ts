@@ -30,6 +30,22 @@ export interface AuthHookResult {
   clearError: () => void;
 }
 
+// Global deduplication for profile fetches
+const profileFetchPromises = new Map<string, Promise<UserProfile | null>>();
+
+// Global singleton Supabase client
+let globalSupabaseClient: ReturnType<typeof createClient> | null = null;
+
+// Track if auth state listener is already set up - USE DIFFERENT APPROACH
+let authStateListenerSetup = false;
+let globalAuthSubscription: { data: { subscription: { unsubscribe: () => void } } } | null = null;
+
+// Create a Promise-based singleton to ensure only one setup happens
+let authSetupPromise: Promise<any> | null = null;
+
+// Debounce duplicate auth events (Supabase sends multiple SIGNED_IN events)
+let lastAuthEvent: { event: string; userId: string; timestamp: number } | null = null;
+
 // Custom hook for authentication
 export function useAuth(): AuthHookResult {
   const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null);
@@ -39,9 +55,9 @@ export function useAuth(): AuthHookResult {
 
   const actions = useAuthActions();
 
-  // Initialize Supabase client
+  // Initialize Supabase client (use global singleton)
   const getSupabase = useCallback(() => {
-    if (!supabaseRef.current) {
+    if (!globalSupabaseClient) {
       // These should come from environment variables in a real app
       const supabaseUrl =
         process.env.NEXT_PUBLIC_SUPABASE_URL ||
@@ -52,7 +68,7 @@ export function useAuth(): AuthHookResult {
         process.env.SUPABASE_ANON_KEY ||
         'your-anon-key';
 
-      supabaseRef.current = createClient(supabaseUrl, supabaseAnonKey, {
+      globalSupabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
         auth: {
           autoRefreshToken: true,
           persistSession: true,
@@ -60,42 +76,76 @@ export function useAuth(): AuthHookResult {
         },
       });
     }
-    return supabaseRef.current;
+    return globalSupabaseClient;
   }, []);
 
-  // Fetch user profile from custom endpoint
+  // Fetch user profile directly from database using Supabase client (with deduplication)
   const fetchUserProfile = useCallback(
-    async (_userId: string): Promise<UserProfile | null> => {
-      try {
-        const supabase = getSupabase();
-        const { data: sessionData } = await supabase.auth.getSession();
-
-        if (!sessionData.session) {
-          throw new Error('No session found');
-        }
-
-        // Call our custom profile endpoint
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'}/functions/v1/auth-profile`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${sessionData.session.access_token}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`Profile fetch failed: ${response.statusText}`);
-        }
-
-        const result = await response.json();
-        return result.profile || null;
-      } catch (error) {
-        console.error('Failed to fetch user profile:', error);
-        return null;
+    async (userId: string): Promise<UserProfile | null> => {
+      // Check if we already have a fetch in progress for this user
+      const existingPromise = profileFetchPromises.get(userId);
+      if (existingPromise) {
+        console.log('Profile fetch already in progress for user:', userId);
+        return existingPromise;
       }
+
+      // Create new fetch promise
+      const fetchPromise = (async () => {
+        try {
+          console.log('Starting new profile fetch for user:', userId);
+          const supabase = getSupabase();
+
+          // Add timeout to prevent hanging (increased from 5s to 10s)
+          const timeoutPromise = new Promise<null>((resolve) => {
+            setTimeout(() => {
+              console.error('Profile fetch timeout after 10 seconds');
+              resolve(null);
+            }, 10000);
+          });
+
+          // Get user profile directly from database
+          const queryPromise = supabase.from('users').select('*').eq('id', userId).single();
+
+          const result = await Promise.race([queryPromise, timeoutPromise]);
+
+          if (!result) {
+            console.error('Profile fetch timed out');
+            return null;
+          }
+
+          const { data: profile, error } = result;
+
+          if (error) {
+            console.error('Failed to fetch user profile:', error);
+            console.error('Error details:', {
+              code: error.code,
+              message: error.message,
+              details: error.details,
+            });
+            return null;
+          }
+
+          console.log('Profile fetched successfully:', profile);
+
+          // Remove sensitive fields and return
+          if (profile) {
+            const { hashed_password, ...safeProfile } = profile;
+            return safeProfile as unknown as UserProfile;
+          }
+          return null;
+        } catch (error) {
+          console.error('Failed to fetch user profile - exception:', error);
+          return null;
+        } finally {
+          // Clean up the promise from the map after completion
+          profileFetchPromises.delete(userId);
+        }
+      })();
+
+      // Store the promise in the map
+      profileFetchPromises.set(userId, fetchPromise);
+
+      return fetchPromise;
     },
     [getSupabase]
   );
@@ -120,14 +170,28 @@ export function useAuth(): AuthHookResult {
         }
 
         if (session?.user) {
-          // Fetch user profile
-          const profile = await fetchUserProfile(session.user.id);
-          actions.signIn(session.user, session, profile || undefined);
+          // First set user as signed in and mark as initialized immediately
+          actions.signIn(session.user, session, undefined);
+          actions.setInitialized(true);
+
+          // Then fetch profile (completely non-blocking - don't wait for it)
+          fetchUserProfile(session.user.id)
+            .then((profile) => {
+              if (profile) {
+                actions.setProfile(profile);
+              }
+            })
+            .catch((error) => {
+              console.warn(
+                'Profile fetch failed during initialization, continuing without profile:',
+                error
+              );
+              // Don't fail initialization if profile fetch fails
+            });
         } else {
           actions.signOut();
+          actions.setInitialized(true);
         }
-
-        actions.setInitialized(true);
       } catch (error) {
         console.error('Auth initialization error:', error);
         actions.setError('Failed to initialize authentication', 'general');
@@ -138,47 +202,130 @@ export function useAuth(): AuthHookResult {
     initAuth();
   }, [getSupabase, fetchUserProfile, actions]);
 
-  // Listen for auth state changes
+  // Listen for auth state changes (Promise-based singleton approach)
   useEffect(() => {
-    const supabase = getSupabase();
+    if (authSetupPromise) {
+      // Setup already in progress or completed, wait for it
+      return;
+    }
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state change:', event, session?.user?.email);
-
-      switch (event) {
-        case 'SIGNED_IN':
-          if (session?.user) {
-            const profile = await fetchUserProfile(session.user.id);
-            actions.signIn(session.user, session, profile || undefined);
-          }
-          break;
-
-        case 'SIGNED_OUT':
-          actions.signOut();
-          break;
-
-        case 'TOKEN_REFRESHED':
-          if (session?.user) {
-            actions.setSession(session);
-            actions.resetRefreshAttempts();
-          }
-          break;
-
-        case 'USER_UPDATED':
-          if (session?.user) {
-            actions.setUser(session.user);
-          }
-          break;
-
-        default:
-          break;
+    authSetupPromise = new Promise((resolve) => {
+      if (authStateListenerSetup) {
+        resolve(true);
+        return;
       }
+
+      // ATOMIC: Set flag BEFORE creating listener
+      authStateListenerSetup = true;
+      console.log('Setting up auth listener - ONCE');
+
+      const supabase = getSupabase();
+
+      const subscription = supabase.auth.onAuthStateChange(async (event, session) => {
+        console.log('Auth state change:', event, session?.user?.email);
+
+        // Debounce duplicate events from Supabase (1 second window)
+        const now = Date.now();
+        const currentEvent = {
+          event,
+          userId: session?.user?.id || '',
+          timestamp: now,
+        };
+
+        if (
+          lastAuthEvent &&
+          lastAuthEvent.event === event &&
+          lastAuthEvent.userId === currentEvent.userId &&
+          now - lastAuthEvent.timestamp < 1000
+        ) {
+          console.log('Ignoring duplicate auth event:', event, session?.user?.email);
+          return;
+        }
+
+        lastAuthEvent = currentEvent;
+
+        // Get the latest actions from the store
+        const store = useAuthStore.getState();
+
+        switch (event) {
+          case 'SIGNED_IN':
+          case 'INITIAL_SESSION':
+            if (session?.user) {
+              // First set the user as signed in
+              store.signIn(session.user, session, undefined);
+
+              // Then fetch the user profile (completely non-blocking)
+              fetchUserProfile(session.user.id)
+                .then((profile) => {
+                  if (profile) {
+                    // Use getState() to ensure we have the latest actions
+                    useAuthStore.getState().setProfile(profile);
+                  }
+                })
+                .catch((error) => {
+                  console.warn(
+                    'Profile fetch failed in auth state change, continuing without profile:',
+                    error
+                  );
+                  // Don't fail authentication if profile fetch fails
+                });
+            }
+            break;
+
+          case 'SIGNED_OUT':
+            store.signOut();
+            break;
+
+          case 'TOKEN_REFRESHED':
+            if (session?.user) {
+              store.setSession(session);
+              store.resetRefreshAttempts();
+            }
+            break;
+
+          case 'USER_UPDATED':
+            if (session?.user) {
+              store.setUser(session.user);
+            }
+            break;
+
+          default:
+            break;
+        }
+      });
+
+      // Store global subscription reference
+      globalAuthSubscription = subscription;
+      resolve(true);
     });
 
-    return () => subscription.unsubscribe();
-  }, [getSupabase, fetchUserProfile, actions]);
+    // Don't unsubscribe on component unmount since this is global
+    return () => {
+      // Keep the subscription active globally
+    };
+  }, [getSupabase, fetchUserProfile]);
+
+  // Authentication methods
+  const refreshSession = useCallback(async (): Promise<void> => {
+    try {
+      const supabase = getSupabase();
+      const { data, error } = await supabase.auth.refreshSession();
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.session) {
+        actions.setSession(data.session);
+        actions.resetRefreshAttempts();
+      }
+    } catch (error) {
+      console.error('Session refresh error:', error);
+      const authError = error as AuthError;
+      actions.setError(authError.message || 'Session refresh failed', 'session');
+      throw error;
+    }
+  }, [getSupabase, actions]);
 
   // Listen for session refresh events from the store
   useEffect(() => {
@@ -191,7 +338,7 @@ export function useAuth(): AuthHookResult {
     return () => {
       window.removeEventListener('auth:session-refresh-needed', handleSessionRefresh);
     };
-  }, []);
+  }, [refreshSession]);
 
   // Authentication methods
   const signIn = useCallback(
@@ -207,18 +354,21 @@ export function useAuth(): AuthHookResult {
         });
 
         if (error) {
-          throw error;
+          // Don't throw the error, just set it in the store
+          actions.setError(error.message || 'Sign in failed', 'login');
+          return;
         }
 
         if (!data.user || !data.session) {
-          throw new Error('Sign in failed - no user or session returned');
+          actions.setError('Sign in failed - no user or session returned', 'login');
+          return;
         }
 
         // Profile will be fetched by the auth state change listener
       } catch (error) {
         const authError = error as AuthError;
         actions.setError(authError.message || 'Sign in failed', 'login');
-        throw error;
+        // Don't throw the error to prevent console errors
       } finally {
         actions.setLoading(false);
       }
@@ -239,6 +389,8 @@ export function useAuth(): AuthHookResult {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''}`,
             },
             body: JSON.stringify(data),
           }
@@ -246,7 +398,8 @@ export function useAuth(): AuthHookResult {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || 'Registration failed');
+          // Pass the error key for translation in the UI
+          throw new Error(errorData.error || 'registration_failed');
         }
 
         // Registration successful - user will need to verify email
@@ -284,31 +437,25 @@ export function useAuth(): AuthHookResult {
         actions.setLoading(true);
         actions.clearError();
 
-        // Call our custom reset password endpoint
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'}/functions/v1/auth-reset-password`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email }),
-          }
-        );
+        // Use Supabase Auth's built-in password reset
+        const supabase = getSupabase();
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/auth/reset-password`,
+        });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Password reset failed');
+        if (error) {
+          throw error;
         }
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Password reset failed';
+        const authError = error as AuthError;
+        const message = authError.message || 'reset_failed';
         actions.setError(message, 'general');
         throw error;
       } finally {
         actions.setLoading(false);
       }
     },
-    [actions]
+    [getSupabase, actions]
   );
 
   const updatePassword = useCallback(
@@ -334,27 +481,6 @@ export function useAuth(): AuthHookResult {
     [getSupabase, actions]
   );
 
-  const refreshSession = useCallback(async (): Promise<void> => {
-    try {
-      const supabase = getSupabase();
-      const { data, error } = await supabase.auth.refreshSession();
-
-      if (error) {
-        throw error;
-      }
-
-      if (data.session) {
-        actions.setSession(data.session);
-        actions.resetRefreshAttempts();
-      }
-    } catch (error) {
-      console.error('Session refresh error:', error);
-      const authError = error as AuthError;
-      actions.setError(authError.message || 'Session refresh failed', 'session');
-      throw error;
-    }
-  }, [getSupabase, actions]);
-
   const updateProfile = useCallback(
     async (data: UpdateProfileData): Promise<void> => {
       try {
@@ -368,27 +494,25 @@ export function useAuth(): AuthHookResult {
           throw new Error('No session found');
         }
 
-        // Call our custom profile update endpoint
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'}/functions/v1/auth-profile`,
-          {
-            method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${sessionData.session.access_token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        // Update profile directly in database
+        const { data: profile, error } = await supabase
+          .from('users')
+          .update({
+            ...data,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', sessionData.session.user.id)
+          .select()
+          .single();
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Profile update failed');
+        if (error) {
+          throw error;
         }
 
-        const result = await response.json();
-        if (result.profile) {
-          actions.setProfile(result.profile);
+        if (profile) {
+          // Remove sensitive fields
+          const { hashed_password, ...safeProfile } = profile;
+          actions.setProfile(safeProfile as unknown as UserProfile);
         }
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Profile update failed';
@@ -413,21 +537,12 @@ export function useAuth(): AuthHookResult {
         throw new Error('No session found');
       }
 
-      // Call our custom profile delete endpoint
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'}/functions/v1/auth-profile`,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${sessionData.session.access_token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      // Delete user profile directly from database
+      // Note: This requires proper RLS policies or a trigger to cascade delete auth user
+      const { error } = await supabase.from('users').delete().eq('id', sessionData.session.user.id);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Account deletion failed');
+      if (error) {
+        throw error;
       }
 
       // Force sign out after account deletion

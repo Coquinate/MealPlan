@@ -54,5 +54,30 @@
     "lunch": "Prânz",
     "dinner": "Cină",
     "snack": "Gustare"
+  },
+  "landing": {
+    "welcome_message": "Bine ai venit la Coquinate",
+    "coming_soon": "În curând",
+    "login_button": "Autentificare",
+    "tagline": "Planifică mesele tale cu ușurință",
+    "system_ready": "Sistem verificat și pregătit pentru utilizare",
+    "feature1": {
+      "title": "Planificare Inteligentă",
+      "description": "Planifică mesele tale cu ușurință și optimizează lista de cumpărături"
+    },
+    "feature2": {
+      "title": "Cumpărături Smart",
+      "description": "Liste de cumpărături generate automat și optimizate pentru buget"
+    },
+    "feature3": {
+      "title": "Asistent Gătit",
+      "description": "Instrucțiuni pas cu pas și cronometru pentru prepararea perfectă"
+    }
+  },
+  "health": {
+    "status_connected": "Conectat",
+    "status_disconnected": "Deconectat",
+    "status_degraded": "Conexiune instabilă",
+    "checking": "Se verifică..."
   }
 }

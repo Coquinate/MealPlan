@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealPlan - Paste Carbonara</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Warm Fintech Color Palette */
+            --primary: oklch(65% 0.18 35);
+            --primary-hover: oklch(60% 0.20 32);
+            --primary-light: oklch(65% 0.18 35 / 0.1);
+            
+            --success: oklch(65% 0.15 145);
+            --success-light: oklch(65% 0.15 145 / 0.1);
+            --warning: oklch(75% 0.15 85);
+            --error: oklch(60% 0.2 25);
+            
+            --text: oklch(20% 0.02 40);
+            --text-secondary: oklch(45% 0.01 40);
+            --text-muted: oklch(65% 0 0);
+            
+            --surface: oklch(99% 0 0);
+            --surface-raised: oklch(100% 0 0);
+            --background: oklch(97% 0.005 40);
+            
+            --border: oklch(92% 0 0);
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px oklch(0% 0 0 / 0.08);
+            --shadow-md: 0 4px 12px oklch(0% 0 0 / 0.1);
+            --shadow-lg: 0 8px 24px oklch(0% 0 0 / 0.12);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--surface-raised);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: oklch(100% 0 0 / 0.95);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 200ms ease;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateX(-2px);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-outline {
+            padding: 0.5rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 200ms ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-outline:hover {
+            background: var(--surface-raised);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            padding: 0.5rem 1.25rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 200ms ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--primary-light);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+        }
+
+        /* Recipe Content */
+        .recipe-content {
+            background: var(--surface-raised);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .recipe-hero {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(135deg, #f5e6d3, #e8d4b0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+        }
+
+        .recipe-badge {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--surface-raised);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .recipe-info {
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .meta-item strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .recipe-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            padding: 0.25rem;
+            background: var(--background);
+            border-radius: 10px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.75rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 200ms ease;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .tab:hover {
+            background: var(--surface);
+        }
+
+        .tab.active {
+            background: var(--surface-raised);
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Ingredients */
+        .ingredients-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .servings-control {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--background);
+            border-radius: 8px;
+            margin-left: auto;
+        }
+
+        .servings-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 200ms ease;
+        }
+
+        .servings-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .ingredients-list {
+            list-style: none;
+        }
+
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: var(--background);
+            border-radius: 8px;
+            transition: all 200ms ease;
+            cursor: pointer;
+        }
+
+        .ingredient-item:hover {
+            background: var(--primary-light);
+            transform: translateX(4px);
+        }
+
+        .ingredient-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+        }
+
+        .ingredient-item.checked {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        .ingredient-amount {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 60px;
+        }
+
+        /* Instructions */
+        .instructions-section {
+            margin-bottom: 2rem;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background: var(--background);
+            border-radius: 10px;
+            transition: all 200ms ease;
+            position: relative;
+        }
+
+        .step-item:hover {
+            background: var(--primary-light);
+            transform: translateX(4px);
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .step-item.completed .step-number {
+            background: var(--success);
+        }
+
+        .step-content {
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .step-timer {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--warning);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* Sidebar */
+        .recipe-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .nutrition-card {
+            background: var(--surface-raised);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nutrition-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .nutrition-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .nutrition-per {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .nutrition-item {
+            padding: 0.75rem;
+            background: var(--background);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .nutrition-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nutrition-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Tags */
+        .tags-card {
+            background: var(--surface-raised);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            padding: 0.5rem 1rem;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 200ms ease;
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Tips Card */
+        .tips-card {
+            background: linear-gradient(135deg, var(--success-light), var(--primary-light));
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tip-content {
+            margin-top: 0.75rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        /* Cooking Mode */
+        .cooking-mode-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 200ms ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .cooking-mode-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .recipe-sidebar {
+                order: -1;
+            }
+
+            .recipe-hero {
+                height: 250px;
+                font-size: 80px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .recipe-meta {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes checkComplete {
+            0% { transform: scale(0) rotate(-45deg); }
+            50% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .checked-animation {
+            animation: checkComplete 300ms ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <a href="#" class="back-btn">
+                ← Înapoi la Plan
+            </a>
+            <div class="header-actions">
+                <button class="btn-outline">
+                    <span>❤️</span> Salvează
+                </button>
+                <button class="btn-outline">
+                    <span>🖨️</span> Print
+                </button>
+                <button class="btn-outline">
+                    <span>📤</span> Share
+                </button>
+                <button class="btn-primary">
+                    <span>🛒</span> Adaugă la Listă
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Recipe Content -->
+        <div class="recipe-content">
+            <div class="recipe-hero">
+                <div class="recipe-badge">
+                    🇮🇹 Italienească
+                </div>
+                🍝
+            </div>
+            
+            <div class="recipe-info">
+                <h1>Paste Carbonara Autentice</h1>
+                
+                <div class="recipe-meta">
+                    <div class="meta-item">
+                        ⏱️ <strong>25 min</strong> total
+                    </div>
+                    <div class="meta-item">
+                        👤 <strong>Ușor</strong> dificultate
+                    </div>
+                    <div class="meta-item">
+                        💰 <strong>35 RON</strong> per porție
+                    </div>
+                    <div class="meta-item">
+                        ⭐ <strong>4.8</strong> rating
+                    </div>
+                </div>
+
+                <p class="recipe-description">
+                    O rețetă clasică italiană care combină simplitatea cu gustul extraordinar. 
+                    Paste cremoase cu ou, brânză Pecorino Romano și guanciale crocant - 
+                    perfecțiunea într-un bol. Fără smântână, doar tehnică autentică romană!
+                </p>
+
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab active">Ingrediente</button>
+                    <button class="tab">Instrucțiuni</button>
+                    <button class="tab">Video</button>
+                </div>
+
+                <!-- Ingredients Section -->
+                <div class="ingredients-section">
+                    <h2 class="section-title">
+                        Ingrediente Necesare
+                        <div class="servings-control">
+                            <button class="servings-btn">-</button>
+                            <span><strong>4</strong> porții</span>
+                            <button class="servings-btn">+</button>
+                        </div>
+                    </h2>
+                    
+                    <ul class="ingredients-list">
+                        <li class="ingredient-item">
+                            <input type="checkbox" class="ingredient-checkbox">
+                            <span class="ingredient-amount">400g</span>
+                            <span>Spaghetti sau Rigatoni</span>
+                        </li>
+                        <li class="ingredient-item">
+                            <input type="checkbox" class="ingredient-checkbox">
+                            <span class="ingredient-amount">200g</span>
+                            <span>Guanciale (sau bacon în lipsă)</span>
+                        </li>
+                        <li class="ingredient-item">
+                            <input type="checkbox" class="ingredient-checkbox">
+                            <span class="ingredient-amount">100g</span>
+                            <span>Pecorino Romano râs</span>
+                        </li>
+                        <li class="ingredient-item">
+                            <input type="checkbox" class="ingredient-checkbox">
+                            <span class="ingredient-amount">4</span>
+                            <span>Gălbenușuri de ou (mari)</span>
+                        </li>
+                        <li class="ingredient-item">
+                            <input type="checkbox" class="ingredient-checkbox">
+                            <span class="ingredient-amount">1</span>
+                            <span>Ou întreg</span>
+                        </li>
+                        <li class="ingredient-item">
+                            <input type="checkbox" class="ingredient-checkbox">
+                            <span class="ingredient-amount">După gust</span>
+                            <span>Piper negru proaspăt măcinat</span>
+                        </li>
+                        <li class="ingredient-item">
+                            <input type="checkbox" class="ingredient-checkbox">
+                            <span class="ingredient-amount">Pentru fiert</span>
+                            <span>Sare grunjoasă</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Instructions Section -->
+                <div class="instructions-section">
+                    <h2 class="section-title">
+                        Mod de Preparare
+                    </h2>
+
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            Pune o oală mare cu apă sărată la fiert. Folosește aproximativ 1 litru de apă pentru 100g de paste și sare precum pentru supă.
+                        </div>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            Taie guanciale în cubulețe de aproximativ 1cm. Pune-l într-o tigaie rece (fără ulei!) și încălzește la foc mediu până devine crocant și auriu.
+                        </div>
+                        <div class="step-timer">5-7 min</div>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            Într-un bol mare, bate gălbenușurile cu oul întreg. Adaugă 3/4 din Pecorino râs și mult piper negru proaspăt măcinat. Amestecă până obții o cremă densă.
+                        </div>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            Când apa fierbe, adaugă pastele și gătește-le cu 1 minut mai puțin decât indică pachetul (al dente). Păstrează o cană cu apă de la paste înainte de scurgere.
+                        </div>
+                        <div class="step-timer">8-10 min</div>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            Oprește focul de sub tigaia cu guanciale. Scurge pastele și adaugă-le imediat în tigaie. Amestecă energic pentru 30 secunde.
+                        </div>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            CRUCIAL: Lasă tigaia să se răcească 1 minut. Adaugă amestecul de ou și amestecă continuu, adăugând treptat apă de la paste până obții o cremă mătăsoasă. Ouăle NU trebuie să se facă omletă!
+                        </div>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            Servește imediat în farfurii încălzite. Presară Pecorino rămas și piper negru proaspăt măcinat din belșug. Buon appetito!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="recipe-sidebar">
+            <!-- Nutrition Card -->
+            <div class="nutrition-card">
+                <div class="nutrition-header">
+                    <h3 class="nutrition-title">Valori Nutriționale</h3>
+                    <span class="nutrition-per">per porție</span>
+                </div>
+                <div class="nutrition-grid">
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">480</div>
+                        <div class="nutrition-label">Calorii</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">52g</div>
+                        <div class="nutrition-label">Carbohidrați</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">28g</div>
+                        <div class="nutrition-label">Proteine</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">18g</div>
+                        <div class="nutrition-label">Grăsimi</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tags Card -->
+            <div class="tags-card">
+                <h3 class="nutrition-title">Categorii & Tags</h3>
+                <div class="tags-list">
+                    <span class="tag">Paste</span>
+                    <span class="tag">Italienesc</span>
+                    <span class="tag">Rapid</span>
+                    <span class="tag">Comfort Food</span>
+                    <span class="tag">Cină</span>
+                </div>
+            </div>
+
+            <!-- Tips Card -->
+            <div class="tips-card">
+                <h3 class="nutrition-title">💡 Sfat Pro</h3>
+                <p class="tip-content">
+                    Secretul unei Carbonara perfecte stă în temperatură! 
+                    Lasă tigaia să se răcească înainte de a adăuga ouăle - 
+                    căldura reziduală va fi suficientă pentru a crea crema perfectă 
+                    fără a face omletă.
+                </p>
+            </div>
+
+            <!-- Cooking Mode Button -->
+            <button class="cooking-mode-btn">
+                👨‍🍳 Pornește Modul Gătit
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Ingredient checkbox interaction
+        document.querySelectorAll('.ingredient-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const item = this.parentElement;
+                if (this.checked) {
+                    item.classList.add('checked');
+                    item.classList.add('checked-animation');
+                } else {
+                    item.classList.remove('checked');
+                }
+            });
+        });
+
+        // Servings control
+        const servingsButtons = document.querySelectorAll('.servings-btn');
+        let servings = 4;
+        
+        servingsButtons[0].addEventListener('click', () => {
+            if (servings > 1) {
+                servings--;
+                updateServings();
+            }
+        });
+        
+        servingsButtons[1].addEventListener('click', () => {
+            if (servings < 12) {
+                servings++;
+                updateServings();
+            }
+        });
+        
+        function updateServings() {
+            document.querySelector('.servings-control span').innerHTML = `<strong>${servings}</strong> porții`;
+            // Here you would also update ingredient amounts
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Step completion
+        document.querySelectorAll('.step-item').forEach(step => {
+            step.addEventListener('click', function() {
+                this.classList.toggle('completed');
+            });
+        });
+
+        // Cooking mode button
+        document.querySelector('.cooking-mode-btn').addEventListener('click', function() {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                alert('Modul Gătit va fi disponibil în curând! 🍳');
+            }, 200);
+        });
+    </script>
+</body>
+</html>

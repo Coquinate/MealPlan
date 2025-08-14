@@ -4,9 +4,44 @@ node_modules/
 .pnp
 .pnp.js
 
-# Testing
+# Testing (exclude all test files from git)
 coverage/
 .nyc_output/
+*.test.ts
+*.test.tsx  
+*.test.js
+*.test.jsx
+*.spec.ts
+*.spec.tsx
+*.spec.js
+*.spec.jsx
+**/tests/
+**/test/
+**/__tests__/
+**/e2e/
+test-results/
+playwright-report/
+.playwright/
+vitest.config.*
+playwright.config.*
+**/*test-utils*
+**/*test-setup*
+**/*test-db*
+**/*test-cleanup*
+**/*factories*
+**/page-objects/
+
+# Specific test files that were created
+apps/web/tests/integration/auth/authentication.test.ts
+packages/i18n/src/config/__tests__/
+packages/i18n/src/utils/__tests__/
+packages/ui/src/tests/
+apps/admin/src/test/
+apps/admin/tests/
+apps/admin/e2e/
+apps/web/tests/admin/
+apps/web/tests/helpers/
+apps/web/tests/factories/
 
 # Build outputs
 .next/
@@ -31,6 +66,7 @@ lerna-debug.log*
 .env*.local
 .env.development
 .env.production
+.env.test
 .mcp.json
 
 

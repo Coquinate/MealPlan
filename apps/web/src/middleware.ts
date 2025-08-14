@@ -45,6 +45,33 @@ function matchesPath(path: string, patterns: string[]): boolean {
   });
 }
 
+// Helper function to extract Supabase session from request cookies
+function extractSupabaseSession(
+  request: NextRequest
+): { access_token?: string; refresh_token?: string } | null {
+  try {
+    const supabaseProjectId = process.env.NEXT_PUBLIC_SUPABASE_URL!.match(/https:\/\/([^.]+)/)?.[1];
+    if (!supabaseProjectId) return null;
+
+    const authTokenName = `sb-${supabaseProjectId}-auth-token`;
+    const authCookie = request.cookies.get(authTokenName);
+
+    if (!authCookie) return null;
+
+    const cookieData = JSON.parse(authCookie.value);
+    if (cookieData.access_token && cookieData.refresh_token) {
+      return {
+        access_token: cookieData.access_token,
+        refresh_token: cookieData.refresh_token,
+      };
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -55,6 +82,40 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/static') ||
     pathname.includes('.') // Files with extensions
   ) {
+    return NextResponse.next();
+  }
+
+  // Check if we have valid Supabase configuration
+  const hasSupabaseConfig =
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // In development mode, allow placeholder values but skip auth checks
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  const hasPlaceholders =
+    process.env.NEXT_PUBLIC_SUPABASE_URL?.includes('placeholder') ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.includes('placeholder');
+
+  // Development-only auth debugging (no sensitive data)
+  if (isDevelopment) {
+    console.log('Middleware auth check:', {
+      pathname,
+      hasSupabaseConfig,
+      hasPlaceholders,
+      cookieCount: request.cookies.getAll().length,
+    });
+  }
+
+  if (!hasSupabaseConfig) {
+    console.error('Supabase configuration missing');
+    return NextResponse.next();
+  }
+
+  // In development with placeholders, skip auth middleware
+  if (isDevelopment && hasPlaceholders) {
+    console.log(
+      'Development mode with placeholder config - skipping auth middleware for',
+      pathname
+    );
     return NextResponse.next();
   }
 
@@ -69,32 +130,80 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Get Supabase session from cookies
+  // Get Supabase session from request cookies
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       auth: {
-        persistSession: false,
-        autoRefreshToken: false,
+        persistSession: true,
+        autoRefreshToken: true,
         detectSessionInUrl: false,
       },
     }
   );
 
-  // Check authentication
-  const {
-    data: { session },
-    error,
-  } = await supabase.auth.getSession();
+  // Extract session from request cookies using helper function
+  const sessionTokens = extractSupabaseSession(request);
 
-  // No session found - redirect to login
+  // Development-only cookie debugging
+  if (isDevelopment) {
+    console.log('Auth cookie lookup:', { foundTokens: !!sessionTokens });
+  }
+
+  let session = null;
+  let error = null;
+
+  if (sessionTokens) {
+    try {
+      if (isDevelopment) {
+        console.log('Auth tokens found:', {
+          hasAccessToken: !!sessionTokens.access_token,
+          hasRefreshToken: !!sessionTokens.refresh_token,
+        });
+      }
+
+      // Set session from parsed cookie data
+      const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+        access_token: sessionTokens.access_token,
+        refresh_token: sessionTokens.refresh_token,
+      });
+      session = sessionData.session;
+      error = sessionError;
+    } catch (e) {
+      if (isDevelopment) {
+        console.log(
+          'Failed to set session from tokens:',
+          e instanceof Error ? e.message : 'Unknown error'
+        );
+      }
+      error = e;
+    }
+  }
+
+  // Fallback to getSession() if no cookie found or parsing failed
+  if (!session && !error) {
+    const sessionResult = await supabase.auth.getSession();
+    session = sessionResult.data.session;
+    error = sessionResult.error;
+    if (isDevelopment) {
+      console.log('Fallback session:', { hasSession: !!session, hasError: !!error });
+    }
+  }
+
+  // No session found in middleware - let client-side handle auth redirect
   if (!session || error) {
+    if (isDevelopment) {
+      console.log('No server-side session, client handling auth for:', pathname);
+    }
+
+    // For protected routes, let the client handle the redirect rather than doing it server-side
+    // This is because Supabase stores the session in localStorage, not in HTTP cookies
     if (isProtectedRoute || isAdminRoute || isPremiumRoute) {
-      const redirectUrl = new URL('/auth/login', request.url);
-      // Add the original URL as a redirect parameter
-      redirectUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(redirectUrl);
+      // Return response with a header indicating auth check is needed
+      const response = NextResponse.next();
+      response.headers.set('x-auth-check-required', 'true');
+      return response;
     }
     return NextResponse.next();
   }
@@ -106,10 +215,12 @@ export async function middleware(request: NextRequest) {
   if (isAdminRoute) {
     try {
       // Query admin status from database
+      // Note: admin_users contains separate admin accounts, not regular users
+      // We check if the current session user ID exists in admin_users table
       const { data: adminUser, error: adminError } = await supabase
         .from('admin_users')
         .select('is_active')
-        .eq('user_id', userId)
+        .eq('id', userId)
         .eq('is_active', true)
         .single();
 

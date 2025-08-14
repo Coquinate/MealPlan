@@ -2,6 +2,7 @@
   "name": "coquinate",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Meal planning and nutrition tracking application",
   "author": "Coquinate Team",
   "license": "UNLICENSED",
@@ -44,8 +45,8 @@
     "typescript-eslint": "^8.39.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "pnpm run lint --fix",
+    "*.{ts,tsx,js,jsx,css}": [
+      "bash -c 'pnpm run lint'",
       "prettier --write"
     ],
     "*.{json,md,yml,yaml}": [

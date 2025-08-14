@@ -17,7 +17,7 @@
     --color-primary-700: oklch(46% 0.06 250);
     --color-primary-800: oklch(38% 0.055 250);
     --color-primary-900: oklch(25% 0.03 250);
-    
+
     /* Grayscale */
     --color-gray: oklch(50% 0 0);
     --color-gray-50: oklch(98% 0 0);
@@ -30,7 +30,7 @@
     --color-gray-700: oklch(35% 0 0);
     --color-gray-800: oklch(25% 0 0);
     --color-gray-900: oklch(15% 0 0);
-    
+
     /* Status Colors */
     --color-error: oklch(60% 0.2 25);
     --color-error-50: oklch(96% 0.08 25);
@@ -38,27 +38,27 @@
     --color-error-500: oklch(60% 0.2 25);
     --color-error-700: oklch(45% 0.25 25);
     --color-error-900: oklch(30% 0.22 25);
-    
+
     --color-success: oklch(65% 0.15 145);
     --color-success-50: oklch(95% 0.06 145);
     --color-success-100: oklch(90% 0.1 145);
     --color-success-500: oklch(65% 0.15 145);
     --color-success-700: oklch(50% 0.18 145);
     --color-success-900: oklch(35% 0.16 145);
-    
+
     --color-warning: oklch(75% 0.15 85);
     --color-warning-50: oklch(96% 0.06 85);
     --color-warning-100: oklch(92% 0.1 85);
     --color-warning-500: oklch(75% 0.15 85);
     --color-warning-700: oklch(65% 0.18 85);
     --color-warning-900: oklch(45% 0.16 85);
-    
+
     /* Surface Colors */
     --color-surface: oklch(98% 0 0);
     --color-surface-raised: oklch(100% 0 0);
     --color-surface-sunken: oklch(96% 0 0);
     --color-surface-hover: oklch(94% 0 0);
-    
+
     /* Text Colors */
     --color-text: oklch(20% 0 0);
     --color-text-secondary: oklch(45% 0 0);
@@ -66,14 +66,14 @@
     --color-text-subtle: oklch(75% 0 0);
     --color-text-inverse: oklch(95% 0 0);
     --color-text-disabled: oklch(80% 0 0);
-    
+
     /* Border Colors */
     --color-border: oklch(92% 0 0);
     --color-border-strong: oklch(85% 0 0);
     --color-border-subtle: oklch(96% 0 0);
     --color-border-muted: oklch(94% 0 0);
     --color-border-focus: oklch(62% 0.05 250);
-    
+
     /* Food Freshness Indicators */
     --color-fresh: oklch(65% 0.15 145);
     --color-good: oklch(70% 0.08 145);
@@ -81,9 +81,9 @@
     --color-use-today: oklch(70% 0.18 45);
     --color-expired: oklch(60% 0.2 25);
   }
-  
+
   /* Planning Mode (Default) */
-  [data-mode="planning"] {
+  [data-mode='planning'] {
     --color-primary: oklch(62% 0.05 250);
     --color-surface: oklch(98% 0 0);
     --color-surface-raised: oklch(100% 0 0);
@@ -91,9 +91,9 @@
     --color-text-secondary: oklch(45% 0 0);
     --color-border: oklch(92% 0 0);
   }
-  
+
   /* Shopping Mode - High Contrast */
-  [data-mode="shopping"] {
+  [data-mode='shopping'] {
     --color-primary: oklch(20% 0 0);
     --color-surface: oklch(100% 0 0);
     --color-text: oklch(10% 0 0);
@@ -101,15 +101,15 @@
     --color-border: oklch(85% 0 0);
     --color-checked: oklch(55% 0.18 145);
     --color-highlight: oklch(95% 0.15 85);
-    
+
     /* Enhanced contrast for outdoor visibility */
     --color-error: oklch(55% 0.25 25);
     --color-success: oklch(60% 0.2 145);
     --color-warning: oklch(70% 0.2 85);
   }
-  
+
   /* Cooking Mode - Warm & Engaging */
-  [data-mode="cooking"] {
+  [data-mode='cooking'] {
     --color-primary: oklch(65% 0.18 35);
     --color-surface: oklch(98% 0.02 40);
     --color-surface-raised: oklch(100% 0.01 40);
@@ -119,20 +119,20 @@
     --color-active-step: oklch(70% 0.2 30);
     --color-timer-urgent: oklch(60% 0.2 25);
     --color-complete: oklch(65% 0.15 145);
-    
+
     /* Warmer status colors */
     --color-error: oklch(60% 0.22 20);
     --color-success: oklch(65% 0.15 140);
     --color-warning: oklch(75% 0.18 80);
   }
-  
+
   /* Dark Mode Support (Future Enhancement) */
   @media (prefers-color-scheme: dark) {
     :root {
       /* Dark mode overrides would go here */
     }
   }
-  
+
   /* High Contrast Mode Support */
   @media (prefers-contrast: high) {
     :root {
@@ -142,7 +142,7 @@
       --color-border-strong: oklch(70% 0 0);
     }
   }
-  
+
   /* Reduced Motion Support */
   @media (prefers-reduced-motion: reduce) {
     * {
@@ -155,6 +155,7 @@
 
 /* Utility Classes for Context Switching */
 @layer utilities {
+  /* 
   .context-planning {
     @apply [&]:data-[mode=planning];
   }
@@ -166,11 +167,22 @@
   .context-cooking {
     @apply [&]:data-[mode=cooking];
   }
-  
+  */
+
   /* Freshness Indicator Classes */
-  .freshness-fresh { color: var(--color-fresh); }
-  .freshness-good { color: var(--color-good); }
-  .freshness-use-soon { color: var(--color-use-soon); }
-  .freshness-use-today { color: var(--color-use-today); }
-  .freshness-expired { color: var(--color-expired); }
+  .freshness-fresh {
+    color: var(--color-fresh);
+  }
+  .freshness-good {
+    color: var(--color-good);
+  }
+  .freshness-use-soon {
+    color: var(--color-use-soon);
+  }
+  .freshness-use-today {
+    color: var(--color-use-today);
+  }
+  .freshness-expired {
+    color: var(--color-expired);
+  }
 }

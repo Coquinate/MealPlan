@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealPlan - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Calm Modern Palette */
+            --primary: oklch(58% 0.08 230);
+            --primary-hover: oklch(52% 0.10 230);
+            --primary-light: oklch(58% 0.08 230 / 0.06);
+            
+            --accent: oklch(62% 0.12 150);
+            --accent-light: oklch(62% 0.12 150 / 0.08);
+            
+            --success: oklch(60% 0.12 145);
+            --success-light: oklch(60% 0.12 145 / 0.08);
+            --warning: oklch(70% 0.10 85);
+            --warning-light: oklch(70% 0.10 85 / 0.08);
+            
+            --text: oklch(22% 0 0);
+            --text-secondary: oklch(50% 0 0);
+            --text-muted: oklch(70% 0 0);
+            
+            --surface: oklch(99.5% 0 0);
+            --surface-raised: oklch(100% 0 0);
+            --background: oklch(98.5% 0 0);
+            
+            --border: oklch(94% 0 0);
+            
+            /* Minimal shadows */
+            --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.03);
+            --shadow-md: 0 2px 6px oklch(0% 0 0 / 0.05);
+            --shadow-lg: 0 4px 12px oklch(0% 0 0 / 0.07);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header - Minimal */
+        header {
+            background: var(--surface-raised);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-nav {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+        }
+
+        nav {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .nav-item {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 200ms ease;
+            font-size: 0.9rem;
+            font-weight: 450;
+        }
+
+        .nav-item:hover {
+            color: var(--text);
+            background: var(--primary-light);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: var(--primary-light);
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .time-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--success-light);
+            color: var(--success);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 200ms ease;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.375rem 0.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .user-menu:hover {
+            background: var(--primary-light);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Welcome */
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.375rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Stats - Clean cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: var(--surface-raised);
+            padding: 1.25rem;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            transition: all 200ms ease;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 450;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+
+        .stat-change {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.125rem 0.375rem;
+            background: var(--success-light);
+            color: var(--success);
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        /* Section headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .btn-secondary {
+            padding: 0.5rem 1rem;
+            background: var(--surface);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Week grid - Clean cards */
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .day-card {
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 200ms ease;
+        }
+
+        .day-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .day-card.today {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        .day-header {
+            padding: 0.875rem 1rem;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-card.today .day-header {
+            background: var(--primary-light);
+        }
+
+        .day-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .day-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .meal-list {
+            padding: 1rem;
+        }
+
+        .meal-item {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.875rem;
+            padding: 0.5rem;
+            margin: -0.5rem;
+            margin-bottom: 0.375rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .meal-item:hover {
+            background: var(--accent-light);
+        }
+
+        .meal-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .meal-info {
+            flex: 1;
+        }
+
+        .meal-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.125rem;
+        }
+
+        .meal-meta {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Shopping preview */
+        .shopping-card {
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.25rem;
+        }
+
+        .shopping-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .shopping-progress {
+            font-size: 0.875rem;
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .shopping-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .shopping-item {
+            padding: 0.625rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 200ms ease;
+            font-size: 0.875rem;
+        }
+
+        .shopping-item:hover {
+            background: var(--accent-light);
+            border-color: var(--accent);
+        }
+
+        .shopping-item input {
+            accent-color: var(--accent);
+        }
+
+        .shopping-item.checked {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+            
+            .week-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-nav">
+                <div class="logo">
+                    <div class="logo-icon">🍃</div>
+                    <span>MealPlan</span>
+                </div>
+                <nav>
+                    <a href="#" class="nav-item active">Prezentare</a>
+                    <a href="#" class="nav-item">Rețete</a>
+                    <a href="#" class="nav-item">Cumpărături</a>
+                    <a href="#" class="nav-item">Calendar</a>
+                </nav>
+            </div>
+            <div class="header-actions">
+                <div class="time-badge">
+                    ⏱ 3.5h economisit
+                </div>
+                <button class="icon-btn">🔔</button>
+                <div class="user-menu">
+                    <div class="user-avatar">AM</div>
+                    <span style="font-size: 0.875rem;">Alexandru</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <div class="container">
+        <!-- Welcome -->
+        <div class="welcome-section">
+            <h1>Bună, Alexandru</h1>
+            <p class="subtitle">Săptămâna 8-14 Ianuarie 2025</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Mese Pregătite</div>
+                <div class="stat-value">12</div>
+                <span class="stat-change">+2 față de săpt. trecută</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Lista Cumpărături</div>
+                <div class="stat-value">24</div>
+                <span class="stat-change" style="background: var(--warning-light); color: var(--warning);">3 urgente</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Calorii / Zi</div>
+                <div class="stat-value">2,450</div>
+                <span class="stat-change">În țintă</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Cost Estimat</div>
+                <div class="stat-value">185 lei</div>
+                <span class="stat-change">-15% economii</span>
+            </div>
+        </div>
+
+        <!-- Weekly Plan -->
+        <div class="section-header">
+            <h2>Planul săptămânii</h2>
+            <button class="btn-secondary">Modifică plan</button>
+        </div>
+
+        <div class="week-grid">
+            <!-- Monday -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-name">Luni</div>
+                        <div class="day-date">8 ianuarie</div>
+                    </div>
+                    <span style="color: var(--success);">✓</span>
+                </div>
+                <div class="meal-list">
+                    <div class="meal-item">
+                        <div class="meal-icon">🥐</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Omletă simplă</div>
+                            <div class="meal-meta">
+                                <span>15 min</span>
+                                <span>320 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-icon">🥗</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Salată verde</div>
+                            <div class="meal-meta">
+                                <span>10 min</span>
+                                <span>180 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-icon">🍗</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Pui la cuptor</div>
+                            <div class="meal-meta">
+                                <span>45 min</span>
+                                <span>520 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tuesday - Today -->
+            <div class="day-card today">
+                <div class="day-header">
+                    <div>
+                        <div class="day-name">Marți • Azi</div>
+                        <div class="day-date">9 ianuarie</div>
+                    </div>
+                    <span style="color: var(--text-muted);">○</span>
+                </div>
+                <div class="meal-list">
+                    <div class="meal-item">
+                        <div class="meal-icon">🥞</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Clătite</div>
+                            <div class="meal-meta">
+                                <span>20 min</span>
+                                <span>380 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-icon">🍲</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Supă de legume</div>
+                            <div class="meal-meta">
+                                <span>30 min</span>
+                                <span>250 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-icon">🍝</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Paste simple</div>
+                            <div class="meal-meta">
+                                <span>25 min</span>
+                                <span>480 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wednesday -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-name">Miercuri</div>
+                        <div class="day-date">10 ianuarie</div>
+                    </div>
+                    <span style="color: var(--text-muted);">○</span>
+                </div>
+                <div class="meal-list">
+                    <div class="meal-item">
+                        <div class="meal-icon">🍳</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Ouă fierte</div>
+                            <div class="meal-meta">
+                                <span>10 min</span>
+                                <span>280 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-icon">🥘</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Tocăniță</div>
+                            <div class="meal-meta">
+                                <span>60 min</span>
+                                <span>450 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-icon">🐟</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Pește la grătar</div>
+                            <div class="meal-meta">
+                                <span>20 min</span>
+                                <span>350 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shopping List -->
+        <div class="section-header">
+            <h2>Lista de cumpărături</h2>
+            <button class="btn-secondary">Vezi tot</button>
+        </div>
+
+        <div class="shopping-card">
+            <div class="shopping-header">
+                <span style="color: var(--text-secondary); font-size: 0.875rem;">Pentru această săptămână</span>
+                <span class="shopping-progress">3 din 24</span>
+            </div>
+            <div class="shopping-grid">
+                <div class="shopping-item">
+                    <input type="checkbox">
+                    <span>Ouă (12)</span>
+                </div>
+                <div class="shopping-item checked">
+                    <input type="checkbox" checked>
+                    <span>Lapte 2L</span>
+                </div>
+                <div class="shopping-item">
+                    <input type="checkbox">
+                    <span>Pâine</span>
+                </div>
+                <div class="shopping-item">
+                    <input type="checkbox">
+                    <span>Pui 1kg</span>
+                </div>
+                <div class="shopping-item checked">
+                    <input type="checkbox" checked>
+                    <span>Roșii</span>
+                </div>
+                <div class="shopping-item">
+                    <input type="checkbox">
+                    <span>Cartofi</span>
+                </div>
+                <div class="shopping-item">
+                    <input type="checkbox">
+                    <span>Ceapă</span>
+                </div>
+                <div class="shopping-item checked">
+                    <input type="checkbox" checked>
+                    <span>Usturoi</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Shopping items
+        document.querySelectorAll('.shopping-item input').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const item = this.parentElement;
+                item.classList.toggle('checked', this.checked);
+                
+                const checked = document.querySelectorAll('.shopping-item input:checked').length;
+                const total = document.querySelectorAll('.shopping-item input').length;
+                document.querySelector('.shopping-progress').textContent = `${checked} din ${total}`;
+            });
+        });
+
+        // Meal hover
+        document.querySelectorAll('.meal-item').forEach(meal => {
+            meal.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>

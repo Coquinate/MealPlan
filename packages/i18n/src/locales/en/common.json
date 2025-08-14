@@ -24,7 +24,8 @@
     "date": "",
     "time": "",
     "name": "",
-    "description": ""
+    "description": "",
+    "select": ""
   },
   "message": {
     "loading": "",
@@ -35,5 +36,48 @@
     "unauthorized": "",
     "forbidden": "",
     "serverError": ""
+  },
+  "time": {
+    "today": ""
+  },
+  "dayOfWeek": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "mealType": {
+    "breakfast": "",
+    "lunch": "",
+    "dinner": "",
+    "snack": ""
+  },
+  "landing": {
+    "welcome_message": "",
+    "coming_soon": "",
+    "login_button": "",
+    "tagline": "",
+    "system_ready": "",
+    "feature1": {
+      "title": "",
+      "description": ""
+    },
+    "feature2": {
+      "title": "",
+      "description": ""
+    },
+    "feature3": {
+      "title": "",
+      "description": ""
+    }
+  },
+  "health": {
+    "status_connected": "",
+    "status_disconnected": "",
+    "status_degraded": "",
+    "checking": ""
   }
 }

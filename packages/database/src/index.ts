@@ -6,17 +6,19 @@
 // Export client and types
 export {
   supabase,
-  createServiceClient,
   TABLES,
   type Database,
   type Tables,
   type Enums,
   type InsertTables,
-  type UpdateTables
-} from './client'
+  type UpdateTables,
+} from './client';
+
+// Export server-only client
+export { createServiceClient } from './server-client';
 
 // Export auth utilities
-export * from './auth'
+export * from './auth';
 
 // Export query utilities
-export * from './queries'
+export * from './queries';

@@ -71,13 +71,22 @@ export const LoginForm = React.forwardRef<HTMLFormElement, LoginFormProps>(
         <form ref={ref} onSubmit={handleSubmit} className="space-y-space-md">
           {/* Header */}
           <div className="text-center space-y-space-xs">
-            <h1 className="text-2xl font-bold text-text">{t('login.title')}</h1>
+            <h1 className="text-heading-2xl font-bold text-text">{t('login.title')}</h1>
           </div>
 
           {/* Global error message */}
           {error && (
-            <div className="bg-error-50 border border-error-200 rounded-md p-space-sm">
-              <p className="text-sm text-error-600">{error}</p>
+            <div
+              className="bg-error-50 border border-error-200 rounded-md p-space-sm"
+              data-testid="login-error-message"
+            >
+              <p className="text-sm text-error-600">
+                {error === 'Invalid login credentials'
+                  ? t('errors.invalidCredentials')
+                  : error === 'login_failed'
+                    ? t('errors.loginFailed')
+                    : error}
+              </p>
             </div>
           )}
 
@@ -111,7 +120,14 @@ export const LoginForm = React.forwardRef<HTMLFormElement, LoginFormProps>(
           </div>
 
           {/* Submit button */}
-          <Button type="submit" loading={loading} disabled={loading} className="w-full" size="lg">
+          <Button
+            type="submit"
+            loading={loading}
+            disabled={loading}
+            className="w-full"
+            size="lg"
+            data-testid="login-submit-button"
+          >
             {t('login.submit')}
           </Button>
 
@@ -122,6 +138,7 @@ export const LoginForm = React.forwardRef<HTMLFormElement, LoginFormProps>(
               onClick={onForgotPassword}
               disabled={loading}
               className="text-sm text-primary hover:text-primary-600 hover:underline focus:outline-none focus:underline disabled:opacity-50"
+              data-testid="forgot-password-link"
             >
               {t('login.forgotPassword')}
             </button>
@@ -136,6 +153,7 @@ export const LoginForm = React.forwardRef<HTMLFormElement, LoginFormProps>(
                 onClick={onCreateAccount}
                 disabled={loading}
                 className="text-primary hover:text-primary-600 hover:underline font-medium focus:outline-none focus:underline disabled:opacity-50"
+                data-testid="create-account-link"
               >
                 {t('login.createAccount')}
               </button>

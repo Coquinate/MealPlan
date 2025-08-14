@@ -12,6 +12,7 @@
 - **Validation:** Zod schemas for all API inputs and outputs
 - **No Hardcoded Text:** Use the I18n system, romanian only
 - **Create JSDoc:** for vital functions
+- **DataTestID:** add unique data-testid for any interractible elements
 - NO ANY TYPES
 
 ## Performance Standards for React 19

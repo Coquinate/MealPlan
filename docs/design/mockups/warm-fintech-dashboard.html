@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealPlan - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Warm Fintech Color Palette */
+            --primary: oklch(65% 0.18 35);
+            --primary-hover: oklch(60% 0.20 32);
+            --primary-light: oklch(65% 0.18 35 / 0.1);
+            
+            --success: oklch(65% 0.15 145);
+            --success-light: oklch(65% 0.15 145 / 0.1);
+            --warning: oklch(75% 0.15 85);
+            --warning-light: oklch(75% 0.15 85 / 0.1);
+            
+            --text: oklch(20% 0.02 40);
+            --text-secondary: oklch(45% 0.01 40);
+            --text-muted: oklch(65% 0 0);
+            
+            --surface: oklch(99% 0 0);
+            --surface-raised: oklch(100% 0 0);
+            --background: oklch(97% 0.005 40);
+            
+            --border: oklch(92% 0 0);
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px oklch(0% 0 0 / 0.08);
+            --shadow-md: 0 4px 12px oklch(0% 0 0 / 0.1);
+            --shadow-lg: 0 8px 24px oklch(0% 0 0 / 0.12);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: var(--surface-raised);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: oklch(100% 0 0 / 0.95);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-nav {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 200ms ease;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--text);
+            background: var(--primary-light);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: var(--primary-light);
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .time-saved {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--success-light);
+            color: var(--success);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.9; }
+        }
+
+        .notification-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 200ms ease;
+            position: relative;
+        }
+
+        .notification-btn:hover {
+            background: var(--surface-raised);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-1px);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--warning);
+            border-radius: 50%;
+            border: 2px solid var(--surface-raised);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .user-menu:hover {
+            background: var(--primary-light);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .date-picker {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .date-picker:hover {
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-1px);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface-raised);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 300ms ease;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .stat-icon.success {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .stat-icon.warning {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .stat-icon.primary {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--success-light);
+            color: var(--success);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Weekly Plan */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 200ms ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--primary-light);
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .day-card {
+            background: var(--surface-raised);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 250ms ease;
+        }
+
+        .day-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .day-card.today {
+            border: 2px solid var(--primary);
+        }
+
+        .day-header {
+            padding: 1rem 1.25rem;
+            background: var(--primary-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-card.today .day-header {
+            background: var(--primary);
+            color: white;
+        }
+
+        .day-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .day-date {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .meal-list {
+            padding: 1.25rem;
+        }
+
+        .meal-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            cursor: pointer;
+            transition: all 200ms ease;
+            padding: 0.5rem;
+            margin: -0.5rem;
+            border-radius: 8px;
+        }
+
+        .meal-item:hover {
+            background: var(--primary-light);
+        }
+
+        .meal-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .meal-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .meal-info {
+            flex: 1;
+        }
+
+        .meal-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+
+        .meal-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .meal-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .meal-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--success-light);
+            color: var(--success);
+            font-size: 14px;
+        }
+
+        .meal-status.pending {
+            background: var(--border);
+            color: var(--text-muted);
+        }
+
+        /* Shopping List Preview */
+        .shopping-preview {
+            background: var(--surface-raised);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .shopping-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .shopping-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .shopping-item {
+            padding: 0.75rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .shopping-item:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .shopping-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .shopping-item.checked {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 1rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .week-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .welcome-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-nav">
+                <div class="logo">
+                    <div class="logo-icon">🍲</div>
+                    <span>MealPlan</span>
+                </div>
+                <nav>
+                    <a href="#" class="nav-item active">Dashboard</a>
+                    <a href="#" class="nav-item">Rețete</a>
+                    <a href="#" class="nav-item">Lista Cumpărături</a>
+                    <a href="#" class="nav-item">Planificare</a>
+                </nav>
+            </div>
+            <div class="header-actions">
+                <div class="time-saved">
+                    ⏱️ 3.5 ore economisite săptămâna asta
+                </div>
+                <button class="notification-btn">
+                    🔔
+                    <span class="notification-dot"></span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">AM</div>
+                    <span>Alexandru</span>
+                    <span style="opacity: 0.5;">▼</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <div class="welcome-header">
+                <div>
+                    <h1>Bună dimineața, Alexandru! ☀️</h1>
+                    <p class="subtitle">Iată planul tău pentru această săptămână</p>
+                </div>
+                <div class="date-picker">
+                    📅 8-14 Ianuarie 2025
+                    <span style="opacity: 0.5;">▼</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon success">✓</div>
+                    <span class="stat-change">+15%</span>
+                </div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Mese gătite săptămâna asta</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon warning">🛒</div>
+                </div>
+                <div class="stat-value">24</div>
+                <div class="stat-label">Ingrediente în lista de cumpărături</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon primary">🔥</div>
+                    <span class="stat-change">7 zile</span>
+                </div>
+                <div class="stat-value">2,450</div>
+                <div class="stat-label">Calorii medii pe zi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon success">💰</div>
+                </div>
+                <div class="stat-value">185 RON</div>
+                <div class="stat-label">Economii estimate săptămâna asta</div>
+            </div>
+        </div>
+
+        <!-- Weekly Plan -->
+        <div class="section-header">
+            <h2>Planul Săptămânii</h2>
+            <button class="btn-primary">
+                ➕ Personalizează Plan
+            </button>
+        </div>
+
+        <div class="week-grid">
+            <!-- Monday -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-name">Luni</div>
+                        <div class="day-date">8 Ian</div>
+                    </div>
+                    <span class="meal-status">✓</span>
+                </div>
+                <div class="meal-list">
+                    <div class="meal-item">
+                        <div class="meal-image">🥐</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Omletă cu legume</div>
+                            <div class="meal-meta">
+                                <span>⏱️ 15 min</span>
+                                <span>🔥 320 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-image">🍲</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Ciorbă de legume</div>
+                            <div class="meal-meta">
+                                <span>⏱️ 30 min</span>
+                                <span>🔥 280 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-image">🍗</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Pui la cuptor cu cartofi</div>
+                            <div class="meal-meta">
+                                <span>⏱️ 45 min</span>
+                                <span>🔥 520 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tuesday (Today) -->
+            <div class="day-card today">
+                <div class="day-header">
+                    <div>
+                        <div class="day-name">Marți (Azi)</div>
+                        <div class="day-date">9 Ian</div>
+                    </div>
+                    <span class="meal-status pending">○</span>
+                </div>
+                <div class="meal-list">
+                    <div class="meal-item">
+                        <div class="meal-image">🥞</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Clătite cu gem</div>
+                            <div class="meal-meta">
+                                <span>⏱️ 20 min</span>
+                                <span>🔥 380 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-image">🥗</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Salată Caesar</div>
+                            <div class="meal-meta">
+                                <span>⏱️ 15 min</span>
+                                <span>🔥 350 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-image">🍝</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Paste Carbonara</div>
+                            <div class="meal-meta">
+                                <span>⏱️ 25 min</span>
+                                <span>🔥 480 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wednesday -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div>
+                        <div class="day-name">Miercuri</div>
+                        <div class="day-date">10 Ian</div>
+                    </div>
+                    <span class="meal-status pending">○</span>
+                </div>
+                <div class="meal-list">
+                    <div class="meal-item">
+                        <div class="meal-image">🍳</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Ouă Benedict</div>
+                            <div class="meal-meta">
+                                <span>⏱️ 25 min</span>
+                                <span>🔥 420 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-image">🍜</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Supă cremă de ciuperci</div>
+                            <div class="meal-meta">
+                                <span>⏱️ 35 min</span>
+                                <span>🔥 290 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-image">🥘</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Tocăniță de vită</div>
+                            <div class="meal-meta">
+                                <span>⏱️ 60 min</span>
+                                <span>🔥 550 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shopping List Preview -->
+        <div class="section-header">
+            <h2>Lista de Cumpărături - Preview</h2>
+            <button class="btn-primary">
+                📱 Vezi Lista Completă
+            </button>
+        </div>
+
+        <div class="shopping-preview">
+            <div class="shopping-header">
+                <p style="color: var(--text-secondary);">Top ingrediente pentru această săptămână</p>
+                <span style="color: var(--success); font-weight: 600;">3/24 cumpărate</span>
+            </div>
+            <div class="shopping-items">
+                <div class="shopping-item">
+                    <input type="checkbox">
+                    <span>Ouă (12 buc)</span>
+                </div>
+                <div class="shopping-item checked">
+                    <input type="checkbox" checked>
+                    <span>Lapte (2L)</span>
+                </div>
+                <div class="shopping-item">
+                    <input type="checkbox">
+                    <span>Pâine integrală</span>
+                </div>
+                <div class="shopping-item">
+                    <input type="checkbox">
+                    <span>Piept de pui (1kg)</span>
+                </div>
+                <div class="shopping-item checked">
+                    <input type="checkbox" checked>
+                    <span>Roșii (500g)</span>
+                </div>
+                <div class="shopping-item">
+                    <input type="checkbox">
+                    <span>Cartofi (2kg)</span>
+                </div>
+                <div class="shopping-item">
+                    <input type="checkbox">
+                    <span>Ceapă (500g)</span>
+                </div>
+                <div class="shopping-item checked">
+                    <input type="checkbox" checked>
+                    <span>Usturoi</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Interactive Shopping List
+        document.querySelectorAll('.shopping-item input').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const item = this.parentElement;
+                if (this.checked) {
+                    item.classList.add('checked');
+                } else {
+                    item.classList.remove('checked');
+                }
+                
+                // Update counter
+                const checked = document.querySelectorAll('.shopping-item input:checked').length;
+                const total = document.querySelectorAll('.shopping-item input').length;
+                document.querySelector('.shopping-header span').textContent = `${checked}/${total} cumpărate`;
+            });
+        });
+
+        // Meal Item Click Animation
+        document.querySelectorAll('.meal-item').forEach(meal => {
+            meal.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+
+        // Animate stats on load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.stat-value').forEach((stat, index) => {
+                const finalValue = stat.textContent;
+                const isNumber = !isNaN(finalValue.replace(/[^0-9]/g, ''));
+                
+                if (isNumber) {
+                    const numericValue = parseInt(finalValue.replace(/[^0-9]/g, ''));
+                    let current = 0;
+                    const increment = numericValue / 30;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= numericValue) {
+                            current = numericValue;
+                            clearInterval(timer);
+                            stat.textContent = finalValue;
+                        } else {
+                            stat.textContent = Math.floor(current) + (finalValue.includes('RON') ? ' RON' : '');
+                        }
+                    }, 50);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
