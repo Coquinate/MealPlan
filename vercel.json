@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "installCommand": "npx pnpm@10.14.0 install",
-  "buildCommand": "npx pnpm@10.14.0 --filter @coquinate/shared build && npx pnpm@10.14.0 --filter @coquinate/i18n build && npx pnpm@10.14.0 --filter @coquinate/ui build && npx pnpm@10.14.0 --filter @coquinate/web build",
+  "buildCommand": "npx pnpm@10.14.0 --filter @coquinate/shared build && npx pnpm@10.14.0 --filter @coquinate/database build && npx pnpm@10.14.0 --filter @coquinate/i18n build && npx pnpm@10.14.0 --filter @coquinate/ui build && npx pnpm@10.14.0 --filter @coquinate/web build",
   "outputDirectory": "apps/web/.next",
   "regions": ["fra1"]
 }
