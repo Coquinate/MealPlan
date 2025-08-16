@@ -28,28 +28,32 @@ export function InteractiveCard({
   variant = 'default',
   disableRipple = false,
 }: InteractiveCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const divRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLAnchorElement>(null);
   const [isPressed, setIsPressed] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
   const isClickable = onClick || href;
+  const isAnchor = href && !onClick;
 
   const handleActivation = (e?: React.MouseEvent) => {
     if (onClick) {
       onClick(e!);
-    } else if (href) {
+    } else if (href && !isAnchor) {
       window.location.href = href;
     }
   };
 
   const handleClick = (e: React.MouseEvent) => {
     if (!disableRipple && !prefersReducedMotion && isClickable) {
-      const card = cardRef.current;
+      const card = isAnchor ? anchorRef.current : divRef.current;
       if (card) {
         createRipple(e, card);
       }
     }
-    handleActivation(e);
+    if (onClick) {
+      handleActivation(e);
+    }
   };
 
   const handleMouseDown = () => {
@@ -64,6 +68,13 @@ export function InteractiveCard({
     setIsPressed(false);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (isClickable && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      handleActivation();
+    }
+  };
+
   const variantClasses = {
     default: 'bg-surface border border-surface-dim shadow-sm',
     glass: 'glass',
@@ -75,32 +86,16 @@ export function InteractiveCard({
 
   const pressedClasses = isPressed && !prefersReducedMotion ? 'scale-[0.98]' : '';
 
-  const Component = href && !onClick ? 'a' : 'div';
+  const cardClassName = cn(
+    'relative overflow-hidden rounded-card p-space-md',
+    variantClasses[variant],
+    interactiveClasses,
+    pressedClasses,
+    className
+  );
 
-  return (
-    <Component
-      ref={cardRef as React.RefObject<HTMLDivElement | HTMLAnchorElement>}
-      className={cn(
-        'relative overflow-hidden rounded-card p-space-md',
-        variantClasses[variant],
-        interactiveClasses,
-        pressedClasses,
-        className
-      )}
-      onClick={handleClick}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseLeave}
-      href={href}
-      role={isClickable ? 'button' : undefined}
-      tabIndex={isClickable ? 0 : undefined}
-      onKeyDown={(e: React.KeyboardEvent) => {
-        if (isClickable && (e.key === 'Enter' || e.key === ' ')) {
-          e.preventDefault();
-          handleActivation();
-        }
-      }}
-    >
+  const commonContent = (
+    <>
       {children}
 
       {/* Hover glow effect for elevated cards */}
@@ -109,6 +104,41 @@ export function InteractiveCard({
           <div className="absolute inset-0 bg-gradient-to-br from-primary-warm/10 to-accent-coral/10" />
         </div>
       )}
-    </Component>
+    </>
+  );
+
+  // Render as anchor tag if href is provided without onClick
+  if (isAnchor) {
+    return (
+      <a
+        ref={anchorRef}
+        href={href}
+        className={cardClassName}
+        onClick={handleClick}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+        onKeyDown={handleKeyDown}
+      >
+        {commonContent}
+      </a>
+    );
+  }
+
+  // Render as div for all other cases
+  return (
+    <div
+      ref={divRef}
+      className={cardClassName}
+      onClick={handleClick}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      role={isClickable ? 'button' : undefined}
+      tabIndex={isClickable ? 0 : undefined}
+      onKeyDown={handleKeyDown}
+    >
+      {commonContent}
+    </div>
   );
 }

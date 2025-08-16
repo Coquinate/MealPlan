@@ -30,7 +30,7 @@ export function CountdownTimer({
   const [timeLeft, setTimeLeft] = useState(duration * 1000); // Convert to milliseconds
   const [isRunning, setIsRunning] = useState(autoStart);
   const [prevDigits, setPrevDigits] = useState<string[]>([]);
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const onCompleteRef = useRef(onComplete);
   const prefersReducedMotion = useReducedMotion();
 

@@ -17,7 +17,8 @@ export * from './floating-elements';
 
 // Meal-specific components
 export * from './meal-card';
-export * from './MealCardExample';
+// Skip MealCardExample - has duplicate exports
+// export * from './MealCardExample';
 export * from './week-grid';
 export * from './shopping-list-item';
 

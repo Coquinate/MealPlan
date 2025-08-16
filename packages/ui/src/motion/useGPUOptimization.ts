@@ -18,7 +18,7 @@ export function useGPUOptimization(
 ) {
   const { enableGPU = true, cleanupDelay = 500, properties = ['transform', 'opacity'] } = options;
 
-  const cleanupTimerRef = useRef<NodeJS.Timeout>();
+  const cleanupTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
     if (!enableGPU || !elementRef.current) return;

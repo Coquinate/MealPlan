@@ -39,7 +39,7 @@ export function NavigationMenu({
   const [activeIndex, setActiveIndex] = useState(items.findIndex((item) => item.active));
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const [indicatorStyle, setIndicatorStyle] = useState({});
-  const menuRef = useRef<HTMLNavElement>(null);
+  const menuRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<(HTMLElement | null)[]>([]);
   const prefersReducedMotion = useReducedMotion();
 
@@ -234,35 +234,22 @@ export function NavigationMenu({
 
       {items.map((item, index) => {
         const isActive = index === activeIndex;
-        const Component = item.href && !item.onClick ? 'a' : 'button';
+        const isAnchor = item.href && !item.onClick;
 
-        return (
-          <Component
-            key={index}
-            ref={(el) => (itemRefs.current[index] = el)}
-            href={item.href}
-            onClick={(e) => handleItemClick(item, index, e)}
-            onFocus={() => setFocusedIndex(index)}
-            onBlur={() => setFocusedIndex(-1)}
-            disabled={item.disabled}
-            tabIndex={isActive ? 0 : -1}
-            className={cn(
-              'relative flex items-center justify-center gap-2',
-              'rounded-md transition-all overflow-hidden',
-              itemSizeClasses[size],
-              isActive ? 'text-primary-warm font-semibold' : 'text-text-secondary hover:text-text',
-              !item.disabled && 'hover:bg-surface-dim/50 active:scale-[0.98]',
-              item.disabled && 'opacity-50 cursor-not-allowed',
-              !prefersReducedMotion && 'hover-lift'
-            )}
-            role="menuitem"
-            aria-current={isActive ? 'page' : undefined}
-            aria-disabled={item.disabled}
-          >
+        const className = cn(
+          'relative flex items-center justify-center gap-2',
+          'rounded-md transition-all overflow-hidden',
+          itemSizeClasses[size],
+          isActive ? 'text-primary-warm font-semibold' : 'text-text-secondary hover:text-text',
+          !item.disabled && 'hover:bg-surface-dim/50 active:scale-[0.98]',
+          item.disabled && 'opacity-50 cursor-not-allowed',
+          !prefersReducedMotion && 'hover-lift'
+        );
+
+        const content = (
+          <>
             {item.icon && <span className="flex-shrink-0">{item.icon}</span>}
-
             <span>{item.label}</span>
-
             {item.badge !== undefined && (
               <span
                 className={cn(
@@ -276,7 +263,49 @@ export function NavigationMenu({
                 {item.badge}
               </span>
             )}
-          </Component>
+          </>
+        );
+
+        if (isAnchor) {
+          return (
+            <a
+              key={index}
+              ref={(el) => {
+                itemRefs.current[index] = el;
+              }}
+              href={item.href}
+              onClick={(e) => handleItemClick(item, index, e)}
+              onFocus={() => setFocusedIndex(index)}
+              onBlur={() => setFocusedIndex(-1)}
+              tabIndex={isActive ? 0 : -1}
+              className={className}
+              role="menuitem"
+              aria-current={isActive ? 'page' : undefined}
+              aria-disabled={item.disabled}
+            >
+              {content}
+            </a>
+          );
+        }
+
+        return (
+          <button
+            key={index}
+            ref={(el) => {
+              itemRefs.current[index] = el;
+            }}
+            onClick={(e) => handleItemClick(item, index, e)}
+            onFocus={() => setFocusedIndex(index)}
+            onBlur={() => setFocusedIndex(-1)}
+            disabled={item.disabled}
+            tabIndex={isActive ? 0 : -1}
+            className={className}
+            role="menuitem"
+            aria-current={isActive ? 'page' : undefined}
+            aria-disabled={item.disabled}
+          >
+            {content}
+          </button>
         );
       })}
     </nav>

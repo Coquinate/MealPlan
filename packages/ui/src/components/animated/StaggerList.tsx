@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, ReactNode } from 'react';
+import React, { useRef, ReactNode, ElementType } from 'react';
 import { useStagger } from '../../motion/useStagger';
 import { useReducedMotion } from '../../motion/useReducedMotion';
 
@@ -9,7 +9,7 @@ interface StaggerListProps {
   className?: string;
   animation?: 'fade' | 'slide-up' | 'slide-down' | 'scale';
   startDelay?: number;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
 }
 
 /**
@@ -21,13 +21,13 @@ export function StaggerList({
   className = '',
   animation = 'slide-up',
   startDelay = 0,
-  as: Component = 'div',
+  as: Component = 'div' as ElementType,
 }: StaggerListProps) {
   const containerRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
   // Apply stagger effect
-  useStagger(containerRef, {
+  useStagger(containerRef as React.RefObject<HTMLElement>, {
     enabled: !prefersReducedMotion,
     startDelay,
   });

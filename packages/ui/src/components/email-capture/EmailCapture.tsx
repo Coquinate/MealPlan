@@ -7,9 +7,10 @@ import { FloatingElements, FloatingOrbPresets } from '../floating-elements';
 
 // Import for production use
 import * as i18nModule from '@coquinate/i18n';
+import type { TranslationNamespace } from '@coquinate/i18n';
 
 // Mock useTranslation for Storybook compatibility
-const useTranslation = (namespace?: string) => {
+const useTranslation = (namespace?: TranslationNamespace | TranslationNamespace[]) => {
   const isStorybook = typeof window !== 'undefined' && (window as any).mockTranslations;
 
   if (isStorybook) {
@@ -94,7 +95,7 @@ export function EmailCapture({
   onSuccess,
   onError,
 }: EmailCaptureProps) {
-  const { t } = useTranslation('landing');
+  const { t } = useTranslation('common');
 
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<EmailCaptureStatus>({ kind: 'idle' });

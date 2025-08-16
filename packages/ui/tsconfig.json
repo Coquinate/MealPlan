@@ -3,17 +3,25 @@
   "compilerOptions": {
     "noEmit": false,
     "outDir": "./dist",
-    "incremental": true,
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
-    "composite": true,
+    "rootDir": "./src",
     "declaration": true,
     "declarationMap": true,
-    "baseUrl": "src",
+    "emitDeclarationOnly": false,
+    "composite": false,
+    "incremental": false,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", ".storybook/**/*", "src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules", "dist"],
-  "references": [{ "path": "../shared" }, { "path": "../config" }]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.stories.*",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "src/components/animated/StaggerList.tsx",
+    "src/tests/**/*"
+  ]
 }

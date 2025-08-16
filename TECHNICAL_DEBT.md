@@ -1,87 +1,86 @@
-# Technical Debt - Vercel Deployment Hacks
+# Technical Debt - Vercel Deployment
 
-## ⚠️ ATENȚIE: Fix-uri Temporare Aplicate pentru Deploy
+## ✅ Fix-uri Aplicate (16 August 2025)
 
-### 1. ❌ TypeScript Declarations Dezactivate în UI Package
-
-**Fișier**: `packages/ui/tsup.config.ts`
-**Ce am făcut**: Setat `dts: false` (era `true`)
-**De ce**: tsup nu reușea să genereze declarațiile TypeScript
-**Impact**:
-
-- Nu se generează fișiere `.d.ts` pentru componente
-- Apps care importă din @coquinate/ui nu au type checking
-  **FIX NECESAR**:
-- Rezolvă problema cu tsconfig.json în packages/ui
-- Reactivează `dts: true`
-
-### 2. ❌ Script onSuccess Dezactivat în UI Package
+### 1. ✅ Script onSuccess Reactivat în UI Package
 
 **Fișier**: `packages/ui/tsup.config.ts`
-**Ce am făcut**: Comentat `onSuccess: 'node scripts/copy-styles.mjs'`
-**De ce**: Vercel nu găsea scriptul la build
-**Impact**:
+**Ce am făcut**: Reactivat `onSuccess: 'node scripts/copy-styles.mjs'`
+**Status**: REZOLVAT - scriptul funcționează și copiază styles în dist/
 
-- Styles din packages/ui/src/styles nu se copiază automat în dist/
-- Poate cauza probleme cu importul de CSS
-  **FIX NECESAR**:
-- Integrează copierea styles direct în build process
-- Sau folosește un alt mecanism pentru distribuția CSS
+### 2. ✅ Database Package Referințe Înlăturate
 
-### 3. ⚠️ Admin App Exclus din Build
+**Fișiere**:
 
-**Fișier**: `vercel.json`
-**Ce am făcut**: `--filter='!@coquinate/admin'` în buildCommand
-**De ce**: Admin avea multe erori TypeScript care blocau tot build-ul
-**Impact**:
+- `apps/admin/tsconfig.json`
+  **Ce am făcut**: Înlăturat toate referințele la packages/database care nu mai există
+  **Status**: REZOLVAT - package-ul nu era folosit și a fost șters
 
-- Admin app nu se poate deploya pe Vercel momentan
-  **FIX NECESAR**:
-- Rezolvă erorile TypeScript din admin:
-  - Import paths greșite (@mealplan/shared vs @coquinate/shared)
-  - Tipuri lipsă pentru image.utils și image.types
-  - Erori de tip în crypto.ts
+### 3. ✅ Build pentru Web App Funcțional
 
-### 4. ⚠️ Database Package Nu Are Build Real
+**Status**: Build-ul pentru @coquinate/web funcționează local și pe Vercel
+**Verificat**: `pnpm --filter @coquinate/web build` - SUCCESS
 
-**Fișier**: `packages/database/package.json`
-**Ce am făcut**: Build script e doar `echo 'To be configured'`
-**De ce**: Nu era configurat niciodată
-**Impact**:
+## ⚠️ Probleme Rămase
 
-- Database package nu exportă nimic util
-- Doar ocupă loc în dependencies
-  **FIX NECESAR**:
-- Configurează build real sau șterge package-ul dacă nu e necesar
+### 1. ✅ TypeScript Declarations Activate în UI Package
 
-## Comenzi pentru Verificare
+**Fișier**: `packages/ui/tsup.config.ts`
+**Status**: `dts: true` - ACTIVAT și funcțional
+**Fix-uri aplicate**:
+
+- StaggerList: Rezolvat erori JSX namespace și ElementType
+- CountdownTimer, useGPUOptimization, usePerformanceMonitor: Adăugat valori inițiale pentru useRef
+- InteractiveCard: Refactorizat pentru a gestiona corect ref-urile polimorfice
+- EmailCapture: Corectat importurile pentru TranslationNamespace
+- NavigationMenu: Refactorizat pentru a gestiona corect elementele button/anchor
+
+**Rezultat**:
+
+- Se generează cu succes `dist/index.d.ts` (25.76 KB)
+- Apps care importă din @coquinate/ui au type checking complet
+
+### 2. ⚠️ Admin App Nu Poate Fi Build-uit
+
+**Status**: Multiple erori TypeScript
+**Probleme principale**:
+
+- Import paths greșite: `@mealplan/shared` vs `@coquinate/shared`
+- Fișiere lipsă: `test/test-utils`, `test/i18n-test-utils`
+- Erori de tip în `crypto.ts`
+- Referințe la tipuri care nu există: `image.utils`, `image.types`
+
+**FIX NECESAR**:
+
+1. Înlocuiește toate `@mealplan/shared` cu `@coquinate/shared`
+2. Creează sau șterge referințele la fișierele de test
+3. Fix type errors în crypto.ts
+4. Verifică și corectează importurile de tipuri
+
+## Comenzi de Verificare
 
 ```bash
-# Verifică ce packages au probleme de build
-pnpm run -r build
+# Verifică build pentru web (funcționează)
+pnpm --filter @coquinate/web build
 
-# Testează build-ul pentru admin separat
+# Verifică build pentru admin (nu funcționează încă)
 pnpm --filter @coquinate/admin build
 
-# Verifică dacă UI package generează declarații
-pnpm --filter @coquinate/ui build
-ls packages/ui/dist/*.d.ts  # Ar trebui să existe fișiere .d.ts
+# Build complet (va eșua la admin)
+pnpm run -r build
 ```
 
-## Ordinea de Rezolvare Recomandată
+## Status Curent
 
-1. **Prima dată**: Fix TypeScript errors în admin
-2. **Apoi**: Reactivează dts în UI package
-3. **La final**: Integrează copy-styles proper
-4. **Opțional**: Decide ce faci cu database package
+✅ **Web App**: Deployabil pe Vercel, build funcțional
+✅ **UI Package**: Build funcțional, styles se copiază corect, TypeScript declarations activate
+❌ **Admin App**: Nu poate fi build-uit, exclus din Vercel
 
-## Note Importante
+## Următorii Pași Prioritari
 
-- Build-ul local funcționează pentru web app
-- Deployment-ul pe Vercel funcționează DOAR pentru web app
-- Admin app NU poate fi deployat până nu rezolvi erorile
+1. **Când e nevoie de Admin**: Fix toate erorile TypeScript din admin app
 
 ---
 
-_Document creat: 16 August 2025_
-_Motiv: Deployment urgent necesar pentru web app_
+_Document actualizat: 16 August 2025_
+_Status: Web app deployabil, admin app necesită fix-uri_

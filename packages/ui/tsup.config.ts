@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 
 export default defineConfig({
   entry: ['src/index.ts'],
-  dts: false, // Temporar dezactivat pentru a permite build-ul
+  dts: true,
   format: ['esm'],
   external: ['react', 'react-dom', '@coquinate/i18n', '@coquinate/shared', '@coquinate/config'],
   treeshake: true,
@@ -16,5 +16,5 @@ export default defineConfig({
     };
   },
   // Copy CSS to dist (cross-platform)
-  // onSuccess: 'node scripts/copy-styles.mjs', // Temporar dezactivat pentru Vercel
+  onSuccess: 'node scripts/copy-styles.mjs',
 });

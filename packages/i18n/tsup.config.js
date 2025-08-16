@@ -1,19 +1,19 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: [
     'src/index.ts',
     'src/config/index.ts',
-    'src/formatters/index.ts', 
+    'src/formatters/index.ts',
     'src/locales/index.ts',
-    'src/types/index.ts'
+    'src/types/index.ts',
   ],
   format: ['cjs', 'esm'],
-  dts: false, // Temporarily disabled to fix build
+  dts: true,
   splitting: false,
   sourcemap: true,
   clean: true,
   external: ['react', 'react-dom'],
   minify: false,
   treeshake: true,
-})
+});

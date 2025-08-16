@@ -9,8 +9,7 @@
       "@/*": ["./src/*"],
       "@coquinate/shared": ["../../packages/shared/src"],
       "@coquinate/ui": ["../../packages/ui/src"],
-      "@coquinate/i18n": ["../../packages/i18n/src"],
-      "@coquinate/database": ["../../packages/database/src"]
+      "@coquinate/i18n": ["../../packages/i18n/src"]
     },
     "types": ["vite/client"]
   },
@@ -19,7 +18,6 @@
   "references": [
     { "path": "../../packages/shared" },
     { "path": "../../packages/ui" },
-    { "path": "../../packages/database" },
     { "path": "../../packages/i18n" },
     { "path": "../../packages/config" }
   ]
