@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { createAnonClient } from '@/lib/supabase/server';
+import { createServerClient } from '@/lib/supabase/server';
 import { emailSignupLimiter } from '@/lib/rate-limit';
 
 /**
@@ -38,11 +38,28 @@ function getClientIp(request: NextRequest): string {
  * Anonymize IP address for GDPR compliance
  */
 function anonymizeIp(ip: string): string {
-  // IPv6: Keep first 4 segments
-  if (ip.includes(':')) {
-    return `${ip.split(':').slice(0, 4).join(':')}::`;
+  // Handle IPv4-mapped IPv6 addresses (e.g., ::ffff:192.168.1.1)
+  if (ip.startsWith('::ffff:')) {
+    const ipv4Part = ip.substring(7);
+    const parts = ipv4Part.split('.');
+    if (parts.length === 4) {
+      // Convert back to IPv4-mapped IPv6 with anonymized last octet
+      return `::ffff:${parts[0]}.${parts[1]}.${parts[2]}.0`;
+    }
   }
-  // IPv4: Zero out last octet
+
+  // Regular IPv6: Keep first 4 segments
+  if (ip.includes(':')) {
+    const segments = ip.split(':');
+    // Take first 4 segments and pad with :: for anonymization
+    if (segments.length >= 4) {
+      return `${segments.slice(0, 4).join(':')}::`;
+    }
+    // If less than 4 segments, just add ::
+    return `${ip}::`.replace(/::+/, '::'); // Avoid multiple ::
+  }
+
+  // Regular IPv4: Zero out last octet
   const parts = ip.split('.');
   return parts.length === 4 ? `${parts[0]}.${parts[1]}.${parts[2]}.0` : ip;
 }
@@ -89,19 +106,31 @@ export async function POST(request: NextRequest) {
     // Normalize email to lowercase for consistency
     const normalizedEmail = email.trim().toLowerCase();
 
-    // Create Supabase client
-    const supabase = createAnonClient();
+    // Create Supabase client with service role for bypassing RLS
+    const supabase = createServerClient();
 
     // Skip the duplicate check - let the database handle it with unique constraint
     // This reduces one round-trip and the database will enforce uniqueness anyway
 
     // Insert new signup with anonymized IP
+    const anonymizedIp = anonymizeIp(clientIp);
+
+    // Debug logging for development
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Email signup attempt:', {
+        originalIp: clientIp,
+        anonymizedIp,
+        email: normalizedEmail.replace(/(.{2}).*(@.*)/, '$1***$2'), // Partially mask email
+      });
+    }
+
     const { data: newSignup, error: insertError } = await supabase
       .from('email_signups')
       .insert({
         email: normalizedEmail,
         gdpr_consent: gdprConsent,
-        ip_address: anonymizeIp(clientIp),
+        gdpr_consent_date: new Date().toISOString(),
+        ip_address: anonymizedIp,
       })
       .select('id, signup_order, is_early_bird')
       .single();
@@ -109,7 +138,11 @@ export async function POST(request: NextRequest) {
     if (insertError) {
       // Log error without PII
       if (process.env.NODE_ENV !== 'production') {
-        console.error('Error inserting email signup:', insertError.code);
+        console.error('Error inserting email signup:', {
+          code: insertError.code,
+          message: insertError.message,
+          details: insertError.details,
+        });
       }
 
       // Check if it's a unique constraint violation
