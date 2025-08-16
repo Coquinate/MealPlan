@@ -1,12 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: [
-    '@coquinate/shared',
-    '@coquinate/ui',
-    '@coquinate/database',
-    '@coquinate/i18n',
-  ],
+  transpilePackages: ['@coquinate/shared', '@coquinate/ui', '@coquinate/i18n'],
   // Exclude test files from production build
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'].filter((ext) => !ext.includes('test')),
   // Performance optimizations

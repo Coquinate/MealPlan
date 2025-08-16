@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^1.0.18",
-    "@coquinate/database": "workspace:*",
     "@coquinate/i18n": "workspace:*",
     "@coquinate/shared": "workspace:*",
     "@coquinate/ui": "workspace:*",

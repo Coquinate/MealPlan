@@ -13,7 +13,6 @@ export default defineConfig(({ mode }) => {
         '@coquinate/shared': path.resolve(__dirname, '../../packages/shared/src'),
         '@coquinate/ui': path.resolve(__dirname, '../../packages/ui/src'),
         '@coquinate/i18n': path.resolve(__dirname, '../../packages/i18n/src'),
-        '@coquinate/database': path.resolve(__dirname, '../../packages/database/src'),
       },
     },
     define: {

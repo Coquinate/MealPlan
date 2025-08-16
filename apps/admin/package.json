@@ -17,7 +17,6 @@
     "clean": "rm -rf dist node_modules"
   },
   "dependencies": {
-    "@coquinate/database": "workspace:*",
     "@coquinate/i18n": "workspace:*",
     "@coquinate/shared": "workspace:*",
     "@coquinate/ui": "workspace:*",

@@ -69,9 +69,6 @@ importers:
 
   apps/admin:
     dependencies:
-      '@coquinate/database':
-        specifier: workspace:*
-        version: link:../../packages/database
       '@coquinate/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
@@ -169,9 +166,6 @@ importers:
       '@ai-sdk/google':
         specifier: ^1.0.18
         version: 1.2.22(zod@3.25.76)
-      '@coquinate/database':
-        specifier: workspace:*
-        version: link:../../packages/database
       '@coquinate/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
@@ -269,19 +263,6 @@ importers:
       tailwindcss:
         specifier: 4.1.11
         version: 4.1.11
-
-  packages/database:
-    dependencies:
-      '@coquinate/shared':
-        specifier: workspace:*
-        version: link:../shared
-      '@supabase/supabase-js':
-        specifier: ^2.39.3
-        version: 2.55.0
-    devDependencies:
-      '@coquinate/config':
-        specifier: workspace:*
-        version: link:../config
 
   packages/i18n:
     dependencies:
