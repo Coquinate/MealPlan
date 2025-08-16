@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 
 export default defineConfig({
   entry: ['src/index.ts'],
-  dts: true,
+  dts: false, // TODO: Fix dts generation on Vercel
   format: ['esm'],
   external: ['react', 'react-dom', '@coquinate/i18n', '@coquinate/shared', '@coquinate/config'],
   treeshake: true,

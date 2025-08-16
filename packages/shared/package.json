@@ -16,7 +16,7 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && echo 'Shared build complete'",
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "echo 'To be configured'",
@@ -28,6 +28,7 @@
     "@types/lz-string": "^1.5.0",
     "@types/node": "^20.11.0",
     "jsdom": "^26.1.0",
+    "typescript": "^5.9.2",
     "vitest": "^3.2.0"
   },
   "dependencies": {

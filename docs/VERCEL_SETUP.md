@@ -160,5 +160,54 @@ Pentru probleme, verifică:
 
 ---
 
-_Actualizat: 16 August 2025_
+_Actualizat: 17 August 2025_
 _Status: Web app deployable pe Vercel_
+
+### Known Issues & TODOs
+
+#### 1. TypeScript Declarations (Temporar Dezactivat)
+
+- **Problem**: TypeScript declarations (dts) sunt dezactivate în UI package
+- **Motiv**: Conflicte cu build process pe Vercel când dts e activat
+- **Status**: Local development funcționează ok fără dts
+- **TODO**: Fix dts generation pentru Vercel deployment
+
+#### 2. @coquinate/shared Module Resolution
+
+- **Problem**: Web app nu găsește `@coquinate/shared` pe Vercel
+- **Eroare**: `Module not found: Can't resolve '@coquinate/shared'`
+- **Cauză**: Probabil symlinks din pnpm workspace nu funcționează corect pe Vercel
+- **Impact**: Build-ul eșuează pe Vercel dar funcționează local
+- **TODO**:
+  - Investigare cum Vercel rezolvă workspace dependencies
+  - Posibilă soluție: folosire tsup în loc de tsc pentru shared package
+  - Alternativă: configurare explicită a webpack aliases în Next.js
+
+#### Pași pentru Rezolvare
+
+1. **Pentru @coquinate/shared issue**:
+
+   ```bash
+   # Opțiune 1: Convertește la tsup
+   cd packages/shared
+   pnpm add -D tsup
+   # Creează tsup.config.ts similar cu UI package
+
+   # Opțiune 2: Adaugă în next.config.js
+   webpack: (config) => {
+     config.resolve.alias['@coquinate/shared'] = path.resolve(__dirname, '../../packages/shared/dist')
+     return config
+   }
+   ```
+
+2. **Pentru TypeScript declarations**:
+   - După ce shared package funcționează, reactivează dts
+   - Testează cu `dts: process.env.VERCEL ? false : true`
+
+#### Status Curent
+
+- ✅ Environment variables configurate
+- ✅ Password protection dezactivat
+- ✅ Build local funcționează
+- ❌ Build pe Vercel eșuează din cauza @coquinate/shared
+- ⚠️ TypeScript declarations dezactivate temporar
