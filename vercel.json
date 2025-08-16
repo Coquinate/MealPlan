@@ -1,16 +1,8 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "buildCommand": "pnpm build",
-  "devCommand": "pnpm dev",
-  "installCommand": "pnpm install",
-  "regions": ["fra1"],
-  "functions": {
-    "apps/web/src/app/api/**/*.ts": {
-      "maxDuration": 10
-    }
-  },
-  "env": {
-    "NEXT_PUBLIC_SITE_URL": "@production-url",
-    "NODE_ENV": "production"
-  }
+  "installCommand": "npx pnpm@10.14.0 install",
+  "buildCommand": "npx pnpm@10.14.0 run -r build",
+  "outputDirectory": "apps/web/.next",
+  "regions": ["fra1"]
 }

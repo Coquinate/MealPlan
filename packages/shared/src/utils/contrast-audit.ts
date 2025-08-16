@@ -4,9 +4,7 @@
  */
 
 import { oklchToRGB, calculateContrastRatio } from './color-utils';
-
-// Import design tokens
-import { modernHearthColors, darkModeTokens } from '@coquinate/config/tailwind/design-tokens';
+import { semanticColors, darkModeColors } from '@coquinate/config/tailwind/design-tokens';
 
 interface ContrastTestCase {
   foreground: string;
@@ -148,19 +146,34 @@ function parseOKLCH(oklchString: string): { r: number; g: number; b: number } {
  * Get color value from token name
  */
 function getColorValue(tokenName: string, isDarkMode: boolean = false): string {
-  const tokens = isDarkMode
-    ? { ...modernHearthColors, ...darkModeTokens.dark }
-    : modernHearthColors;
+  const tokens = isDarkMode ? { ...semanticColors, ...darkModeColors } : semanticColors;
 
   // Handle special cases
   if (tokenName === 'white') return 'oklch(100% 0 0)';
   if (tokenName === 'error') return 'oklch(50% 0.2 25)';
   if (tokenName === 'success') return 'oklch(55% 0.15 145)';
 
-  // Add dark- prefix for dark mode tokens
-  const key = isDarkMode && !tokenName.startsWith('dark-') ? `dark-${tokenName}` : tokenName;
+  // Get the value from tokens
+  const value = tokens[tokenName as keyof typeof tokens];
 
-  return tokens[key] || tokens[tokenName] || tokenName;
+  // If it's a CSS variable reference, we need actual OKLCH values for contrast calculation
+  if (typeof value === 'string' && value.startsWith('var(')) {
+    // Provide fallback OKLCH values for CSS variables
+    const fallbackValues: Record<string, string> = {
+      'primary-warm': 'oklch(58% 0.08 200)',
+      'accent-coral': 'oklch(75% 0.18 20)',
+      'accent-coral-dark': 'oklch(65% 0.15 20)',
+      'dark-surface': 'oklch(15% 0.01 200)',
+      'dark-surface-glass': 'oklch(18% 0.01 200)',
+      'surface-glass': 'oklch(98% 0 0)',
+      'dark-text': 'oklch(92% 0 0)',
+      surface: 'oklch(98% 0 0)',
+    };
+
+    return fallbackValues[tokenName] || tokenName;
+  }
+
+  return value || tokenName;
 }
 
 /**
