@@ -10,6 +10,12 @@ import {
   parseJsonBody,
   createServiceClient,
 } from '../_shared/auth.ts';
+import {
+  withErrorLogging,
+  logEdgeFunctionError,
+  logEdgeFunctionSuccess,
+  generateEdgeRequestId,
+} from '../_shared/monitoring.ts';
 
 interface RegisterRequest {
   email: string;
@@ -57,37 +63,71 @@ function validateRegistrationData(data: RegisterRequest): string | null {
 /**
  * Create user profile with household preferences
  */
-async function createUserProfile(userId: string, email: string, preferences: RegisterRequest) {
+async function createUserProfile(
+  userId: string,
+  email: string,
+  preferences: RegisterRequest,
+  requestId?: string
+) {
   const supabase = createServiceClient();
 
-  const { error } = await supabase.from('users').insert({
-    id: userId,
-    email,
-    hashed_password: 'managed_by_supabase_auth', // Password is managed by Supabase Auth
-    household_size: preferences.household_size,
-    menu_type: preferences.menu_type,
-    subscription_status: 'trial',
-    has_active_trial: true,
-    has_trial_gift_access: false,
-    trial_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days trial
-    default_view_preference: preferences.default_view_preference || 'RO',
-    guest_mode_enabled: false,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  });
+  try {
+    const { error } = await supabase.from('users').insert({
+      id: userId,
+      email,
+      hashed_password: 'managed_by_supabase_auth', // Password is managed by Supabase Auth
+      household_size: preferences.household_size,
+      menu_type: preferences.menu_type,
+      subscription_status: 'trial',
+      has_active_trial: true,
+      has_trial_gift_access: false,
+      trial_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days trial
+      default_view_preference: preferences.default_view_preference || 'RO',
+      guest_mode_enabled: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
 
-  if (error) {
-    console.error('Failed to create user profile:', error);
-    throw new Error('Failed to create user profile');
+    if (error) {
+      await logEdgeFunctionError(
+        new Error('Failed to create user profile: ' + error.message),
+        'auth/register',
+        'database',
+        'high',
+        { userId, email, error },
+        userId,
+        requestId
+      );
+      throw new Error('Failed to create user profile');
+    }
+
+    // Log successful profile creation
+    logEdgeFunctionSuccess('auth/register:createUserProfile', userId, requestId, undefined, {
+      email,
+      household_size: preferences.household_size,
+      menu_type: preferences.menu_type,
+    });
+
+    return true;
+  } catch (error) {
+    await logEdgeFunctionError(
+      error as Error,
+      'auth/register',
+      'database',
+      'critical',
+      { userId, email, preferences: { ...preferences, password: '[REDACTED]' } },
+      userId,
+      requestId
+    );
+    throw error;
   }
-
-  return true;
 }
 
 /**
  * Main registration handler
  */
 async function handleRegistration(request: Request): Promise<Response> {
+  const requestId = generateEdgeRequestId();
   // Handle CORS preflight
   const corsResponse = handleCors(request);
   if (corsResponse) return corsResponse;
@@ -134,7 +174,16 @@ async function handleRegistration(request: Request): Promise<Response> {
     });
 
     if (authError) {
-      console.error('Supabase Auth registration error:', authError);
+      // Log auth error with context
+      await logEdgeFunctionError(
+        authError,
+        'auth/register',
+        'auth',
+        authError.message.includes('already registered') ? 'medium' : 'high',
+        { email: registrationData.email, authError: authError.message },
+        undefined,
+        requestId
+      );
 
       // Handle common registration errors
       if (authError.message.includes('already registered')) {
@@ -167,10 +216,15 @@ async function handleRegistration(request: Request): Promise<Response> {
     }
 
     // Create user profile in users table
-    await createUserProfile(authData.user.id, registrationData.email, registrationData);
+    await createUserProfile(authData.user.id, registrationData.email, registrationData, requestId);
 
     // Log successful registration
-    console.log(`User registered successfully: ${registrationData.email}`);
+    logEdgeFunctionSuccess('auth/register', authData.user.id, requestId, undefined, {
+      email: registrationData.email,
+      household_size: registrationData.household_size,
+      menu_type: registrationData.menu_type,
+      trial_created: true,
+    });
 
     return successResponse(
       {
@@ -183,7 +237,19 @@ async function handleRegistration(request: Request): Promise<Response> {
       201
     );
   } catch (error) {
-    console.error('Registration error:', error);
+    // Log critical registration error
+    await logEdgeFunctionError(
+      error as Error,
+      'auth/register',
+      'auth',
+      'critical',
+      {
+        email: registrationData.email,
+        requestData: { ...registrationData, password: '[REDACTED]' },
+      },
+      undefined,
+      requestId
+    );
 
     return errorResponse(
       {
@@ -195,7 +261,5 @@ async function handleRegistration(request: Request): Promise<Response> {
   }
 }
 
-// Edge Function handler
-Deno.serve(async (request: Request) => {
-  return await handleRegistration(request);
-});
+// Edge Function handler with comprehensive logging
+Deno.serve(withErrorLogging(handleRegistration, 'auth/register'));

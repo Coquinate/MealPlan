@@ -79,5 +79,39 @@
     "status_disconnected": "",
     "status_degraded": "",
     "checking": ""
+  },
+  "dashboard": {
+    "header": {
+      "brand": "",
+      "greeting": "",
+      "greeting_fallback": "",
+      "signOut": ""
+    },
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "status": ""
+    },
+    "features": {
+      "mealPlanning": {
+        "title": "",
+        "description": "",
+        "button": ""
+      },
+      "shoppingList": {
+        "title": "",
+        "description": "",
+        "button": ""
+      },
+      "cookingAssistant": {
+        "title": "",
+        "description": "",
+        "button": ""
+      }
+    }
+  },
+  "app": {
+    "title": "",
+    "demo": ""
   }
 }

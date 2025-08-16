@@ -165,8 +165,8 @@ export async function middleware(request: NextRequest) {
 
       // Set session from parsed cookie data
       const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
-        access_token: sessionTokens.access_token,
-        refresh_token: sessionTokens.refresh_token,
+        access_token: sessionTokens.access_token!,
+        refresh_token: sessionTokens.refresh_token!,
       });
       session = sessionData.session;
       error = sessionError;

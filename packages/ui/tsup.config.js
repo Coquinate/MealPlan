@@ -1,13 +1,12 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: ['src/index.ts'],
-  format: ['cjs', 'esm'],
   dts: true,
-  splitting: false,
+  format: ['esm'],
+  external: ['react', 'react-dom'],
+  treeshake: true,
   sourcemap: true,
   clean: true,
-  external: ['react', 'react-dom'],
-  minify: false,
-  treeshake: true,
-})
+  minify: process.env.NODE_ENV === 'production',
+});

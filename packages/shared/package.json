@@ -9,23 +9,36 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./src/utils/constants": {
+      "types": "./dist/utils/constants.d.ts",
+      "import": "./dist/utils/constants.js"
     }
   },
   "scripts": {
     "build": "tsc",
-    "test": "echo 'To be configured'",
+    "test": "vitest",
+    "test:run": "vitest run",
     "lint": "echo 'To be configured'",
     "format": "echo 'To be configured'",
     "clean": "rm -rf dist node_modules"
   },
   "devDependencies": {
-    "@coquinate/config": "workspace:*"
+    "@coquinate/config": "workspace:*",
+    "@types/lz-string": "^1.5.0",
+    "@types/node": "^20.11.0",
+    "jsdom": "^26.1.0",
+    "vitest": "^3.2.0"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.0.18",
     "@supabase/supabase-js": "^2.39.3",
+    "ai": "^4.2.2",
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
+    "lz-string": "^1.5.0",
     "tailwind-merge": "^2.5.5",
+    "zod": "^3.25.76",
     "zustand": "^5.0.2"
   }
 }

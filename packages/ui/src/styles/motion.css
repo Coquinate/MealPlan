@@ -1,0 +1,636 @@
+/* Motion System Foundation - Modern Hearth Theme Phase 2 */
+
+/* ============================
+   Motion Tokens & Variables
+   ============================ */
+:root {
+  /* Easing functions */
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-expressive: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-springy: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-ease-gentle: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Base durations */
+  --motion-duration-1: 120ms;
+  --motion-duration-2: 180ms;
+  --motion-duration-3: 260ms;
+  --motion-duration-4: 380ms;
+  --motion-duration-5: 500ms;
+
+  /* Stagger timing */
+  --stagger-interval: 40ms;
+  --stagger-delay: 0ms;
+}
+
+/* ============================
+   Motion Policy Scaling
+   ============================ */
+
+/* Subtle - for productivity/app areas */
+html[data-motion='subtle'] {
+  --motion-duration-1: 90ms;
+  --motion-duration-2: 140ms;
+  --motion-duration-3: 200ms;
+  --motion-duration-4: 300ms;
+  --motion-duration-5: 400ms;
+  --stagger-interval: 24ms;
+}
+
+/* Standard - default for most areas */
+html[data-motion='standard'] {
+  --motion-duration-1: 120ms;
+  --motion-duration-2: 180ms;
+  --motion-duration-3: 260ms;
+  --motion-duration-4: 380ms;
+  --motion-duration-5: 500ms;
+  --stagger-interval: 40ms;
+}
+
+/* Expressive - for landing/marketing */
+html[data-motion='expressive'] {
+  --motion-duration-1: 160ms;
+  --motion-duration-2: 240ms;
+  --motion-duration-3: 360ms;
+  --motion-duration-4: 520ms;
+  --motion-duration-5: 680ms;
+  --stagger-interval: 60ms;
+}
+
+/* ============================
+   Reduced Motion Override
+   ============================ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-1: 1ms !important;
+    --motion-duration-2: 1ms !important;
+    --motion-duration-3: 1ms !important;
+    --motion-duration-4: 1ms !important;
+    --motion-duration-5: 1ms !important;
+    --stagger-interval: 0ms !important;
+    --stagger-delay: 0ms !important;
+  }
+
+  /* Disable all animations */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============================
+   Core Keyframe Animations
+   ============================ */
+
+/* Fade animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Slide animations */
+@keyframes slide-up-in {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down-in {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-left-in {
+  from {
+    transform: translateX(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-right-in {
+  from {
+    transform: translateX(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Scale animations */
+@keyframes scale-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes scale-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+/* Meal-specific animations */
+@keyframes meal-drop {
+  0% {
+    transform: translateY(-12px) scale(0.96);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(0) scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes success-check {
+  0% {
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes cooking-timer-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 oklch(70% 0.18 20 / 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px oklch(70% 0.18 20 / 0);
+  }
+}
+
+/* Pulse animations */
+@keyframes pulse-soft {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px oklch(58% 0.08 200 / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px oklch(58% 0.08 200 / 0.5);
+  }
+}
+
+/* Bounce animations */
+@keyframes bounce-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes success-bounce {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.3) rotate(5deg);
+  }
+  60% {
+    transform: scale(0.95) rotate(-3deg);
+  }
+  80% {
+    transform: scale(1.05) rotate(1deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+/* Ripple effect */
+@keyframes ripple {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.25;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+/* Logo breathing */
+@keyframes logo-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.95;
+  }
+}
+
+/* Badge Bounce In */
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Loading Dots Animation */
+@keyframes loading-dot {
+  0%,
+  80%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
+}
+
+/* Basic Pulse */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Shimmer for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Digit flip for countdown */
+@keyframes digit-flip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+    opacity: 0;
+  }
+  51% {
+    transform: rotateX(-90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+/* ============================
+   Animation Utility Classes
+   ============================ */
+
+/* Fade animations */
+.anim-fade-in {
+  animation: fade-in var(--motion-duration-2) var(--motion-ease-standard) both;
+}
+
+.anim-fade-out {
+  animation: fade-out var(--motion-duration-2) var(--motion-ease-standard) both;
+}
+
+/* Slide animations */
+.anim-slide-up-in {
+  animation: slide-up-in var(--motion-duration-3) var(--motion-ease-standard) both;
+}
+
+.anim-slide-down-in {
+  animation: slide-down-in var(--motion-duration-3) var(--motion-ease-standard) both;
+}
+
+.anim-slide-left-in {
+  animation: slide-left-in var(--motion-duration-3) var(--motion-ease-standard) both;
+}
+
+.anim-slide-right-in {
+  animation: slide-right-in var(--motion-duration-3) var(--motion-ease-standard) both;
+}
+
+/* Scale animations */
+.anim-scale-in {
+  animation: scale-in var(--motion-duration-2) var(--motion-ease-expressive) both;
+}
+
+.anim-scale-out {
+  animation: scale-out var(--motion-duration-2) var(--motion-ease-expressive) both;
+}
+
+/* Meal-specific animations */
+.anim-meal-drop {
+  animation: meal-drop var(--motion-duration-3) var(--motion-ease-expressive) both;
+}
+
+.anim-success-check {
+  animation: success-check var(--motion-duration-4) var(--motion-ease-springy) both;
+}
+
+.anim-cooking-timer {
+  animation: cooking-timer-pulse 2s var(--motion-ease-gentle) infinite;
+}
+
+/* Pulse animations */
+.anim-pulse-soft {
+  animation: pulse-soft 2.2s var(--motion-ease-springy) infinite;
+}
+
+.anim-pulse-glow {
+  animation: pulse-glow 2s var(--motion-ease-gentle) infinite;
+}
+
+/* Bounce animations */
+.anim-bounce-soft {
+  animation: bounce-soft 2s var(--motion-ease-springy) infinite;
+}
+
+.anim-success-bounce {
+  animation: success-bounce 0.8s var(--motion-ease-springy) both;
+}
+
+/* Logo breathing */
+.anim-logo-breathe {
+  animation: logo-breathe 4s var(--motion-ease-gentle) infinite;
+}
+
+/* Badge bounce in */
+.anim-bounce-in {
+  animation: bounce-in var(--motion-duration-3) var(--motion-ease-springy) both;
+}
+
+/* Loading dots */
+.anim-loading-dot {
+  animation: loading-dot 1.4s var(--motion-ease-gentle) infinite;
+}
+
+/* Basic pulse */
+.anim-pulse {
+  animation: pulse 2s var(--motion-ease-gentle) infinite;
+}
+
+/* Button feedback animations */
+.button-feedback {
+  transition: all var(--motion-duration-2) var(--motion-ease-standard);
+}
+
+.button-bounce:active {
+  animation: success-bounce 0.4s var(--motion-ease-springy);
+}
+
+/* Countdown digit flip */
+.anim-digit-flip {
+  animation: digit-flip 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* ============================
+   Stagger System
+   ============================ */
+
+/* Container with stagger */
+[data-stagger] > * {
+  animation-delay: calc(
+    var(--stagger-delay, 0ms) + var(--stagger-interval) * var(--stagger-index, 0)
+  );
+}
+
+/* Exit animations */
+.anim-exit-fade {
+  animation: fade-in var(--motion-duration-2) var(--motion-ease-standard) reverse both;
+}
+
+.anim-exit-slide-up {
+  animation: slide-up-in var(--motion-duration-3) var(--motion-ease-standard) reverse both;
+}
+
+/* ============================
+   Ripple Effect System
+   ============================ */
+
+.ripple-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transform-origin: center;
+  pointer-events: none;
+  background: currentColor;
+  animation: ripple var(--motion-duration-4) var(--motion-ease-standard) forwards;
+  will-change: transform, opacity;
+}
+
+/* Disable ripple on subtle mode */
+html[data-motion='subtle'] .ripple {
+  animation: none;
+  display: none;
+}
+
+/* ============================
+   Shimmer Loading States
+   ============================ */
+
+.shimmer-loading {
+  background: linear-gradient(90deg, oklch(92% 0 0) 25%, oklch(96% 0 0) 50%, oklch(92% 0 0) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius);
+}
+
+/* Dark mode shimmer */
+.dark .shimmer-loading {
+  background: linear-gradient(
+    90deg,
+    oklch(20% 0.01 200) 25%,
+    oklch(25% 0.01 200) 50%,
+    oklch(20% 0.01 200) 75%
+  );
+  background-size: 200% 100%;
+}
+
+/* Disable shimmer on reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-loading {
+    animation: none;
+    background: oklch(92% 0 0);
+  }
+
+  .dark .shimmer-loading {
+    background: oklch(20% 0.01 200);
+  }
+}
+
+/* ============================
+   Interactive State Transitions
+   ============================ */
+
+.hover-lift {
+  transition: transform var(--motion-duration-2) var(--motion-ease-standard);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+.hover-scale {
+  transition: transform var(--motion-duration-2) var(--motion-ease-standard);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.active-scale {
+  transition: transform var(--motion-duration-1) var(--motion-ease-standard);
+}
+
+.active-scale:active {
+  transform: scale(0.98);
+}
+
+/* Glow transitions */
+.hover-glow {
+  transition: box-shadow var(--motion-duration-3) var(--motion-ease-standard);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px oklch(58% 0.08 200 / 0.3);
+}
+
+/* ============================
+   Page Transition Helpers
+   ============================ */
+
+.page-enter {
+  animation: fade-in var(--motion-duration-3) var(--motion-ease-standard) both;
+}
+
+.page-exit {
+  animation: fade-out var(--motion-duration-3) var(--motion-ease-standard) both;
+}
+
+/* View transition names for key regions */
+main {
+  view-transition-name: main-content;
+}
+
+nav {
+  view-transition-name: navigation;
+}
+
+header {
+  view-transition-name: header;
+}
+
+/* ============================
+   Mobile Performance Overrides
+   ============================ */
+
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile */
+  html[data-motion='expressive'] {
+    --motion-duration-1: 140ms;
+    --motion-duration-2: 200ms;
+    --motion-duration-3: 300ms;
+    --motion-duration-4: 420ms;
+    --motion-duration-5: 540ms;
+  }
+
+  /* Disable expensive effects on mobile */
+  .anim-pulse-glow,
+  .hover-glow {
+    animation: none;
+  }
+
+  /* Simplify hover states on touch devices */
+  @media (hover: none) {
+    .hover-lift:hover,
+    .hover-scale:hover {
+      transform: none;
+    }
+  }
+}

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coquinate - Eggshell & Greige Background Tests</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+        :root {
+            /* Modern Hearth Colors */
+            --primary-warm: oklch(58% 0.08 200);
+            --primary-warm-light: oklch(72% 0.06 200);
+            --accent-coral: oklch(70% 0.18 20);
+            
+            /* Eggshell & Greige Options */
+            --eggshell-1: oklch(98% 0.004 75);      /* Classic eggshell - warm cream */
+            --eggshell-2: oklch(97.5% 0.006 70);    /* Deeper eggshell */
+            --eggshell-3: oklch(98.5% 0.003 80);    /* Very subtle eggshell */
+            
+            --greige-1: oklch(97% 0.003 60);        /* Light greige - grey with warmth */
+            --greige-2: oklch(96.5% 0.004 50);      /* Classic greige */
+            --greige-3: oklch(97.5% 0.002 40);      /* Cool greige */
+            
+            --grey-soft: oklch(97% 0 0);            /* Pure soft grey */
+            --grey-warm: oklch(97% 0.002 30);       /* Warm grey */
+            
+            --text-primary: oklch(20% 0 0);
+            --text-secondary: oklch(45% 0 0);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+            background: white;
+        }
+
+        h1 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--primary-warm);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.5rem;
+            margin: 3rem 0 1.5rem;
+            color: var(--text-primary);
+            padding-left: 1rem;
+            border-left: 4px solid var(--accent-coral);
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .option {
+            border: 2px solid oklch(92% 0 0);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .option-header {
+            padding: 1rem;
+            background: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid oklch(94% 0 0);
+        }
+
+        .option-code {
+            font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: oklch(96% 0 0);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .preview {
+            padding: 3rem;
+            min-height: 350px;
+            position: relative;
+        }
+
+        /* Eggshell Backgrounds */
+        .preview-eggshell-1 { background: var(--eggshell-1); }
+        .preview-eggshell-2 { background: var(--eggshell-2); }
+        .preview-eggshell-3 { background: var(--eggshell-3); }
+
+        /* Greige Backgrounds */
+        .preview-greige-1 { background: var(--greige-1); }
+        .preview-greige-2 { background: var(--greige-2); }
+        .preview-greige-3 { background: var(--greige-3); }
+
+        /* Grey Backgrounds */
+        .preview-grey-soft { background: var(--grey-soft); }
+        .preview-grey-warm { background: var(--grey-warm); }
+
+        .sample-content {
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        .sample-title {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .sample-title .gradient {
+            background: linear-gradient(135deg, var(--primary-warm), var(--accent-coral));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sample-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .sample-card {
+            background: oklch(100% 0 0);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px oklch(0% 0 0 / 0.06);
+            border: 1px solid oklch(92% 0 0);
+            margin-bottom: 1rem;
+        }
+
+        .sample-card-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .sample-card-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .sample-button {
+            background: var(--primary-warm);
+            color: white;
+            padding: 0.875rem 1.75rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .sample-button:hover {
+            background: var(--primary-warm-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px oklch(58% 0.08 200 / 0.3);
+        }
+
+        .winner {
+            position: relative;
+            border-color: var(--accent-coral);
+        }
+
+        .winner::after {
+            content: '⭐ RECOMANDAT';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent-coral);
+            color: white;
+            padding: 0.3rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 10;
+        }
+
+        .analysis {
+            margin-top: 4rem;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, 
+                oklch(98% 0.002 60) 0%, 
+                oklch(97% 0.003 80) 100%
+            );
+            border-radius: 16px;
+            border: 1px solid oklch(92% 0 0);
+        }
+
+        .analysis h2 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .analysis-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .analysis-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary-warm);
+        }
+
+        .analysis-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .analysis-card li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: start;
+        }
+
+        .analysis-card li::before {
+            content: '→';
+            color: var(--accent-coral);
+            margin-right: 0.75rem;
+            font-weight: 700;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin: 0 0.5rem;
+            border: 1px solid oklch(85% 0 0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Eggshell & Greige Background Tests</h1>
+        <p class="subtitle">Variante mai sofisticate pentru Coquinate - spre coajă de ou și greige</p>
+        
+        <!-- Eggshell Section -->
+        <h2 class="section-title">🥚 Variante Eggshell (Coajă de Ou)</h2>
+        <div class="options">
+            <div class="option winner">
+                <div class="option-header">
+                    <span>Eggshell Classic</span>
+                    <span class="option-code">oklch(98% 0.004 75)</span>
+                </div>
+                <div class="preview preview-eggshell-1">
+                    <div class="sample-content">
+                        <h2 class="sample-title">
+                            Planificare <span class="gradient">inteligentă</span>
+                        </h2>
+                        <p class="sample-text">
+                            Transformă gătitul într-o experiență relaxantă cu rețete 
+                            personalizate și liste optimizate.
+                        </p>
+                        <div class="sample-card">
+                            <div class="sample-card-title">Card pe Eggshell</div>
+                            <div class="sample-card-text">
+                                Contrast subtil dar clar, feeling cald și premium
+                            </div>
+                        </div>
+                        <button class="sample-button">Începe Acum</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="option">
+                <div class="option-header">
+                    <span>Eggshell Deep</span>
+                    <span class="option-code">oklch(97.5% 0.006 70)</span>
+                </div>
+                <div class="preview preview-eggshell-2">
+                    <div class="sample-content">
+                        <h2 class="sample-title">
+                            Planificare <span class="gradient">inteligentă</span>
+                        </h2>
+                        <p class="sample-text">
+                            Transformă gătitul într-o experiență relaxantă cu rețete 
+                            personalizate și liste optimizate.
+                        </p>
+                        <div class="sample-card">
+                            <div class="sample-card-title">Card pe Eggshell Deep</div>
+                            <div class="sample-card-text">
+                                Mai multă căldură, contrast mai pronunțat
+                            </div>
+                        </div>
+                        <button class="sample-button">Începe Acum</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="option">
+                <div class="option-header">
+                    <span>Eggshell Subtle</span>
+                    <span class="option-code">oklch(98.5% 0.003 80)</span>
+                </div>
+                <div class="preview preview-eggshell-3">
+                    <div class="sample-content">
+                        <h2 class="sample-title">
+                            Planificare <span class="gradient">inteligentă</span>
+                        </h2>
+                        <p class="sample-text">
+                            Transformă gătitul într-o experiență relaxantă cu rețete 
+                            personalizate și liste optimizate.
+                        </p>
+                        <div class="sample-card">
+                            <div class="sample-card-title">Card pe Eggshell Subtle</div>
+                            <div class="sample-card-text">
+                                Foarte subtil, aproape alb dar cu căldură
+                            </div>
+                        </div>
+                        <button class="sample-button">Începe Acum</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Greige Section -->
+        <h2 class="section-title">🎨 Variante Greige (Grey + Beige)</h2>
+        <div class="options">
+            <div class="option">
+                <div class="option-header">
+                    <span>Greige Light</span>
+                    <span class="option-code">oklch(97% 0.003 60)</span>
+                </div>
+                <div class="preview preview-greige-1">
+                    <div class="sample-content">
+                        <h2 class="sample-title">
+                            Planificare <span class="gradient">inteligentă</span>
+                        </h2>
+                        <p class="sample-text">
+                            Transformă gătitul într-o experiență relaxantă cu rețete 
+                            personalizate și liste optimizate.
+                        </p>
+                        <div class="sample-card">
+                            <div class="sample-card-title">Card pe Greige Light</div>
+                            <div class="sample-card-text">
+                                Sofisticat, neutru cu căldură subtilă
+                            </div>
+                        </div>
+                        <button class="sample-button">Începe Acum</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="option">
+                <div class="option-header">
+                    <span>Greige Classic</span>
+                    <span class="option-code">oklch(96.5% 0.004 50)</span>
+                </div>
+                <div class="preview preview-greige-2">
+                    <div class="sample-content">
+                        <h2 class="sample-title">
+                            Planificare <span class="gradient">inteligentă</span>
+                        </h2>
+                        <p class="sample-text">
+                            Transformă gătitul într-o experiență relaxantă cu rețete 
+                            personalizate și liste optimizate.
+                        </p>
+                        <div class="sample-card">
+                            <div class="sample-card-title">Card pe Greige Classic</div>
+                            <div class="sample-card-text">
+                                Mai mult contrast, foarte elegant
+                            </div>
+                        </div>
+                        <button class="sample-button">Începe Acum</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="option">
+                <div class="option-header">
+                    <span>Greige Cool</span>
+                    <span class="option-code">oklch(97.5% 0.002 40)</span>
+                </div>
+                <div class="preview preview-greige-3">
+                    <div class="sample-content">
+                        <h2 class="sample-title">
+                            Planificare <span class="gradient">inteligentă</span>
+                        </h2>
+                        <p class="sample-text">
+                            Transformă gătitul într-o experiență relaxantă cu rețete 
+                            personalizate și liste optimizate.
+                        </p>
+                        <div class="sample-card">
+                            <div class="sample-card-title">Card pe Greige Cool</div>
+                            <div class="sample-card-text">
+                                Mai spre gri, minimalist și modern
+                            </div>
+                        </div>
+                        <button class="sample-button">Începe Acum</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grey Section -->
+        <h2 class="section-title">🔘 Variante Grey Pure</h2>
+        <div class="options">
+            <div class="option">
+                <div class="option-header">
+                    <span>Soft Grey</span>
+                    <span class="option-code">oklch(97% 0 0)</span>
+                </div>
+                <div class="preview preview-grey-soft">
+                    <div class="sample-content">
+                        <h2 class="sample-title">
+                            Planificare <span class="gradient">inteligentă</span>
+                        </h2>
+                        <p class="sample-text">
+                            Transformă gătitul într-o experiență relaxantă cu rețete 
+                            personalizate și liste optimizate.
+                        </p>
+                        <div class="sample-card">
+                            <div class="sample-card-title">Card pe Soft Grey</div>
+                            <div class="sample-card-text">
+                                Neutru complet, foarte clean
+                            </div>
+                        </div>
+                        <button class="sample-button">Începe Acum</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="option">
+                <div class="option-header">
+                    <span>Warm Grey</span>
+                    <span class="option-code">oklch(97% 0.002 30)</span>
+                </div>
+                <div class="preview preview-grey-warm">
+                    <div class="sample-content">
+                        <h2 class="sample-title">
+                            Planificare <span class="gradient">inteligentă</span>
+                        </h2>
+                        <p class="sample-text">
+                            Transformă gătitul într-o experiență relaxantă cu rețete 
+                            personalizate și liste optimizate.
+                        </p>
+                        <div class="sample-card">
+                            <div class="sample-card-title">Card pe Warm Grey</div>
+                            <div class="sample-card-text">
+                                Gri cu foarte puțină căldură
+                            </div>
+                        </div>
+                        <button class="sample-button">Începe Acum</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis -->
+        <div class="analysis">
+            <h2>📊 Analiza & Recomandări</h2>
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <h3>🏆 Recomandare Principală</h3>
+                    <ul>
+                        <li><strong>Eggshell Classic</strong> 
+                            <span class="color-swatch" style="background: var(--eggshell-1);"></span>
+                        </li>
+                        <li>Cald dar nu yellowish</li>
+                        <li>Sofisticat și premium</li>
+                        <li>Perfect pentru food platform</li>
+                        <li>White cards au contrast subtil dar clar</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-card">
+                    <h3>✨ Alternative Bune</h3>
+                    <ul>
+                        <li><strong>Eggshell Subtle</strong> - dacă vrei mai subtil</li>
+                        <li><strong>Greige Light</strong> - pentru vibe mai modern/tech</li>
+                        <li><strong>Warm Grey</strong> - minimalist dar nu cold</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-card">
+                    <h3>💡 Considerații</h3>
+                    <ul>
+                        <li>Eggshell = mai organic, food-friendly</li>
+                        <li>Greige = mai tech/modern</li>
+                        <li>Grey = minimalist, poate prea cold pentru food</li>
+                        <li>Toate merg bine cu warm teal accent</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

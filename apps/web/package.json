@@ -7,6 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "analyze": "ANALYZE=true next build",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -17,28 +18,39 @@
     "clean": "rm -rf .next dist node_modules"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.0.18",
     "@coquinate/database": "workspace:*",
     "@coquinate/i18n": "workspace:*",
     "@coquinate/shared": "workspace:*",
     "@coquinate/ui": "workspace:*",
+    "@hookform/resolvers": "^5.2.1",
     "@supabase/supabase-js": "^2.39.3",
+    "@tabler/icons-react": "^3.34.1",
     "@tailwindcss/postcss": "^4.1.11",
     "@vercel/analytics": "^1.5.0",
+    "ai": "^4.2.2",
     "autoprefixer": "^10.4.21",
+    "micro": "^10.0.1",
     "next": "^15.4.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "tailwindcss": "^4.1.11"
+    "react-hook-form": "^7.62.0",
+    "stripe": "^17.6.0",
+    "tailwindcss": "^4.1.11",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@coquinate/config": "workspace:*",
+    "@next/bundle-analyzer": "^15.4.6",
     "@playwright/test": "^1.54.2",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/micro": "^7.3.7",
     "@vitejs/plugin-react": "^5.0.0",
     "@vitest/coverage-v8": "^3.2.4",
     "jsdom": "^26.1.0",
+    "node-mocks-http": "^1.16.3",
     "vitest": "^3.2.0"
   }
 }

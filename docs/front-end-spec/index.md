@@ -83,6 +83,11 @@
     - [Props & TypeScript Interfaces](./COMPONENT-TECHNICAL-REFERENCE.md#app-specific-components)
     - [Usage Guidelines & States](./COMPONENT-TECHNICAL-REFERENCE.md#form-components)
     - [Detailed Component Specs](./COMPONENT-TECHNICAL-REFERENCE.md#component-implementation-specifications)
+  - **[Storybook Development Setup](./STORYBOOK-PRACTICAL-SETUP.md)** 🚀
+    - [9-Phase Implementation Guide](./STORYBOOK-PRACTICAL-SETUP.md#faza-1-setup-si-configurare-de-baza-30-minute)
+    - [Story-Driven Development Workflow](./STORYBOOK-PRACTICAL-SETUP.md#faza-4-workflow-cu-ai-si-commands-15-minute)
+    - [MSW API Mocking Strategy](./STORYBOOK-PRACTICAL-SETUP.md#faza-3-msw-mocking-si-page-stories-25-minute)
+    - [Component Generator (Plop)](./STORYBOOK-PRACTICAL-SETUP.md#appendix-generator-automat-bonus-20-minute)
   - [Branding & Style Guide](./branding-style-guide.md)
     - [Visual Identity](./branding-style-guide.md#visual-identity)
     - [Context-Aware Color System](./branding-style-guide.md#context-aware-color-system)

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coquinate - Test Background Colors</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+        :root {
+            /* Modern Hearth Colors */
+            --primary-warm: oklch(58% 0.08 200);
+            --primary-warm-light: oklch(72% 0.06 200);
+            --accent-coral: oklch(70% 0.18 20);
+            
+            /* Background Options */
+            --bg-option-1: oklch(98% 0 0);           /* Current - slightly off-white */
+            --bg-option-2: oklch(98.5% 0.005 200);   /* Very subtle warm teal tint */
+            --bg-option-3: oklch(99% 0.003 60);      /* Extremely subtle warm tint */
+            --bg-option-4: oklch(97% 0.01 30);       /* Soft warm beige */
+            --bg-option-5: oklch(98% 0.008 200);     /* More noticeable teal tint */
+            
+            --text-primary: oklch(20% 0 0);
+            --text-secondary: oklch(45% 0 0);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--primary-warm);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .option {
+            border: 2px solid oklch(90% 0 0);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .option-header {
+            padding: 1rem;
+            background: oklch(95% 0 0);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-code {
+            font-family: monospace;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .preview {
+            padding: 3rem;
+            min-height: 300px;
+        }
+
+        .preview-1 { background: var(--bg-option-1); }
+        .preview-2 { background: var(--bg-option-2); }
+        .preview-3 { background: var(--bg-option-3); }
+        .preview-4 { background: var(--bg-option-4); }
+        .preview-5 { background: var(--bg-option-5); }
+
+        .sample-content {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .sample-title {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .sample-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .sample-card {
+            background: oklch(100% 0 0);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px oklch(0% 0 0 / 0.05);
+            border: 1px solid oklch(90% 0 0);
+        }
+
+        .sample-button {
+            background: var(--primary-warm);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .winner {
+            position: relative;
+        }
+
+        .winner::after {
+            content: '⭐ RECOMMENDED';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent-coral);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .comparison {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: oklch(95% 0 0);
+            border-radius: 12px;
+        }
+
+        .comparison h2 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .comparison-table {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+        }
+
+        .comparison-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .comparison-value {
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Background Color Options pentru Coquinate</h1>
+        
+        <div class="options">
+            <!-- Option 1 - Current -->
+            <div class="option">
+                <div class="option-header">
+                    <span>Option 1 - Current</span>
+                    <span class="option-code">oklch(98% 0 0)</span>
+                </div>
+                <div class="preview preview-1">
+                    <div class="sample-content">
+                        <h2 class="sample-title">Planificare inteligentă</h2>
+                        <p class="sample-text">
+                            Prima platformă românească care înțelege gusturile 
+                            familiei tale și creează planuri personalizate.
+                        </p>
+                        <div class="sample-card">
+                            <strong>White card on background</strong><br>
+                            Good contrast, clean look
+                            <button class="sample-button">Test Button</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option 2 - Subtle Teal -->
+            <div class="option winner">
+                <div class="option-header">
+                    <span>Option 2 - Subtle Warm Teal</span>
+                    <span class="option-code">oklch(98.5% 0.005 200)</span>
+                </div>
+                <div class="preview preview-2">
+                    <div class="sample-content">
+                        <h2 class="sample-title">Planificare inteligentă</h2>
+                        <p class="sample-text">
+                            Prima platformă românească care înțelege gusturile 
+                            familiei tale și creează planuri personalizate.
+                        </p>
+                        <div class="sample-card">
+                            <strong>White card on background</strong><br>
+                            Softer, warmer feeling
+                            <button class="sample-button">Test Button</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option 3 - Very Subtle Warm -->
+            <div class="option">
+                <div class="option-header">
+                    <span>Option 3 - Ultra Subtle Warm</span>
+                    <span class="option-code">oklch(99% 0.003 60)</span>
+                </div>
+                <div class="preview preview-3">
+                    <div class="sample-content">
+                        <h2 class="sample-title">Planificare inteligentă</h2>
+                        <p class="sample-text">
+                            Prima platformă românească care înțelege gusturile 
+                            familiei tale și creează planuri personalizate.
+                        </p>
+                        <div class="sample-card">
+                            <strong>White card on background</strong><br>
+                            Almost white, tiny warmth
+                            <button class="sample-button">Test Button</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option 4 - Warm Beige -->
+            <div class="option">
+                <div class="option-header">
+                    <span>Option 4 - Soft Warm Beige</span>
+                    <span class="option-code">oklch(97% 0.01 30)</span>
+                </div>
+                <div class="preview preview-4">
+                    <div class="sample-content">
+                        <h2 class="sample-title">Planificare inteligentă</h2>
+                        <p class="sample-text">
+                            Prima platformă românească care înțelege gusturile 
+                            familiei tale și creează planuri personalizate.
+                        </p>
+                        <div class="sample-card">
+                            <strong>White card on background</strong><br>
+                            HelloFresh style beige
+                            <button class="sample-button">Test Button</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option 5 - More Teal -->
+            <div class="option">
+                <div class="option-header">
+                    <span>Option 5 - More Teal Tint</span>
+                    <span class="option-code">oklch(98% 0.008 200)</span>
+                </div>
+                <div class="preview preview-5">
+                    <div class="sample-content">
+                        <h2 class="sample-title">Planificare inteligentă</h2>
+                        <p class="sample-text">
+                            Prima platformă românească care înțelege gusturile 
+                            familiei tale și creează planuri personalizate.
+                        </p>
+                        <div class="sample-card">
+                            <strong>White card on background</strong><br>
+                            More noticeable tint
+                            <button class="sample-button">Test Button</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison">
+            <h2>🎨 Analiza Opțiunilor</h2>
+            <div class="comparison-table">
+                <div class="comparison-row">
+                    <div class="comparison-label">Recomandare:</div>
+                    <div class="comparison-value">
+                        <strong>Option 2 - Subtle Warm Teal</strong> 
+                        (oklch(98.5% 0.005 200))
+                    </div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-label">De ce:</div>
+                    <div class="comparison-value">
+                        • Suficient de subtil să nu distragă<br>
+                        • Conectează cu brand colors (warm teal)<br>
+                        • Mai cald și welcoming decât pure white<br>
+                        • White cards încă au contrast bun<br>
+                        • Nu e prea beige/yellowish ca HelloFresh
+                    </div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-label">Alternative bune:</div>
+                    <div class="comparison-value">
+                        • Option 3 dacă vrei super subtle<br>
+                        • Option 4 dacă vrei full HelloFresh vibe
+                    </div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-label">De evitat:</div>
+                    <div class="comparison-value">
+                        • Option 1 - prea cold/clinical<br>
+                        • Option 5 - prea mult tint, devine distracting
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

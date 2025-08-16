@@ -5,7 +5,8 @@
     "recipes": "",
     "mealPlans": "",
     "users": "",
-    "settings": ""
+    "settings": "",
+    "cacheStats": "Cache Statistics"
   },
   "recipes": {
     "title": "",
@@ -21,5 +22,60 @@
     "edit": "",
     "delete": "",
     "assign": ""
+  },
+  "cache": {
+    "title": "Cache Performance",
+    "loading": "Loading cache statistics...",
+    "error": "Failed to load cache statistics",
+    "retry": "Retry",
+    "autoRefresh": "Auto-refresh",
+    "period": {
+      "label": "Period",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "all": "All Time"
+    },
+    "summary": {
+      "hitRate": "Hit Rate",
+      "costSaved": "Cost Saved",
+      "totalQuestions": "Total Questions",
+      "uniqueQuestions": "Unique Questions",
+      "cacheSize": "Cache Size",
+      "cacheItems": "Cache Items"
+    },
+    "performance": {
+      "title": "Performance Metrics",
+      "daily": "Daily Performance",
+      "monthly": "Monthly Performance",
+      "date": "Date",
+      "month": "Month",
+      "hits": "Hits",
+      "misses": "Misses",
+      "hitRate": "Hit Rate",
+      "costSaved": "Saved"
+    },
+    "topQuestions": {
+      "title": "Top Questions",
+      "question": "Question",
+      "count": "Count",
+      "category": "Category",
+      "lastAsked": "Last Asked",
+      "times": "times"
+    },
+    "distribution": {
+      "title": "Cache Distribution",
+      "category": "Category",
+      "percentage": "Percentage"
+    },
+    "systemHealth": {
+      "title": "System Health",
+      "utilization": "Cache Utilization",
+      "evictionRate": "Eviction Rate",
+      "avgResponseTime": "Avg Response Time",
+      "errorRate": "Error Rate"
+    },
+    "noData": "No cache data available",
+    "refreshing": "Refreshing..."
   }
 }

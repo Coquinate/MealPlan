@@ -145,3 +145,6 @@ supabase/seed.sql
 supabase/seed-with-env.sh
 GEMINI.md
 packages/i18n/TYPESCRIPT_STRATEGIC_ANYS.md
+
+*storybook.log
+storybook-static

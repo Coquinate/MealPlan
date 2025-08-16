@@ -9,7 +9,8 @@ export type TranslationNamespace =
   | 'shopping'
   | 'admin'
   | 'recipes'
-  | 'settings';
+  | 'settings'
+  | 'landing';
 
 export type TranslationKey = string;
 
@@ -21,7 +22,7 @@ export type TranslationKey = string;
  * specific namespace structure.
  *
  * @param {string | string[]} [ns] - Translation namespace(s) to use.
- *   Available namespaces: 'common', 'auth', 'meals', 'shopping', 'admin', 'recipes', 'settings'.
+ *   Available namespaces: 'common', 'auth', 'meals', 'shopping', 'admin', 'recipes', 'settings', 'landing'.
  *   Defaults to 'common' if not specified.
  *
  * @param {object} [options] - i18next translation options

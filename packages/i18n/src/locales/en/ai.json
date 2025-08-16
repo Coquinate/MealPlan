@@ -1,0 +1,59 @@
+{
+  "chat": {
+    "title": "",
+    "placeholder": "",
+    "send": "",
+    "thinking": "",
+    "typing": "",
+    "cancel": "",
+    "clear": "",
+    "retry": "",
+    "copy": "",
+    "copied": "",
+    "newChat": ""
+  },
+  "status": {
+    "connecting": "",
+    "connected": "",
+    "disconnected": "",
+    "error": "",
+    "streaming": "",
+    "ready": "",
+    "processing": ""
+  },
+  "error": {
+    "generic": "",
+    "rateLimit": "",
+    "timeout": "",
+    "network": "",
+    "authentication": "",
+    "serverError": "",
+    "invalidInput": "",
+    "tokenLimit": ""
+  },
+  "message": {
+    "welcome": "",
+    "empty": "",
+    "assistant": "",
+    "user": "",
+    "system": ""
+  },
+  "action": {
+    "regenerate": "",
+    "stop": "",
+    "edit": "",
+    "delete": "",
+    "feedback": "",
+    "like": "",
+    "dislike": ""
+  },
+  "tooltip": {
+    "copy": "",
+    "regenerate": "",
+    "clear": "",
+    "stop": ""
+  },
+  "media": {
+    "image": ""
+  }
+}

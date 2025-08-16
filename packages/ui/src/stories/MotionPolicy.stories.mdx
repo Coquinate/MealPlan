@@ -1,0 +1,412 @@
+import { Meta, Story, Canvas, Controls } from '@storybook/blocks';
+import { useState } from 'react';
+
+<Meta title="Design System/Motion Policy" />
+
+# Motion Policy Guide
+
+*Control animation intensity based on user needs and context*
+
+## 🎯 Motion Philosophy
+
+Our motion system adapts to different contexts and user preferences. We prioritize:
+
+1. **Performance** - Smooth animations that don't impact usability
+2. **Accessibility** - Respect user preferences for reduced motion
+3. **Context** - Match animation intensity to the user's task
+4. **Delight** - Add personality without distraction
+
+## 📊 Motion Levels
+
+export const MotionDemo = () => {
+  const [motionLevel, setMotionLevel] = useState('standard');
+  
+  return (
+    <div className="space-y-8 p-8">
+      <div className="flex gap-4">
+        <button 
+          onClick={() => setMotionLevel('subtle')}
+          className={`px-4 py-2 rounded ${motionLevel === 'subtle' ? 'bg-primary-warm text-white' : 'bg-surface'}`}
+        >
+          Subtle
+        </button>
+        <button 
+          onClick={() => setMotionLevel('standard')}
+          className={`px-4 py-2 rounded ${motionLevel === 'standard' ? 'bg-primary-warm text-white' : 'bg-surface'}`}
+        >
+          Standard
+        </button>
+        <button 
+          onClick={() => setMotionLevel('expressive')}
+          className={`px-4 py-2 rounded ${motionLevel === 'expressive' ? 'bg-primary-warm text-white' : 'bg-surface'}`}
+        >
+          Expressive
+        </button>
+      </div>
+      
+      <div data-motion={motionLevel} className="relative h-64 bg-surface-sunken rounded-lg overflow-hidden">
+        {motionLevel !== 'subtle' && (
+          <div 
+            className="floating-orb w-24 h-24 absolute top-10 left-10"
+            style={{
+              animationDuration: motionLevel === 'expressive' ? '8s' : '15s'
+            }}
+          />
+        )}
+        
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div 
+            className="glass p-8 rounded-lg text-center"
+            style={{
+              transition: motionLevel === 'subtle' ? 'none' : 'all 0.3s',
+              transform: motionLevel === 'expressive' ? 'scale(1.05)' : 'scale(1)'
+            }}
+          >
+            <h3 className="text-xl font-bold mb-2">Motion Level: {motionLevel}</h3>
+            <p className="text-secondary">
+              {motionLevel === 'subtle' && 'Minimal animations for focus'}
+              {motionLevel === 'standard' && 'Balanced animations for engagement'}
+              {motionLevel === 'expressive' && 'Full animations for impact'}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+<Canvas>
+  <Story name="Motion Level Demo">
+    <MotionDemo />
+  </Story>
+</Canvas>
+
+### Level Comparison
+
+| Level | **Subtle** | **Standard** | **Expressive** |
+|-------|------------|--------------|----------------|
+| **Use Case** | Dashboards, Forms | Landing Pages | Marketing, Demos |
+| **Transitions** | 150ms | 300ms | 500ms |
+| **Floating Elements** | None | Slow (20s) | Fast (10s) |
+| **Hover Effects** | translateY(-2px) | translateY(-4px) + shadow | translateY(-8px) + glow |
+| **Page Transitions** | Fade only | Fade + slide | Fade + slide + scale |
+| **Stagger Delays** | None | 100ms | 200ms |
+| **Spring Physics** | Disabled | Gentle | Bouncy |
+
+## 🔧 Implementation
+
+### Setting Motion Level
+
+Motion level is controlled via `data-motion` attribute on the body element:
+
+```tsx
+// app/layout.tsx
+export default function RootLayout({ children, pathname }) {
+  // Determine motion level based on route
+  const getMotionLevel = () => {
+    if (pathname.startsWith('/dashboard')) return 'subtle';
+    if (pathname === '/') return 'standard';
+    if (pathname.startsWith('/demo')) return 'expressive';
+    return 'standard';
+  };
+
+  return (
+    <html lang="ro">
+      <body data-motion={getMotionLevel()}>
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+### CSS Implementation
+
+```css
+/* Base animation */
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+/* Subtle - Minimal motion */
+body[data-motion="subtle"] {
+  .animate-float { animation: none; }
+  .mesh-gradient { animation: none; }
+  .floating-orb { display: none; }
+  
+  .hover-lift:hover { 
+    transform: translateY(-2px);
+    transition: transform 150ms ease;
+  }
+  
+  .transition-all {
+    transition-duration: 150ms;
+  }
+}
+
+/* Standard - Balanced motion */
+body[data-motion="standard"] {
+  .animate-float { animation: float 20s ease-in-out infinite; }
+  .floating-orb { animation: float 15s ease-in-out infinite; }
+  
+  .hover-lift:hover { 
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: all 300ms ease;
+  }
+  
+  .transition-all {
+    transition-duration: 300ms;
+  }
+}
+
+/* Expressive - Full motion */
+body[data-motion="expressive"] {
+  .animate-float { animation: float 10s ease-in-out infinite; }
+  .floating-orb { animation: float 8s ease-in-out infinite; }
+  .mesh-gradient { animation: mesh-morph 20s ease-in-out infinite; }
+  
+  .hover-lift:hover { 
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    transition: all 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .transition-all {
+    transition-duration: 500ms;
+  }
+}
+```
+
+## ♿ Accessibility
+
+### Prefers Reduced Motion
+
+Always respect the user's system preference:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Override all motion levels */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  /* Maintain visual feedback without motion */
+  .hover-lift:hover {
+    box-shadow: 0 0 0 2px var(--primary-warm);
+  }
+}
+```
+
+### JavaScript Hook
+
+```typescript
+// hooks/useMotionPolicy.ts
+export function useMotionPolicy() {
+  const [motionLevel, setMotionLevel] = useState('standard');
+  const [prefersReduced, setPrefersReduced] = useState(false);
+
+  useEffect(() => {
+    // Check system preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReduced(mediaQuery.matches);
+
+    // Get current motion level
+    const level = document.body.dataset.motion || 'standard';
+    setMotionLevel(level);
+
+    // Listen for changes
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReduced(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return {
+    motionLevel: prefersReduced ? 'subtle' : motionLevel,
+    prefersReduced,
+    setMotionLevel: (level: string) => {
+      if (!prefersReduced) {
+        document.body.dataset.motion = level;
+        setMotionLevel(level);
+      }
+    }
+  };
+}
+```
+
+## 📱 Performance Considerations
+
+### Mobile Optimization
+
+```typescript
+// Detect device capabilities
+const getOptimalMotionLevel = () => {
+  // Check for low-end device indicators
+  const isLowEnd = 
+    navigator.hardwareConcurrency <= 4 ||
+    navigator.deviceMemory <= 4 ||
+    navigator.connection?.effectiveType === 'slow-2g' ||
+    navigator.connection?.effectiveType === '2g';
+
+  if (isLowEnd) return 'subtle';
+  
+  // Check for touch device (mobile/tablet)
+  const isTouchDevice = 'ontouchstart' in window;
+  if (isTouchDevice) return 'standard';
+  
+  return 'expressive';
+};
+```
+
+### Animation Budget
+
+Keep animations performant by limiting concurrent effects:
+
+| Resource | Subtle | Standard | Expressive |
+|----------|--------|----------|------------|
+| **Floating Orbs** | 0 | 1-2 | 2-3 |
+| **Concurrent Transitions** | 1 | 2-3 | 3-5 |
+| **Blur Effects** | Static | Limited | Full |
+| **Particle Effects** | None | On interaction | Ambient |
+| **3D Transforms** | None | On hover | Active |
+
+## 🎮 Interactive Examples
+
+### Button Animation Comparison
+
+export const ButtonComparison = () => {
+  return (
+    <div className="grid grid-cols-3 gap-8 p-8">
+      <div data-motion="subtle" className="space-y-4">
+        <h4 className="font-bold">Subtle</h4>
+        <button className="gradient-primary text-white px-6 py-3 rounded-lg hover-lift transition-all">
+          Click Me
+        </button>
+        <p className="text-sm text-secondary">150ms, minimal lift</p>
+      </div>
+      
+      <div data-motion="standard" className="space-y-4">
+        <h4 className="font-bold">Standard</h4>
+        <button className="gradient-primary text-white px-6 py-3 rounded-lg hover-lift transition-all">
+          Click Me
+        </button>
+        <p className="text-sm text-secondary">300ms, shadow on hover</p>
+      </div>
+      
+      <div data-motion="expressive" className="space-y-4">
+        <h4 className="font-bold">Expressive</h4>
+        <button className="gradient-primary text-white px-6 py-3 rounded-lg hover-lift transition-all">
+          Click Me
+        </button>
+        <p className="text-sm text-secondary">500ms, scale + glow</p>
+      </div>
+    </div>
+  );
+};
+
+<Canvas>
+  <Story name="Button Comparison">
+    <ButtonComparison />
+  </Story>
+</Canvas>
+
+### List Animation Comparison
+
+export const ListComparison = () => {
+  const items = ['Mic dejun', 'Prânz', 'Cină', 'Gustare'];
+  
+  return (
+    <div className="grid grid-cols-3 gap-8 p-8">
+      <div data-motion="subtle">
+        <h4 className="font-bold mb-4">Subtle</h4>
+        <ul className="space-y-2">
+          {items.map((item, i) => (
+            <li key={i} className="p-3 bg-surface rounded">
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p className="text-sm text-secondary mt-2">No stagger</p>
+      </div>
+      
+      <div data-motion="standard">
+        <h4 className="font-bold mb-4">Standard</h4>
+        <ul className="space-y-2">
+          {items.map((item, i) => (
+            <li 
+              key={i} 
+              className="p-3 bg-surface rounded stagger-fade-up"
+              style={{ animationDelay: `${i * 100}ms` }}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p className="text-sm text-secondary mt-2">100ms stagger</p>
+      </div>
+      
+      <div data-motion="expressive">
+        <h4 className="font-bold mb-4">Expressive</h4>
+        <ul className="space-y-2">
+          {items.map((item, i) => (
+            <li 
+              key={i} 
+              className="p-3 bg-surface rounded stagger-fade-up"
+              style={{ animationDelay: `${i * 200}ms` }}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p className="text-sm text-secondary mt-2">200ms stagger</p>
+      </div>
+    </div>
+  );
+};
+
+<Canvas>
+  <Story name="List Stagger">
+    <ListComparison />
+  </Story>
+</Canvas>
+
+## 🚀 Best Practices
+
+### Do's ✅
+
+- **Match motion to user intent** - Productivity tasks need subtle motion
+- **Test on real devices** - Ensure smooth performance on target hardware
+- **Provide motion controls** - Let users adjust if needed
+- **Use motion to guide attention** - Direct focus to important changes
+- **Keep it consistent** - Similar actions should have similar animations
+
+### Don'ts ❌
+
+- **Don't animate everything** - Be selective and purposeful
+- **Don't ignore performance** - Monitor FPS and jank
+- **Don't force motion** - Respect reduced motion preferences
+- **Don't make users wait** - Keep animations snappy
+- **Don't loop endlessly** - Ambient animations should be subtle
+
+## 📊 Motion Metrics
+
+Track these metrics to ensure good motion UX:
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| **Frame Rate** | >30fps mobile, >60fps desktop | Chrome DevTools Performance |
+| **Jank** | <5% of frames | Performance Observer API |
+| **Time to Interactive** | Not delayed by animations | Lighthouse |
+| **Motion Sickness Reports** | 0 | User feedback |
+| **Preference Changes** | Track subtle vs expressive | Analytics |
+
+---
+
+*Motion Policy for Modern Hearth Theme*  
+*Respecting user needs while adding delight*

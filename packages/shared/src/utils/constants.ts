@@ -1,0 +1,213 @@
+/**
+ * Shared constants for AI services
+ * All magic numbers should be defined here with descriptive names
+ */
+
+// Time durations in milliseconds
+export const TIME_CONSTANTS = {
+  ONE_SECOND: 1000,
+  ONE_MINUTE: 60 * 1000,
+  FIVE_MINUTES: 5 * 60 * 1000,
+  TEN_MINUTES: 10 * 60 * 1000,
+  THIRTY_MINUTES: 30 * 60 * 1000,
+  ONE_HOUR: 60 * 60 * 1000,
+  TWO_HOURS: 2 * 60 * 60 * 1000,
+  TWELVE_HOURS: 12 * 60 * 60 * 1000,
+  ONE_DAY: 24 * 60 * 60 * 1000,
+  SEVEN_DAYS: 7 * 24 * 60 * 60 * 1000,
+  THIRTY_DAYS: 30 * 24 * 60 * 60 * 1000,
+} as const;
+
+// Storage size limits in bytes
+export const STORAGE_CONSTANTS = {
+  ONE_KB: 1024,
+  ONE_MB: 1024 * 1024,
+  FOUR_MB: 4 * 1024 * 1024,
+  FIVE_MB: 5 * 1024 * 1024,
+  TEN_MB: 10 * 1024 * 1024,
+  // localStorage quota safety margins
+  LOCALSTORAGE_SAFETY_MARGIN: 0.9, // Use only 90% of available quota
+  LOCALSTORAGE_WARNING_THRESHOLD: 0.8, // Warn at 80% usage
+} as const;
+
+// Rate limiting constants
+export const RATE_LIMIT_CONSTANTS = {
+  // Default limits per minute
+  DEFAULT_REQUESTS_PER_MINUTE: 10,
+  ADMIN_REQUESTS_PER_MINUTE: 10,
+  CSRF_TOKENS_PER_MINUTE: 5,
+  AI_REQUESTS_PER_MINUTE: 30,
+
+  // Burst allowances
+  DEFAULT_BURST_ALLOWANCE: 5,
+  PREMIUM_BURST_ALLOWANCE: 10,
+
+  // Daily limits
+  FREE_TIER_DAILY_LIMIT: 100,
+  STANDARD_TIER_DAILY_LIMIT: 500,
+  PREMIUM_TIER_DAILY_LIMIT: 2000,
+
+  // Retry delays
+  MIN_RETRY_DELAY: 1000,
+  MAX_RETRY_DELAY: 30000,
+  RETRY_BACKOFF_MULTIPLIER: 2,
+} as const;
+
+// AI Service constants
+export const AI_SERVICE_CONSTANTS = {
+  // Token limits
+  DEFAULT_MAX_TOKENS: 200,
+  SHORT_RESPONSE_TOKENS: 100,
+  MEDIUM_RESPONSE_TOKENS: 500,
+  LONG_RESPONSE_TOKENS: 1000,
+  MAX_RESPONSE_TOKENS: 2000,
+
+  // Temperature settings
+  PRECISE_TEMPERATURE: 0.3,
+  BALANCED_TEMPERATURE: 0.5,
+  CREATIVE_TEMPERATURE: 0.7,
+  MAX_TEMPERATURE: 1.0,
+
+  // Retry settings
+  DEFAULT_MAX_RETRIES: 3,
+  MAX_RETRY_ATTEMPTS: 5,
+
+  // Response time targets (ms)
+  TARGET_RESPONSE_TIME: 200,
+  MAX_ACCEPTABLE_RESPONSE_TIME: 500,
+  TIMEOUT_DURATION: 30000,
+} as const;
+
+// Cache constants
+export const CACHE_CONSTANTS = {
+  // Cache TTL
+  DEFAULT_TTL_MS: TIME_CONSTANTS.SEVEN_DAYS,
+  SHORT_TTL_MS: TIME_CONSTANTS.ONE_HOUR,
+  MEDIUM_TTL_MS: TIME_CONSTANTS.ONE_DAY,
+  LONG_TTL_MS: TIME_CONSTANTS.THIRTY_DAYS,
+
+  // Cache size limits
+  MAX_CACHE_SIZE_BYTES: STORAGE_CONSTANTS.FOUR_MB,
+  MAX_CACHE_ITEMS: 1000,
+  MIN_ITEMS_TO_KEEP: 100,
+
+  // LRU settings
+  LRU_CHECK_INTERVAL: TIME_CONSTANTS.FIVE_MINUTES,
+  LRU_EVICTION_BATCH_SIZE: 10,
+
+  // Cache effectiveness thresholds
+  GOOD_HIT_RATE: 0.7, // 70%
+  ACCEPTABLE_HIT_RATE: 0.5, // 50%
+  POOR_HIT_RATE: 0.3, // 30%
+} as const;
+
+// Analytics constants
+export const ANALYTICS_CONSTANTS = {
+  // Sampling rates
+  DEFAULT_SAMPLING_RATE: 1.0, // 100%
+  HIGH_LOAD_SAMPLING_RATE: 0.1, // 10%
+
+  // Top lists
+  DEFAULT_TOP_QUESTIONS_COUNT: 10,
+  MAX_TOP_QUESTIONS_COUNT: 50,
+
+  // History limits
+  MAX_HISTORY_ITEMS: 1000,
+  MAX_DAILY_ENTRIES: 365,
+  MAX_MONTHLY_ENTRIES: 24,
+
+  // Cost calculations (USD per 1K tokens)
+  COST_PER_1K_INPUT_TOKENS: 0.003,
+  COST_PER_1K_OUTPUT_TOKENS: 0.015,
+} as const;
+
+// Session constants
+export const SESSION_CONSTANTS = {
+  // Session durations
+  DEFAULT_SESSION_TTL: TIME_CONSTANTS.ONE_DAY,
+  ADMIN_SESSION_TTL: TIME_CONSTANTS.TWELVE_HOURS,
+  SESSION_IDLE_TIMEOUT: TIME_CONSTANTS.TWO_HOURS,
+
+  // Session cleanup
+  SESSION_CLEANUP_INTERVAL: TIME_CONSTANTS.ONE_HOUR,
+
+  // Token expiration
+  CSRF_TOKEN_TTL: TIME_CONSTANTS.ONE_HOUR,
+  API_TOKEN_TTL: TIME_CONSTANTS.THIRTY_DAYS,
+} as const;
+
+// UI/UX constants
+export const UI_CONSTANTS = {
+  // Debounce delays
+  INPUT_DEBOUNCE_DELAY: 300,
+  SEARCH_DEBOUNCE_DELAY: 500,
+  SCROLL_DEBOUNCE_DELAY: 100,
+
+  // Animation durations
+  FAST_ANIMATION: 200,
+  NORMAL_ANIMATION: 300,
+  SLOW_ANIMATION: 500,
+
+  // Pagination
+  DEFAULT_PAGE_SIZE: 20,
+  MAX_PAGE_SIZE: 100,
+
+  // Notification durations
+  SUCCESS_NOTIFICATION_DURATION: 3000,
+  ERROR_NOTIFICATION_DURATION: 5000,
+  WARNING_NOTIFICATION_DURATION: 4000,
+} as const;
+
+// Preloader constants
+export const PRELOADER_CONSTANTS = {
+  DEFAULT_MAX_QUESTIONS: 3,
+  MAX_QUESTIONS_TO_PRELOAD: 5,
+  STAGGER_DELAY: 1000,
+  DEFAULT_TIMEOUT: 30000,
+  CLEANUP_DELAY: 5000,
+} as const;
+
+// Error constants
+export const ERROR_CONSTANTS = {
+  // Retry counts
+  MAX_ERROR_RETRIES: 3,
+
+  // Error reporting batch
+  ERROR_BATCH_SIZE: 10,
+  ERROR_BATCH_INTERVAL: TIME_CONSTANTS.FIVE_MINUTES,
+
+  // Circuit breaker
+  CIRCUIT_BREAKER_THRESHOLD: 5,
+  CIRCUIT_BREAKER_RESET_TIME: TIME_CONSTANTS.TEN_MINUTES,
+} as const;
+
+// Pattern matching priorities
+export const PATTERN_PRIORITIES = {
+  SUBSTITUTION: 1000,
+  TEMPERATURE: 900,
+  TECHNIQUES: 800,
+  STORAGE: 700,
+  SERVINGS: 600,
+  DURATION: 500,
+  CALORIES: 400,
+  DIFFICULTY: 300,
+  TIPS: 200,
+  GENERAL: 100,
+} as const;
+
+// Export all constants as a single object for convenience
+export const CONSTANTS = {
+  TIME: TIME_CONSTANTS,
+  STORAGE: STORAGE_CONSTANTS,
+  RATE_LIMIT: RATE_LIMIT_CONSTANTS,
+  AI_SERVICE: AI_SERVICE_CONSTANTS,
+  CACHE: CACHE_CONSTANTS,
+  ANALYTICS: ANALYTICS_CONSTANTS,
+  SESSION: SESSION_CONSTANTS,
+  UI: UI_CONSTANTS,
+  PRELOADER: PRELOADER_CONSTANTS,
+  ERROR: ERROR_CONSTANTS,
+  PATTERN_PRIORITIES,
+} as const;
+
+export default CONSTANTS;

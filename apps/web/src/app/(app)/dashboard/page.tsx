@@ -59,13 +59,19 @@ export default function DashboardPage() {
               <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-600 rounded-lg flex items-center justify-center">
                 <span className="text-lg font-bold text-white">🥘</span>
               </div>
-              <h1 className="text-heading-xl font-bold text-primary">Coquinate</h1>
+              <h1 className="text-heading-xl font-bold text-primary">
+                {t('dashboard.header.brand')}
+              </h1>
             </div>
 
             <div className="flex items-center space-x-4">
-              <span className="text-text-secondary">Bună, {user?.email || 'utilizator'}!</span>
+              <span className="text-text-secondary">
+                {user?.email
+                  ? t('dashboard.header.greeting', { name: user.email })
+                  : t('dashboard.header.greeting_fallback')}
+              </span>
               <Button variant="secondary" size="sm" onClick={handleSignOut}>
-                Deconectează-te
+                {t('dashboard.header.signOut')}
               </Button>
             </div>
           </div>
@@ -82,16 +88,18 @@ export default function DashboardPage() {
                 <span className="text-4xl">🎉</span>
               </div>
               <h2 className="text-heading-2xl font-bold text-text mb-space-sm">
-                Bun venit în Coquinate!
+                {t('dashboard.welcome.title')}
               </h2>
               <p className="text-text-secondary max-w-md mx-auto">
-                Platforma ta pentru planificarea meselor și organizarea cumpărăturilor
+                {t('dashboard.welcome.subtitle')}
               </p>
             </div>
 
             <div className="inline-flex items-center px-space-sm py-space-xs bg-primary-100 rounded-full">
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse mr-2"></div>
-              <span className="text-sm font-medium text-primary">În curs de dezvoltare</span>
+              <span className="text-sm font-medium text-primary">
+                {t('dashboard.welcome.status')}
+              </span>
             </div>
           </Card>
 
@@ -102,13 +110,13 @@ export default function DashboardPage() {
                 <span className="text-3xl">📅</span>
               </div>
               <h3 className="text-heading-lg font-semibold text-text mb-space-sm">
-                Planificare Mese
+                {t('dashboard.features.mealPlanning.title')}
               </h3>
               <p className="text-text-secondary text-sm mb-space-md">
-                Planifică mesele pentru săptămâna următoare
+                {t('dashboard.features.mealPlanning.description')}
               </p>
               <Button variant="secondary" size="sm" disabled>
-                Curând disponibil
+                {t('dashboard.features.mealPlanning.button')}
               </Button>
             </Card>
 
@@ -117,13 +125,13 @@ export default function DashboardPage() {
                 <span className="text-3xl">🛒</span>
               </div>
               <h3 className="text-heading-lg font-semibold text-text mb-space-sm">
-                Listă Cumpărături
+                {t('dashboard.features.shoppingList.title')}
               </h3>
               <p className="text-text-secondary text-sm mb-space-md">
-                Generează liste de cumpărături automat
+                {t('dashboard.features.shoppingList.description')}
               </p>
               <Button variant="secondary" size="sm" disabled>
-                Curând disponibil
+                {t('dashboard.features.shoppingList.button')}
               </Button>
             </Card>
 
@@ -132,13 +140,13 @@ export default function DashboardPage() {
                 <span className="text-3xl">👨‍🍳</span>
               </div>
               <h3 className="text-heading-lg font-semibold text-text mb-space-sm">
-                Asistent Gătit
+                {t('dashboard.features.cookingAssistant.title')}
               </h3>
               <p className="text-text-secondary text-sm mb-space-md">
-                Instrucțiuni pas cu pas pentru rețete
+                {t('dashboard.features.cookingAssistant.description')}
               </p>
               <Button variant="secondary" size="sm" disabled>
-                Curând disponibil
+                {t('dashboard.features.cookingAssistant.button')}
               </Button>
             </Card>
           </div>

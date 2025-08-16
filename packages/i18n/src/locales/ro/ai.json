@@ -1,0 +1,59 @@
+{
+  "chat": {
+    "title": "Asistent Rețete",
+    "placeholder": "Întreabă-mă despre rețete...",
+    "send": "Trimite",
+    "thinking": "Mă gândesc...",
+    "typing": "Tastează...",
+    "cancel": "Anulează",
+    "clear": "Șterge conversația",
+    "retry": "Încearcă din nou",
+    "copy": "Copiază",
+    "copied": "Copiat!",
+    "newChat": "Conversație nouă"
+  },
+  "status": {
+    "connecting": "Se conectează...",
+    "connected": "Conectat",
+    "disconnected": "Deconectat",
+    "error": "Eroare de conexiune",
+    "streaming": "Primesc răspuns...",
+    "ready": "Gata",
+    "processing": "Procesez..."
+  },
+  "error": {
+    "generic": "A apărut o eroare. Te rog încearcă din nou.",
+    "rateLimit": "Ai depășit limita de solicitări. Te rog așteaptă {{seconds}} secunde.",
+    "timeout": "Cererea a expirat. Te rog încearcă din nou.",
+    "network": "Eroare de rețea. Verifică conexiunea la internet.",
+    "authentication": "Eroare de autentificare. Te rog reîncarcă pagina.",
+    "serverError": "Eroare de server. Te rog încearcă mai târziu.",
+    "invalidInput": "Mesajul introdus nu este valid.",
+    "tokenLimit": "Răspunsul este prea lung. Te rog reformulează întrebarea."
+  },
+  "message": {
+    "welcome": "Bună! Sunt asistentul tău pentru rețete. Cum te pot ajuta azi?",
+    "empty": "Nu ai nicio conversație încă. Începe prin a pune o întrebare!",
+    "assistant": "Asistent",
+    "user": "Tu",
+    "system": "Sistem"
+  },
+  "action": {
+    "regenerate": "Regenerează răspuns",
+    "stop": "Oprește generarea",
+    "edit": "Editează mesaj",
+    "delete": "Șterge mesaj",
+    "feedback": "Oferă feedback",
+    "like": "Îmi place",
+    "dislike": "Nu îmi place"
+  },
+  "tooltip": {
+    "copy": "Copiază în clipboard",
+    "regenerate": "Generează un nou răspuns",
+    "clear": "Șterge toată conversația",
+    "stop": "Oprește generarea curentă"
+  },
+  "media": {
+    "image": "Imagine"
+  }
+}

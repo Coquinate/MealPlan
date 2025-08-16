@@ -1,18 +1,43 @@
 # External APIs
 
-## Gemini 2.0 Flash API
+## Gemini 2.0 Flash API (Updated 2025)
 
 - **Purpose:** AI-powered recipe generation and meal plan creation
 - **Documentation:** https://ai.google.dev/api/generate-content
 - **Base URL(s):** https://generativelanguage.googleapis.com
 - **Authentication:** API Key
-- **Rate Limits:** 60 requests per minute (free tier)
+- **Rate Limits:** Project tier-based (60 req/min default, scales with usage)
+- **AI SDK Integration:** AI SDK 4.2 with @ai-sdk/google package
 
 **Key Endpoints Used:**
 
 - `POST /v1beta/models/gemini-2.0-flash:generateContent` - Recipe generation and validation
+- `POST /v1beta/models/gemini-2.0-flash:streamGenerateContent` - Streaming responses
 
-**Integration Notes:** Used for admin dashboard AI features (Stories 3.6, 3.11, 3.12, 3.13)
+**AI SDK 4.2 Integration:**
+
+```typescript
+import { google } from '@ai-sdk/google';
+import { generateText, streamText } from 'ai';
+
+const aiModel = google('gemini-2.0-flash', {
+  apiKey: process.env.GEMINI_API_KEY,
+});
+```
+
+**Integration Notes:**
+
+- Used for admin dashboard AI features (Stories 3.6, 3.11, 3.12, 3.13)
+- Integrated via AI SDK 4.2 (not direct API calls)
+- Supports message parts for future image processing
+- Production-ready model (generally available)
+
+**Environment Configuration:**
+
+```bash
+GEMINI_API_KEY=your-gemini-api-key-here
+GEMINI_MODEL=gemini-2.0-flash  # Updated from gemini-pro
+```
 
 ## Resend API
 

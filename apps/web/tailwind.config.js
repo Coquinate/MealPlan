@@ -104,6 +104,17 @@ export default {
 
         // Background convenience
         background: designTokens.colors.surface,
+
+        // Modern Hearth colors
+        'primary-warm': 'var(--color-primary-warm)',
+        'primary-warm-light': 'var(--color-primary-warm-light)',
+        'primary-warm-dark': 'var(--color-primary-warm-dark)',
+        'accent-coral': 'var(--color-accent-coral)',
+        'accent-coral-soft': 'var(--color-accent-coral-soft)',
+        'accent-coral-deep': 'var(--color-accent-coral-deep)',
+        'surface-glass': 'var(--color-surface-glass)',
+        'surface-glass-elevated': 'var(--color-surface-glass-elevated)',
+        'surface-glass-border': 'var(--color-surface-glass-border)',
       },
 
       // Semantic font sizes matching component usage
@@ -140,5 +151,47 @@ export default {
     },
   },
 
-  plugins: [],
+  plugins: [
+    // Modern Hearth Plugin - Glass Morphism & Focus States
+    function ({ addUtilities }) {
+      addUtilities({
+        // Glass morphism utilities
+        '.glass': {
+          background: 'var(--color-surface-glass)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          border: '1px solid var(--color-surface-glass-border)',
+          willChange: 'backdrop-filter',
+          transform: 'translateZ(0)', // GPU acceleration
+        },
+
+        '.glass-elevated': {
+          background: 'var(--color-surface-glass-elevated)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid var(--color-surface-glass-border)',
+        },
+
+        // Motion policy utilities
+        '.hover-lift': {
+          transition: 'transform 0.2s ease-out',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+          },
+        },
+
+        // Focus states
+        '.focus-glass': {
+          '&:focus-visible': {
+            outline: 'none',
+            boxShadow:
+              '0 0 0 2px var(--color-surface-glass), 0 0 0 5px var(--color-primary-warm), 0 0 20px var(--color-primary-warm/30), 0 8px 25px rgba(0,0,0,0.15)',
+            backdropFilter: 'blur(12px)',
+            background: 'var(--color-surface-glass-elevated)',
+            transition: 'all 0.2s ease-out',
+          },
+        },
+      });
+    },
+  ],
 };

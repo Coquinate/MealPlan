@@ -38,26 +38,54 @@ interface ValidationIssue {
 
 ```typescript
 // /supabase/functions/recipe-validation/index.ts
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { google } from '@ai-sdk/google';
+import { generateText, streamText } from 'ai';
 
-const genAI = new GoogleGenerativeAI(Deno.env.get('GEMINI_API_KEY')!);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+// AI SDK 4.2 configuration
+const aiModel = google('gemini-2.0-flash', {
+  apiKey: Deno.env.get('GEMINI_API_KEY')!,
+});
 
 export const recipeValidationRouter = router({
   validateRecipe: publicProcedure.input(recipeValidationSchema).mutation(async ({ input }) => {
-    const prompt = buildValidationPrompt(input);
-    const result = await model.generateContent(prompt);
+    const result = await generateText({
+      model: aiModel,
+      messages: [
+        { role: 'system', content: 'You are a Romanian recipe validation expert.' },
+        { role: 'user', content: buildValidationPrompt(input) },
+      ],
+      maxTokens: 1000,
+      temperature: 0.3,
+    });
     return processValidationResponse(result);
   }),
 
   optimizeNutrition: publicProcedure
     .input(nutritionOptimizationSchema)
     .mutation(async ({ input }) => {
-      // AI-powered nutrition optimization
+      // AI SDK 4.2 nutrition optimization with streaming
+      const result = await streamText({
+        model: aiModel,
+        messages: [
+          { role: 'system', content: 'You are a nutrition expert for Romanian cuisine.' },
+          { role: 'user', content: buildNutritionPrompt(input) },
+        ],
+        maxTokens: 800,
+      });
+      return result;
     }),
 
   generateRecipeSuggestions: publicProcedure.input(suggestionSchema).query(async ({ input }) => {
-    // AI-powered recipe suggestions
+    // AI SDK 4.2 with message parts for future image support
+    const result = await generateText({
+      model: aiModel,
+      messages: [
+        { role: 'system', content: 'You are a creative Romanian chef assistant.' },
+        { role: 'user', content: [{ type: 'text', text: buildSuggestionPrompt(input) }] },
+      ],
+      maxTokens: 1200,
+    });
+    return result;
   }),
 });
 ```
@@ -65,7 +93,7 @@ export const recipeValidationRouter = router({
 ### 3. AI Database Integration
 
 ```sql
--- AI validation results storage
+-- AI validation results storage (AI SDK 4.2 compatible)
 CREATE TABLE validation_results (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   recipe_id UUID NOT NULL REFERENCES recipes(id),
@@ -74,11 +102,14 @@ CREATE TABLE validation_results (
   issues JSONB,
   suggestions JSONB,
   ai_model_version TEXT DEFAULT 'gemini-2.0-flash',
+  ai_sdk_version TEXT DEFAULT '4.2',
+  token_usage JSONB, -- AI SDK 4.2 usage tracking
+  request_id TEXT,   -- AI SDK 4.2 request tracking
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- AI processing queue for batch operations
+-- AI processing queue for batch operations (AI SDK 4.2 enhanced)
 CREATE TABLE ai_processing_queue (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   task_type TEXT NOT NULL,
@@ -86,9 +117,13 @@ CREATE TABLE ai_processing_queue (
   status TEXT DEFAULT 'pending',
   attempts INTEGER DEFAULT 0,
   max_attempts INTEGER DEFAULT 3,
+  ai_sdk_version TEXT DEFAULT '4.2',
+  model_used TEXT DEFAULT 'gemini-2.0-flash',
+  token_usage JSONB, -- Store AI SDK 4.2 usage stats
   scheduled_at TIMESTAMPTZ DEFAULT NOW(),
   processed_at TIMESTAMPTZ,
   error_message TEXT,
+  error_type TEXT, -- AI SDK 4.2 error types
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 ```
@@ -109,10 +144,36 @@ graph LR
     I --> F
 ```
 
-## AI Configuration and Limits
+## AI Configuration and Limits (Updated 2025)
 
-- **Model**: Gemini 2.0 Flash (latest stable)
-- **Rate Limiting**: 60 requests/minute per API key
+**AI SDK 4.2 Configuration:**
+
+- **Package**: @ai-sdk/google (AI SDK 4.2 compatible)
+- **Model**: gemini-2.0-flash (production-ready, generally available)
+- **SDK Version**: AI SDK 4.2 with message parts support
+- **Rate Limiting**: Project tier-based (60 req/min default, scales with usage)
 - **Timeout**: 30 seconds per validation request
-- **Retry Logic**: 3 attempts with exponential backoff
-- **Cost Management**: Cached results for identical validation requests
+- **Retry Logic**: 3 attempts with exponential backoff (built into AI SDK 4.2)
+- **Cost Management**: AI SDK 4.2 built-in caching + local caching for identical requests
+- **Streaming**: Enabled with automatic cleanup mechanisms
+- **Message Parts**: Enabled for future text + image support
+
+**Environment Configuration:**
+
+```bash
+# Updated for AI SDK 4.2 (2025)
+GEMINI_API_KEY=your-gemini-api-key-here
+GEMINI_MODEL=gemini-2.0-flash  # Updated from gemini-pro
+AI_SDK_VERSION=4.2
+AI_STREAM_ENABLED=true
+AI_MESSAGE_PARTS_ENABLED=true
+```
+
+**Migration Notes:**
+
+- ❌ Old: `@google/generative-ai` package
+- ✅ New: `@ai-sdk/google` package (AI SDK 4.2)
+- ❌ Old: `gemini-pro` model
+- ✅ New: `gemini-2.0-flash` model (production-ready)
+- ❌ Old: Direct API calls
+- ✅ New: AI SDK 4.2 generateText/streamText with message parts

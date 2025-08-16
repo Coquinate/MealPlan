@@ -4,26 +4,38 @@
 
 ### Component Organization
 
+**IMPORTANT**: All shared UI components are developed in `packages/ui` with Storybook for reuse across web and admin apps.
+
 ```
+packages/ui/                # Shared component library with Storybook
+├── src/
+│   ├── components/
+│   │   ├── button/         # Base components with stories
+│   │   │   ├── Button.tsx
+│   │   │   ├── Button.stories.tsx
+│   │   │   └── Button.test.tsx
+│   │   ├── meal-card/      # Feature-specific shared components
+│   │   │   ├── MealCard.tsx
+│   │   │   ├── MealCard.stories.tsx
+│   │   │   └── MealCard.test.tsx
+│   │   └── email-capture/
+│   │       ├── EmailCapture.tsx
+│   │       ├── EmailCapture.stories.tsx
+│   │       └── EmailCapture.test.tsx
+│   └── index.ts           # Export all components
+├── .storybook/            # Storybook configuration
+└── package.json
+
 apps/web/src/
 ├── components/
-│   ├── ui/                 # shadcn/ui base components
-│   │   ├── button.tsx
-│   │   ├── card.tsx
-│   │   └── dialog.tsx
-│   ├── features/          # Feature-specific components
+│   ├── features/          # App-specific business logic components
 │   │   ├── meal-plan/
-│   │   │   ├── MealPlanGrid.tsx
-│   │   │   ├── MealCard.tsx
+│   │   │   ├── MealPlanGrid.tsx      # Uses MealCard from @coquinate/ui
 │   │   │   └── RecipeModal.tsx
-│   │   ├── shopping/
-│   │   │   ├── ShoppingList.tsx
-│   │   │   ├── CategorySection.tsx
-│   │   │   └── ItemCheckbox.tsx
-│   │   └── recipes/
-│   │       ├── RecipeCard.tsx
-│   │       └── Instructions.tsx
-│   └── layout/           # Layout components
+│   │   └── shopping/
+│   │       ├── ShoppingList.tsx      # Uses Button from @coquinate/ui
+│   │       └── CategorySection.tsx
+│   └── layout/           # App-specific layout components
 │       ├── Header.tsx
 │       ├── Navigation.tsx
 │       └── Footer.tsx
@@ -42,9 +54,18 @@ apps/web/src/
     └── utils.ts
 ```
 
-### Component Architecture
+### Component Development Workflow
 
-Components follow a feature-based organization with shared UI primitives from shadcn/ui. Each component is typed with TypeScript interfaces and uses memo for performance optimization where appropriate.
+**Development Process:**
+
+1. **UI Components**: All reusable components developed in `packages/ui` with Storybook
+2. **Story-Driven Development**: Every component has corresponding `.stories.tsx` for visual testing
+3. **MSW Mocking**: API dependencies mocked with MSW for realistic component behavior
+4. **Cross-App Usage**: Components imported via `@coquinate/ui` in both web and admin apps
+
+**Implementation Guide**: Follow `docs/front-end-spec/STORYBOOK-PRACTICAL-SETUP.md` for complete 9-phase setup.
+
+Components follow a feature-based organization with shared UI primitives developed through Storybook. Each component is typed with TypeScript interfaces and uses memo for performance optimization where appropriate.
 
 ## State Management Architecture
 

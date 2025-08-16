@@ -1,13 +1,15 @@
 /**
  * Tailwind configuration for UI components package
  */
-import baseConfig from '@coquinate/config/tailwind/tailwind.config.js'
+import baseConfig from '@coquinate/config/tailwind/tailwind.config.js';
 
 /** @type {import('tailwindcss').Config} */
 export default {
   ...baseConfig,
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
+    './.storybook/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/stories/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     ...baseConfig.theme,
@@ -15,11 +17,11 @@ export default {
       ...baseConfig.theme.extend,
       // Add animation keyframes for Radix UI animations
       keyframes: {
-        'in': {
+        in: {
           '0%': { opacity: '0', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
-        'out': {
+        out: {
           '0%': { opacity: '1', transform: 'scale(1)' },
           '100%': { opacity: '0', transform: 'scale(0.95)' },
         },
@@ -57,8 +59,8 @@ export default {
         },
       },
       animation: {
-        'in': 'in 150ms ease-out',
-        'out': 'out 150ms ease-in',
+        in: 'in 150ms ease-out',
+        out: 'out 150ms ease-in',
         'fade-in': 'fade-in 150ms ease-out',
         'fade-out': 'fade-out 150ms ease-in',
         'zoom-in-95': 'zoom-in 150ms ease-out',
@@ -73,7 +75,7 @@ export default {
   plugins: [
     ...baseConfig.plugins,
     // Plugin for animation utilities
-    function({ addUtilities }) {
+    function ({ addUtilities }) {
       addUtilities({
         '.animate-in': {
           animationName: 'in',
@@ -101,7 +103,7 @@ export default {
         '.slide-in-from-bottom-2': { '--tw-enter-translate-y': '0.5rem' },
         '.slide-in-from-left-2': { '--tw-enter-translate-x': '-0.5rem' },
         '.slide-in-from-right-2': { '--tw-enter-translate-x': '0.5rem' },
-      })
+      });
     },
   ],
-}
+};

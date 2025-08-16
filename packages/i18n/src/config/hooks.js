@@ -178,7 +178,8 @@ export const useRomanianFormatters = () => {
       formatPercentage,
       formatTemperature,
       formatFileSize,
-    } = require('../utils/formatters'); // eslint-disable-line @typescript-eslint/no-require-imports
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+    } = require('../utils/formatters');
     return {
       formatDate,
       formatTime,

@@ -3,12 +3,17 @@
   "compilerOptions": {
     "noEmit": false,
     "outDir": "./dist",
-    "incremental": false,
-    "composite": false,
+    "incremental": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "composite": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", ".storybook/**/*", "src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"],
   "references": [{ "path": "../shared" }, { "path": "../config" }]
 }

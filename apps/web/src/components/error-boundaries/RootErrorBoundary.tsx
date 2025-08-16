@@ -2,10 +2,12 @@
 
 import React from 'react';
 import { Button, Card } from '@coquinate/ui';
+import { logComponentError, generateRequestId } from '@coquinate/shared';
 
-interface ErrorBoundaryState {
+export interface ErrorBoundaryState {
   hasError: boolean;
   error?: Error;
+  errorId?: string;
 }
 
 interface ErrorBoundaryProps {
@@ -25,31 +27,38 @@ export class RootErrorBoundary extends React.Component<ErrorBoundaryProps, Error
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    // Generate unique error ID for tracking
+    const errorId = generateRequestId();
+
     // Update state to render the error UI
     return {
       hasError: true,
       error,
+      errorId,
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  async componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log error details for debugging
     console.error('RootErrorBoundary caught an error:', error, errorInfo);
 
-    // In production, you might want to send this to an error reporting service
-    if (process.env.NODE_ENV === 'production') {
-      // TODO: Send to error tracking service (e.g., Sentry)
-      console.error('Production error logged:', {
-        error: error.message,
-        stack: error.stack,
-        componentStack: errorInfo.componentStack,
-      });
+    // Log structured error with immediate alerts for critical boundary failures
+    try {
+      await logComponentError(
+        error,
+        {
+          componentStack: errorInfo.componentStack || undefined,
+        },
+        'RootErrorBoundary'
+      );
+    } catch (loggingError) {
+      console.error('Failed to log error boundary failure:', loggingError);
     }
   }
 
   handleReset = () => {
     // Reset the error boundary state
-    this.setState({ hasError: false, error: undefined });
+    this.setState({ hasError: false, error: undefined, errorId: undefined });
   };
 
   handleReload = () => {
@@ -90,6 +99,11 @@ export class RootErrorBoundary extends React.Component<ErrorBoundaryProps, Error
                   <p className="text-text-secondary">
                     Ne pare rău pentru inconvenient. A apărut o problemă neașteptată.
                   </p>
+                  {this.state.errorId && (
+                    <p className="text-xs text-text-tertiary mt-2 font-mono">
+                      ID eroare: {this.state.errorId}
+                    </p>
+                  )}
                 </div>
 
                 {/* Error details for development */}
@@ -124,6 +138,13 @@ export class RootErrorBoundary extends React.Component<ErrorBoundaryProps, Error
                   <a href="mailto:support@coquinate.com" className="text-primary hover:underline">
                     support@coquinate.com
                   </a>
+                  {this.state.errorId && (
+                    <span>
+                      {' '}
+                      și menționează ID-ul erorii:{' '}
+                      <code className="font-mono">{this.state.errorId}</code>
+                    </span>
+                  )}
                 </p>
               </div>
             </Card>

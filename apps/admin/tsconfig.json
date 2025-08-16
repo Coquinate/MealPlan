@@ -3,14 +3,24 @@
   "compilerOptions": {
     "noEmit": false,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@coquinate/shared": ["../../packages/shared/src"],
+      "@coquinate/ui": ["../../packages/ui/src"],
+      "@coquinate/i18n": ["../../packages/i18n/src"],
+      "@coquinate/database": ["../../packages/database/src"]
+    },
+    "types": ["vite/client"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*", "vite.config.ts"],
+  "exclude": ["node_modules", "dist", "coverage"],
   "references": [
     { "path": "../../packages/shared" },
     { "path": "../../packages/ui" },
     { "path": "../../packages/database" },
+    { "path": "../../packages/i18n" },
     { "path": "../../packages/config" }
   ]
 }

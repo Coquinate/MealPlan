@@ -1,11 +1,50 @@
 {
   "title": "Panou de administrare",
   "navigation": {
+    "main": "Navigare principală",
     "dashboard": "Tablou de bord",
     "recipes": "Rețete",
-    "mealPlans": "Planuri de mese",
-    "users": "Utilizatori",
+    "meal-plans": "Planuri Masă",
+    "validation": "Validare",
+    "analytics": "Analize",
     "settings": "Setări"
+  },
+  "theme": {
+    "toggle": "Schimbă tema",
+    "light": "Mod luminos",
+    "dark": "Mod întunecat"
+  },
+  "auth": {
+    "logout": "Deconectare",
+    "twoFactorTitle": "Verificare în doi pași",
+    "twoFactorPrompt": "Introdu codul din aplicația de autentificare",
+    "invalidCode": "Cod invalid",
+    "verifying": "Se verifică...",
+    "errors": {
+      "sessionExpired": "Sesiunea a expirat. Vă rugăm să vă autentificați din nou.",
+      "invalidSession": "Sesiune invalidă",
+      "notAuthenticated": "Nu sunteți autentificat",
+      "accessDenied": "Nu aveți acces de administrator",
+      "accessError": "Eroare la verificarea accesului"
+    }
+  },
+  "roles": {
+    "super_admin": "Super Admin",
+    "admin": "Administrator",
+    "operator": "Operator",
+    "viewer": "Vizualizator"
+  },
+  "status": {
+    "currentWeek": "Săptămâna curentă",
+    "week": "Săptămâna {{week}}",
+    "dateRange": "{{start}} - {{end}}",
+    "nextPublish": "Următoarea publicare",
+    "at": "la",
+    "validationStatus": "Status validare",
+    "validationValid": "✓ Valid",
+    "validationWarning": "⚠ Avertizări",
+    "validationError": "✗ Erori",
+    "validationUnknown": "○ Necunoscut"
   },
   "recipes": {
     "title": "Gestionare rețete",
@@ -21,5 +60,81 @@
     "edit": "Editează planul",
     "delete": "Șterge planul",
     "assign": "Atribuie utilizatorului"
+  },
+  "cacheStats": {
+    "title": "Performanță Cache AI",
+    "description": "Statistici în timp real despre sistemul de cache AI",
+    "loading": "Se încarcă statisticile...",
+    "summary": {
+      "title": "Sumar",
+      "totalQuestions": "Întrebări Totale",
+      "uniqueQuestions": "Întrebări Unice",
+      "cacheHitRate": "Rată de Succes Cache",
+      "costSavings": "Economii Cost",
+      "totalCacheSize": "Dimensiune Cache",
+      "totalCacheItems": "Elemente în Cache"
+    },
+    "topQuestions": {
+      "title": "Întrebări Frecvente",
+      "question": "Întrebare",
+      "count": "Răspunsuri",
+      "category": "Categorie",
+      "lastAsked": "Ultima Solicitare"
+    },
+    "cacheDistribution": {
+      "title": "Distribuție Cache",
+      "category": "Categorie",
+      "count": "Număr",
+      "percentage": "Procent"
+    },
+    "performance": {
+      "title": "Performanță",
+      "daily": "Zilnic",
+      "monthly": "Lunar",
+      "date": "Data",
+      "month": "Luna",
+      "hits": "Găsite",
+      "misses": "Ratate",
+      "hitRate": "Rată Succes",
+      "costSaved": "Cost Economisit"
+    },
+    "systemHealth": {
+      "title": "Sănătate Sistem",
+      "cacheUtilization": "Utilizare Cache",
+      "evictionRate": "Rată Evacuare",
+      "averageResponseTime": "Timp Mediu Răspuns",
+      "errorRate": "Rată Erori"
+    },
+    "actions": {
+      "refresh": "Reîmprospătare",
+      "exportData": "Exportă Date",
+      "clearCache": "Golește Cache"
+    },
+    "categories": {
+      "substitution": "Substituții",
+      "temperature": "Temperatură",
+      "techniques": "Tehnici",
+      "storage": "Conservare",
+      "servings": "Porții",
+      "duration": "Durată",
+      "calories": "Calorii",
+      "difficulty": "Dificultate",
+      "tips": "Sfaturi",
+      "general": "General"
+    }
+  },
+  "quickActions": {
+    "cloneLastWeek": "Clonează Săptămâna Trecută",
+    "emergencyMode": "Mod Urgență",
+    "emergencyModeActive": "Mod Urgență ACTIV",
+    "confirmClone": "Sigur doriți să clonați planurile de masă de săptămâna trecută?",
+    "confirmCloneYes": "Da, Clonează",
+    "cancel": "Anulează",
+    "confirmEmergencyActivate": "Activați modul urgență? Acest lucru va permite publicarea imediată fără validare completă.",
+    "confirmEmergencyDeactivate": "Dezactivați modul urgență?",
+    "enterEmergency": "Tastați \"EMERGENCY\" pentru confirmare:",
+    "activate": "Activează",
+    "deactivate": "Dezactivează",
+    "keyboardShortcuts": "Scurtături tastatură (apăsați ?)"
   }
 }

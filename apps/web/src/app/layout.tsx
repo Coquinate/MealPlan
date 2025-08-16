@@ -1,10 +1,31 @@
 import React from 'react';
-import { Inter } from 'next/font/google';
+import { Inter, Lexend } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 import { RootErrorBoundary } from '../components/error-boundaries/RootErrorBoundary';
 import { ClientProviders } from '../components/providers/ClientProviders';
+import { GlassMorphismInit } from '../components/features/GlassMorphismInit';
 import '../styles/globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+// Modern Hearth Font Setup with Romanian Support
+// NOTE: Font loading is app-specific (Next.js vs Vite), but font families
+// are defined in packages/config/tailwind/design-tokens.js (shared design system)
+const inter = Inter({
+  subsets: ['latin', 'latin-ext'], // CRITICAL pentru diacritice românești
+  variable: '--font-inter',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+  fallback: ['Roboto', 'system-ui', 'sans-serif'], // Better Romanian support
+});
+
+const lexend = Lexend({
+  subsets: ['latin', 'latin-ext'], // Romanian diacritics support
+  variable: '--font-lexend',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+  fallback: ['Inter', 'system-ui', 'sans-serif'],
+  preload: false, // Lazy load - only loads when used by .font-display class
+  adjustFontFallback: true, // Reduces layout shift when font loads
+});
 
 export const metadata = {
   title: {
@@ -57,15 +78,17 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ro" className={inter.className}>
+    <html lang="ro" className={`${inter.variable} ${lexend.variable}`} data-motion="subtle">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="antialiased">
+      <body className="font-primary antialiased">
+        <GlassMorphismInit />
         <RootErrorBoundary>
           <ClientProviders>{children}</ClientProviders>
         </RootErrorBoundary>
+        <Analytics />
       </body>
     </html>
   );

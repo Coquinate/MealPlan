@@ -97,6 +97,40 @@ export declare const resources: {
           status_degraded: string;
           checking: string;
         };
+        dashboard: {
+          header: {
+            brand: string;
+            greeting: string;
+            greeting_fallback: string;
+            signOut: string;
+          };
+          welcome: {
+            title: string;
+            subtitle: string;
+            status: string;
+          };
+          features: {
+            mealPlanning: {
+              title: string;
+              description: string;
+              button: string;
+            };
+            shoppingList: {
+              title: string;
+              description: string;
+              button: string;
+            };
+            cookingAssistant: {
+              title: string;
+              description: string;
+              button: string;
+            };
+          };
+        };
+        app: {
+          title: string;
+          demo: string;
+        };
       };
       button: {
         save: string;
@@ -178,6 +212,40 @@ export declare const resources: {
         status_disconnected: string;
         status_degraded: string;
         checking: string;
+      };
+      dashboard: {
+        header: {
+          brand: string;
+          greeting: string;
+          greeting_fallback: string;
+          signOut: string;
+        };
+        welcome: {
+          title: string;
+          subtitle: string;
+          status: string;
+        };
+        features: {
+          mealPlanning: {
+            title: string;
+            description: string;
+            button: string;
+          };
+          shoppingList: {
+            title: string;
+            description: string;
+            button: string;
+          };
+          cookingAssistant: {
+            title: string;
+            description: string;
+            button: string;
+          };
+        };
+      };
+      app: {
+        title: string;
+        demo: string;
       };
     }>;
     auth: () => Promise<{
@@ -391,6 +459,68 @@ export declare const resources: {
           delete: string;
           assign: string;
         };
+        cacheStats: {
+          title: string;
+          description: string;
+          loading: string;
+          summary: {
+            title: string;
+            totalQuestions: string;
+            uniqueQuestions: string;
+            cacheHitRate: string;
+            costSavings: string;
+            totalCacheSize: string;
+            totalCacheItems: string;
+          };
+          topQuestions: {
+            title: string;
+            question: string;
+            count: string;
+            category: string;
+            lastAsked: string;
+          };
+          cacheDistribution: {
+            title: string;
+            category: string;
+            count: string;
+            percentage: string;
+          };
+          performance: {
+            title: string;
+            daily: string;
+            monthly: string;
+            date: string;
+            month: string;
+            hits: string;
+            misses: string;
+            hitRate: string;
+            costSaved: string;
+          };
+          systemHealth: {
+            title: string;
+            cacheUtilization: string;
+            evictionRate: string;
+            averageResponseTime: string;
+            errorRate: string;
+          };
+          actions: {
+            refresh: string;
+            exportData: string;
+            clearCache: string;
+          };
+          categories: {
+            substitution: string;
+            temperature: string;
+            techniques: string;
+            storage: string;
+            servings: string;
+            duration: string;
+            calories: string;
+            difficulty: string;
+            tips: string;
+            general: string;
+          };
+        };
       };
       title: string;
       navigation: {
@@ -414,6 +544,68 @@ export declare const resources: {
         edit: string;
         delete: string;
         assign: string;
+      };
+      cacheStats: {
+        title: string;
+        description: string;
+        loading: string;
+        summary: {
+          title: string;
+          totalQuestions: string;
+          uniqueQuestions: string;
+          cacheHitRate: string;
+          costSavings: string;
+          totalCacheSize: string;
+          totalCacheItems: string;
+        };
+        topQuestions: {
+          title: string;
+          question: string;
+          count: string;
+          category: string;
+          lastAsked: string;
+        };
+        cacheDistribution: {
+          title: string;
+          category: string;
+          count: string;
+          percentage: string;
+        };
+        performance: {
+          title: string;
+          daily: string;
+          monthly: string;
+          date: string;
+          month: string;
+          hits: string;
+          misses: string;
+          hitRate: string;
+          costSaved: string;
+        };
+        systemHealth: {
+          title: string;
+          cacheUtilization: string;
+          evictionRate: string;
+          averageResponseTime: string;
+          errorRate: string;
+        };
+        actions: {
+          refresh: string;
+          exportData: string;
+          clearCache: string;
+        };
+        categories: {
+          substitution: string;
+          temperature: string;
+          techniques: string;
+          storage: string;
+          servings: string;
+          duration: string;
+          calories: string;
+          difficulty: string;
+          tips: string;
+          general: string;
+        };
       };
     }>;
     recipes: () => Promise<{
@@ -613,6 +805,40 @@ export declare const resources: {
           status_degraded: string;
           checking: string;
         };
+        dashboard: {
+          header: {
+            brand: string;
+            greeting: string;
+            greeting_fallback: string;
+            signOut: string;
+          };
+          welcome: {
+            title: string;
+            subtitle: string;
+            status: string;
+          };
+          features: {
+            mealPlanning: {
+              title: string;
+              description: string;
+              button: string;
+            };
+            shoppingList: {
+              title: string;
+              description: string;
+              button: string;
+            };
+            cookingAssistant: {
+              title: string;
+              description: string;
+              button: string;
+            };
+          };
+        };
+        app: {
+          title: string;
+          demo: string;
+        };
       };
       button: {
         save: string;
@@ -694,6 +920,40 @@ export declare const resources: {
         status_disconnected: string;
         status_degraded: string;
         checking: string;
+      };
+      dashboard: {
+        header: {
+          brand: string;
+          greeting: string;
+          greeting_fallback: string;
+          signOut: string;
+        };
+        welcome: {
+          title: string;
+          subtitle: string;
+          status: string;
+        };
+        features: {
+          mealPlanning: {
+            title: string;
+            description: string;
+            button: string;
+          };
+          shoppingList: {
+            title: string;
+            description: string;
+            button: string;
+          };
+          cookingAssistant: {
+            title: string;
+            description: string;
+            button: string;
+          };
+        };
+      };
+      app: {
+        title: string;
+        demo: string;
       };
     }>;
     auth: () => Promise<{
@@ -867,6 +1127,7 @@ export declare const resources: {
           mealPlans: string;
           users: string;
           settings: string;
+          cacheStats: string;
         };
         recipes: {
           title: string;
@@ -883,6 +1144,61 @@ export declare const resources: {
           delete: string;
           assign: string;
         };
+        cache: {
+          title: string;
+          loading: string;
+          error: string;
+          retry: string;
+          autoRefresh: string;
+          period: {
+            label: string;
+            daily: string;
+            weekly: string;
+            monthly: string;
+            all: string;
+          };
+          summary: {
+            hitRate: string;
+            costSaved: string;
+            totalQuestions: string;
+            uniqueQuestions: string;
+            cacheSize: string;
+            cacheItems: string;
+          };
+          performance: {
+            title: string;
+            daily: string;
+            monthly: string;
+            date: string;
+            month: string;
+            hits: string;
+            misses: string;
+            hitRate: string;
+            costSaved: string;
+          };
+          topQuestions: {
+            title: string;
+            question: string;
+            count: string;
+            category: string;
+            lastAsked: string;
+            times: string;
+          };
+          distribution: {
+            title: string;
+            category: string;
+            percentage: string;
+          };
+          systemHealth: {
+            title: string;
+            utilization: string;
+            evictionRate: string;
+            avgResponseTime: string;
+            errorRate: string;
+          };
+          noData: string;
+          refreshing: string;
+        };
       };
       title: string;
       navigation: {
@@ -891,6 +1207,7 @@ export declare const resources: {
         mealPlans: string;
         users: string;
         settings: string;
+        cacheStats: string;
       };
       recipes: {
         title: string;
@@ -906,6 +1223,61 @@ export declare const resources: {
         edit: string;
         delete: string;
         assign: string;
+      };
+      cache: {
+        title: string;
+        loading: string;
+        error: string;
+        retry: string;
+        autoRefresh: string;
+        period: {
+          label: string;
+          daily: string;
+          weekly: string;
+          monthly: string;
+          all: string;
+        };
+        summary: {
+          hitRate: string;
+          costSaved: string;
+          totalQuestions: string;
+          uniqueQuestions: string;
+          cacheSize: string;
+          cacheItems: string;
+        };
+        performance: {
+          title: string;
+          daily: string;
+          monthly: string;
+          date: string;
+          month: string;
+          hits: string;
+          misses: string;
+          hitRate: string;
+          costSaved: string;
+        };
+        topQuestions: {
+          title: string;
+          question: string;
+          count: string;
+          category: string;
+          lastAsked: string;
+          times: string;
+        };
+        distribution: {
+          title: string;
+          category: string;
+          percentage: string;
+        };
+        systemHealth: {
+          title: string;
+          utilization: string;
+          evictionRate: string;
+          avgResponseTime: string;
+          errorRate: string;
+        };
+        noData: string;
+        refreshing: string;
       };
     }>;
     recipes: () => Promise<{

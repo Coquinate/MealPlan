@@ -1,0 +1,16 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "pnpm build",
+  "devCommand": "pnpm dev",
+  "installCommand": "pnpm install",
+  "regions": ["fra1"],
+  "functions": {
+    "apps/web/src/app/api/**/*.ts": {
+      "maxDuration": 10
+    }
+  },
+  "env": {
+    "NEXT_PUBLIC_SITE_URL": "@production-url",
+    "NODE_ENV": "production"
+  }
+}

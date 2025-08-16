@@ -79,5 +79,39 @@
     "status_disconnected": "Deconectat",
     "status_degraded": "Conexiune instabilă",
     "checking": "Se verifică..."
+  },
+  "dashboard": {
+    "header": {
+      "brand": "Coquinate",
+      "greeting": "Bună, {{name}}!",
+      "greeting_fallback": "Bună, utilizator!",
+      "signOut": "Deconectează-te"
+    },
+    "welcome": {
+      "title": "Bun venit în Coquinate!",
+      "subtitle": "Platforma ta pentru planificarea meselor și organizarea cumpărăturilor",
+      "status": "În curs de dezvoltare"
+    },
+    "features": {
+      "mealPlanning": {
+        "title": "Planificare Mese",
+        "description": "Planifică mesele pentru săptămâna următoare",
+        "button": "Curând disponibil"
+      },
+      "shoppingList": {
+        "title": "Listă Cumpărături",
+        "description": "Generează liste de cumpărături automat",
+        "button": "Curând disponibil"
+      },
+      "cookingAssistant": {
+        "title": "Asistent Gătit",
+        "description": "Instrucțiuni pas cu pas pentru rețete",
+        "button": "Curând disponibil"
+      }
+    }
+  },
+  "app": {
+    "title": "Coquinate",
+    "demo": "Demo"
   }
 }

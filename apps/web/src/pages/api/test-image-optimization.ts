@@ -5,10 +5,21 @@
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
+import { logError, generateRequestId } from '@coquinate/shared';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const requestId = generateRequestId();
+
   if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    await logError(`Invalid method for image optimization test: ${req.method}`, 'backend', 'low', {
+      route: '/api/test-image-optimization',
+      method: req.method,
+      requestId,
+    });
+    return res.status(405).json({
+      error: 'Metodă neacceptată',
+      message: 'Doar metoda GET este acceptată',
+    });
   }
 
   try {
@@ -17,9 +28,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
+      await logError(
+        'Missing Supabase configuration for image optimization test',
+        'backend',
+        'high',
+        {
+          hasUrl: !!supabaseUrl,
+          hasKey: !!supabaseKey,
+          requestId,
+        }
+      );
       return res.status(500).json({
-        error: 'Missing Supabase configuration',
-        details: 'NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY not configured',
+        error: 'Configurare lipsă',
+        message: 'Configurația Supabase nu este completă pentru testarea optimizării imaginilor',
+        requestId,
       });
     }
 
@@ -31,9 +53,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .list('', { limit: 1 });
 
     if (bucketError) {
+      await logError(`Storage bucket access failed: ${bucketError.message}`, 'backend', 'high', {
+        bucketName: 'recipe-images',
+        error: bucketError.message,
+        requestId,
+      });
       return res.status(500).json({
-        error: 'Storage bucket access failed',
+        error: 'Acces eșuat la bucket',
+        message: 'Nu s-a putut accesa bucket-ul de imagini pentru testare',
         details: bucketError.message,
+        requestId,
       });
     }
 
@@ -65,8 +94,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       avif: `/_next/image?url=${encodeURIComponent(testImageUrl)}&w=1200&q=85&f=avif`,
     };
 
+    console.log(`✅ Testul optimizării imaginilor finalizat cu succes (Request ID: ${requestId})`);
+
     return res.status(200).json({
       success: true,
+      requestId,
       storage: {
         bucketAccessible: true,
         bucketFiles: Array.isArray(bucketData) ? bucketData.length : 0,
@@ -97,18 +129,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       testing: {
         instructions: [
-          '1. Upload a test image to recipe-images bucket',
-          '2. Visit the generated test URLs to verify optimization',
-          '3. Check browser Network tab for WebP/AVIF format delivery',
-          '4. Test on different devices/screen sizes',
-          '5. Verify proper caching headers are set',
+          '1. Încarcă o imagine de test în bucket-ul recipe-images',
+          '2. Vizitează URL-urile de test generate pentru verificarea optimizării',
+          '3. Verifică în Network tab-ul browser-ului livrarea formatelor WebP/AVIF',
+          '4. Testează pe diferite dispozitive/dimensiuni de ecran',
+          '5. Verifică că header-ele de cache sunt setate corect',
         ],
       },
     });
   } catch (error) {
+    await logError(error as Error, 'backend', 'high', {
+      operation: 'image_optimization_test',
+      route: '/api/test-image-optimization',
+      requestId,
+    });
+
+    console.error('❌ Image optimization test failed:', error);
     return res.status(500).json({
-      error: 'Test failed',
-      details: error instanceof Error ? error.message : 'Unknown error occurred',
+      error: 'Test eșuat',
+      message: 'Testarea optimizării imaginilor a eșuat',
+      details: error instanceof Error ? error.message : 'Eroare necunoscută',
+      requestId,
     });
   }
 }

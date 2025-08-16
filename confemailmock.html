@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Confirmare Înscriere Coquinate</title>
+    <style>
+        /* Stiluri pentru a asigura compatibilitate maximă */
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@700&family=Inter:wght@400;600&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #FBF9F7; /* --surface-eggshell */
+        }
+        table {
+            border-spacing: 0;
+        }
+        td {
+            padding: 0;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #737373; /* --text-secondary */
+        }
+        img {
+            border: 0;
+        }
+        .wrapper {
+            width: 100%;
+            table-layout: fixed;
+            background-color: #FBF9F7; /* --surface-eggshell */
+            padding-bottom: 60px;
+        }
+        .main {
+            background-color: #ffffff; /* --surface-white */
+            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
+            border-spacing: 0;
+            font-family: 'Inter', sans-serif;
+            color: #333333; /* --text-primary */
+        }
+        .button {
+            background-color: #2D9596; /* Accent Teal */
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .logo {
+            font-family: 'Lexend', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2D9596; /* MODIFICAT: Accent Teal */
+            text-decoration: none;
+        }
+        .check {
+            color: #2D9596; /* Accent Teal */
+            font-weight: 700;
+        }
+        @media screen and (max-width: 600px) {
+            /* Stiluri pentru mobil */
+        }
+    </style>
+</head>
+<body>
+    <center class="wrapper">
+        <table class="main" width="100%">
+            <!-- Antet cu Logo -->
+            <tr>
+                <td style="padding: 32px; text-align: center;">
+                    <a href="#" class="logo" style="font-family: 'Lexend', sans-serif; font-size: 24px; font-weight: 700; color: #2D9596; text-decoration: none;">Coquinate</a>
+                </td>
+            </tr>
+
+            <!-- Continut Principal -->
+            <tr>
+                <td style="padding: 0 32px 32px;">
+                    <h1 style="font-family: 'Lexend', sans-serif; font-size: 28px; font-weight: 700; line-height: 1.2; color: #333333; margin-bottom: 24px;">Confirmare înscriere!</h1>
+                    
+                    <p style="font-size: 16px; line-height: 1.6; color: #737373; margin-bottom: 24px;">Salut,</p>
+                    
+                    <p style="font-size: 16px; line-height: 1.6; color: #737373; margin-bottom: 24px;">
+                        Mulțumim că te-ai alăturat listei de așteptare Coquinate! Ești cu un pas mai aproape de a spune adio întrebării „Ce mâncăm azi?”.
+                    </p>
+
+                    <!-- AICI ESTE LOGICA PENTRU OFERTE DIFERITE -->
+                    
+                    <!-- Varianta pentru primii 500 (is_early_bird = true) -->
+                    {{#if is_early_bird}}
+                    <table width="100%" style="border-spacing: 0; background-color: #F0FAFA; border: 1px solid #B2DFDB; border-radius: 8px; padding: 24px; text-align: center; margin-bottom: 24px;">
+                        <tr>
+                            <td>
+                                <h2 style="font-family: 'Lexend', sans-serif; font-size: 20px; color: #2D9596; margin: 0 0 12px;">Felicitări! Ai prins oferta!</h2>
+                                <p style="font-size: 16px; line-height: 1.6; color: #737373; margin: 0;">
+                                    Ești unul dintre primii 500 de membri și vei primi <strong>o lună de acces complet gratuit</strong> la lansare.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    {{/if}}
+
+                    <!-- Varianta pentru restul (is_early_bird = false) -->
+                    {{#unless is_early_bird}}
+                    <table width="100%" style="border-spacing: 0; background-color: #FBF9F7; border: 1px solid #E5E7EB; border-radius: 8px; padding: 24px; text-align: center; margin-bottom: 24px;">
+                        <tr>
+                            <td>
+                                <h2 style="font-family: 'Lexend', sans-serif; font-size: 20px; color: #2D9596; margin: 0 0 12px;">Beneficiul tău este garantat!</h2>
+                                <p style="font-size: 16px; line-height: 1.6; color: #737373; margin: 0;">
+                                    Pentru că te-ai înscris pe lista de așteptare, vei primi <strong>un trial extins, de la 3 la 7 zile</strong>, plus acces prioritar la lansare.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    {{/unless}}
+
+                    <p style="font-size: 16px; line-height: 1.6; color: #737373; margin-bottom: 24px;">
+                        Vom reveni cu noutăți pe măsură ce ne apropiem de lansare. Stai pe aproape!
+                    </p>
+
+                </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+                <td style="padding: 32px; text-align: center; background-color: #FBF9F7;">
+                    <p style="font-size: 12px; color: #A0AEC0; margin: 0;">
+                        © 2025 Coquinate. Dezvoltat cu pasiune pentru familiile din România.
+                    </p>
+                    <p style="font-size: 12px; color: #A0AEC0; margin-top: 8px;">
+                        Ai primit acest e-mail pentru că te-ai înscris pe lista de așteptare pe site-ul nostru.
+                    </p>
+                    <a href="{{unsubscribe}}" style="font-size: 12px; color: #A0AEC0; text-decoration: underline;">Dezabonare</a>
+                </td>
+            </tr>
+        </table>
+    </center>
+</body>
+</html>

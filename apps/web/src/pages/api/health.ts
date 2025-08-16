@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
+import { logError, generateRequestId } from '@coquinate/shared';
 
 interface HealthCheckResponse {
   status: 'healthy' | 'degraded' | 'unhealthy';
@@ -30,11 +31,22 @@ interface HealthCheckResponse {
  */
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HealthCheckResponse | { error: string }>
+  res: NextApiResponse<HealthCheckResponse | { error: string; requestId?: string }>
 ) {
+  const requestId = generateRequestId();
+
   // Only allow GET requests
   if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    await logError(`Invalid method for health check: ${req.method}`, 'backend', 'low', {
+      route: '/api/health',
+      method: req.method,
+      userAgent: req.headers['user-agent'],
+      requestId,
+    });
+    return res.status(405).json({
+      error: 'Metodă neacceptată',
+      requestId,
+    });
   }
 
   const startTime = Date.now();
@@ -77,13 +89,34 @@ export default async function handler(
           dbStatus = 'up';
           dbResponseTime = Date.now() - dbStartTime;
         } else {
-          console.warn('Database health check failed:', error);
+          await logError(`Database health check failed: ${error.message}`, 'database', 'high', {
+            error: error.message,
+            route: '/api/health',
+            requestId,
+          });
+          console.warn('⚠️ Database health check failed:', error);
         }
       } else {
-        console.warn('Missing Supabase environment variables');
+        await logError(
+          'Missing Supabase environment variables for health check',
+          'database',
+          'critical',
+          {
+            hasUrl: !!supabaseUrl,
+            hasServiceKey: !!supabaseServiceKey,
+            route: '/api/health',
+            requestId,
+          }
+        );
+        console.warn('⚠️ Missing Supabase environment variables');
       }
     } catch (error) {
-      console.error('Database connection failed:', error);
+      await logError(error as Error, 'database', 'high', {
+        operation: 'health_check_db_connection',
+        route: '/api/health',
+        requestId,
+      });
+      console.error('❌ Database connection failed:', error);
     }
 
     // Update health check response
@@ -114,9 +147,30 @@ export default async function handler(
       `public, s-maxage=${cacheTime}, stale-while-revalidate=${cacheTime * 2}`
     );
 
-    return res.status(200).json(healthResponse);
+    // Log successful health check for monitoring
+    if (healthResponse.status === 'healthy') {
+      console.log(
+        `✅ Verificarea de sănătate trecută (Request ID: ${requestId}) - DB: ${dbResponseTime}ms`
+      );
+    } else {
+      console.warn(
+        `⚠️ Verificarea de sănătate ${healthResponse.status} (Request ID: ${requestId}) - DB: ${dbResponseTime}ms`
+      );
+    }
+
+    return res.status(200).json({
+      ...healthResponse,
+      requestId,
+    } as HealthCheckResponse & { requestId: string });
   } catch (error) {
-    console.error('Health check failed:', error);
+    await logError(error as Error, 'backend', 'critical', {
+      operation: 'health_check_failed',
+      route: '/api/health',
+      totalTime: Date.now() - startTime,
+      requestId,
+    });
+
+    console.error('❌ Health check failed:', error);
 
     return res.status(500).json({
       status: 'unhealthy',
@@ -132,6 +186,8 @@ export default async function handler(
           status: 'down',
         },
       },
-    } as HealthCheckResponse);
+      requestId,
+      error: 'Internal health check error',
+    } as HealthCheckResponse & { requestId: string; error: string });
   }
 }

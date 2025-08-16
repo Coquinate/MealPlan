@@ -5,13 +5,19 @@
  */
 
 // Component exports
-export * from './components'
+export * from './components';
 
-// Hook exports  
-export * from './hooks'
+// Animated component exports
+export * from './components/animated';
+
+// Hook exports
+export * from './hooks';
+
+// Motion system exports
+export * from './motion';
 
 // Utility exports
-export * from './utils'
+export * from './utils';
 
 // Re-export specific utilities for convenience
-export { cn } from './utils/cn'
+export { cn } from './utils/cn';

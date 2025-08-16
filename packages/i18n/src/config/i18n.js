@@ -8,6 +8,7 @@ import roShopping from '../locales/ro/shopping.json';
 import roAdmin from '../locales/ro/admin.json';
 import roRecipes from '../locales/ro/recipes.json';
 import roSettings from '../locales/ro/settings.json';
+import roLanding from '../locales/ro/landing.json';
 import enCommon from '../locales/en/common.json';
 import enAuth from '../locales/en/auth.json';
 import enMeals from '../locales/en/meals.json';
@@ -15,6 +16,7 @@ import enShopping from '../locales/en/shopping.json';
 import enAdmin from '../locales/en/admin.json';
 import enRecipes from '../locales/en/recipes.json';
 import enSettings from '../locales/en/settings.json';
+import enLanding from '../locales/en/landing.json';
 // Romanian pluralization rules
 const romanianPluralRules = {
   rule: (count) => {
@@ -36,7 +38,7 @@ export const initializeI18n = async () => {
     fallbackLng: 'en', // English fallback for development
     // Namespace configuration
     defaultNS: 'common',
-    ns: ['common', 'auth', 'meals', 'shopping', 'admin', 'recipes', 'settings'],
+    ns: ['common', 'auth', 'meals', 'shopping', 'admin', 'recipes', 'settings', 'landing'],
     // Debug configuration
     debug: process.env.NODE_ENV === 'development',
     // Interpolation configuration for dynamic content
@@ -96,6 +98,7 @@ export const initializeI18n = async () => {
         admin: roAdmin,
         recipes: roRecipes,
         settings: roSettings,
+        landing: roLanding,
       },
       en: {
         common: enCommon,
@@ -105,6 +108,7 @@ export const initializeI18n = async () => {
         admin: enAdmin,
         recipes: enRecipes,
         settings: enSettings,
+        landing: enLanding,
       },
     },
     // Missing key handling for development
