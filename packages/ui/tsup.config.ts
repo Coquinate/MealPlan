@@ -15,6 +15,6 @@ export default defineConfig({
       js: '"use client"',
     };
   },
-  // Copy CSS to dist (cross-platform)
-  onSuccess: 'node scripts/copy-styles.mjs',
+  // Copy CSS to dist (temporarily disabled for Vercel)
+  // onSuccess: 'node scripts/copy-styles.mjs',
 });
