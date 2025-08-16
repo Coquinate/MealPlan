@@ -15,6 +15,20 @@ export default defineConfig({
       js: '"use client"',
     };
   },
-  // Copy CSS to dist (temporarily disabled for Vercel)
-  // onSuccess: 'node scripts/copy-styles.mjs',
+  // Post-build: copy CSS files
+  onSuccess: async () => {
+    const { existsSync, mkdirSync, cpSync } = await import('fs');
+    const { join } = await import('path');
+
+    const srcStyles = join(process.cwd(), 'src', 'styles');
+    const distStyles = join(process.cwd(), 'dist', 'styles');
+
+    if (existsSync(srcStyles)) {
+      if (!existsSync(distStyles)) {
+        mkdirSync(distStyles, { recursive: true });
+      }
+      cpSync(srcStyles, distStyles, { recursive: true });
+      console.log('✅ Styles copied successfully.');
+    }
+  },
 });
