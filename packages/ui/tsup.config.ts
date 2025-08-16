@@ -16,5 +16,5 @@ export default defineConfig({
     };
   },
   // Copy CSS to dist (cross-platform)
-  onSuccess: 'node scripts/copy-styles.mjs',
+  // onSuccess: 'node scripts/copy-styles.mjs', // Temporar dezactivat pentru Vercel
 });
