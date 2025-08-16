@@ -1,0 +1,66 @@
+{
+  "hero": {
+    "title": "Gata cu 'Ce gătim azi?'",
+    "subtitle": "Economisește 3+ ore săptămânal cu planificarea automată a meselor",
+    "cta": "Anunță-mă când lansăm"
+  },
+  "benefits": {
+    "title": "De ce Coquinate?",
+    "save_time": {
+      "title": "Economisește 3+ ore pe săptămână",
+      "description": "Nu mai pierzi timp gândindu-te ce să gătești"
+    },
+    "save_money": {
+      "title": "Reduce costurile cu 300 RON lunar",
+      "description": "Elimină risipa și cumpărăturile impulsive"
+    },
+    "eat_healthy": {
+      "title": "Mâncare sănătoasă pentru familie",
+      "description": "Rețete echilibrate, porții calculate"
+    },
+    "reduce_waste": {
+      "title": "Zero risipă alimentară",
+      "description": "Folosește tot ce cumperi, inteligent"
+    }
+  },
+  "email": {
+    "label": "Email pentru notificări",
+    "placeholder": "adresa@email.com",
+    "button": "Înscrie-te",
+    "submitting": "Se trimite...",
+    "loading": "Se încarcă...",
+    "success": "Te-ai înscris cu succes!",
+    "required": "Adresa de email este obligatorie",
+    "invalid": "Te rugăm să introduci o adresă de email validă",
+    "too_long": "Adresa de email este prea lungă",
+    "error": "A apărut o eroare. Încearcă din nou.",
+    "rate_limit": "Prea multe încercări. Reîncearcă în câteva minute.",
+    "already_exists": "Această adresă de email este deja înregistrată.",
+    "early_bird_badge": "🌟 Early Bird - Primii 500!",
+    "early_bird_message": "Felicitări! Ești printre primii 500 de utilizatori și vei primi beneficii exclusive!",
+    "regular_message": "Mulțumim pentru înregistrare! Te vom anunța când lansăm platforma.",
+    "share_prompt": "Împărtășește cu prietenii:",
+    "share_text": "Tocmai m-am înscris pe Coquinate - platforma care îți planifică mesele automat!",
+    "phase_info": "În curând - Implementare Faza 3",
+    "aria_labels": {
+      "email_input": "Introdu adresa ta de email",
+      "submit_button": "Trimite formularul de înscriere",
+      "share_facebook": "Distribuie pe Facebook",
+      "share_whatsapp": "Distribuie pe WhatsApp"
+    },
+    "errors": {
+      "invalid_email": "Te rugăm să introduci o adresă de email validă",
+      "already_subscribed": "Ești deja abonat la newsletter",
+      "rate_limited": "Prea multe încercări. Încearcă din nou în 5 minute.",
+      "server_error": "Eroare de server. Te rugăm să încerci din nou."
+    }
+  },
+  "gdpr": {
+    "consent_text": "Sunt de acord cu prelucrarea datelor personale conform",
+    "privacy_policy_link": "Politicii de Confidențialitate",
+    "required": "Trebuie să accepți termenii pentru a continua"
+  },
+  "status": {
+    "launching_soon": "Lansare în curând"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "hero": {
+    "title": "",
+    "subtitle": "",
+    "cta": ""
+  },
+  "benefits": {
+    "title": "",
+    "save_time": {
+      "title": "",
+      "description": ""
+    },
+    "save_money": {
+      "title": "",
+      "description": ""
+    },
+    "eat_healthy": {
+      "title": "",
+      "description": ""
+    },
+    "reduce_waste": {
+      "title": "",
+      "description": ""
+    }
+  },
+  "email": {
+    "label": "",
+    "placeholder": "",
+    "button": "",
+    "submitting": "",
+    "loading": "",
+    "success": "",
+    "required": "",
+    "invalid": "",
+    "too_long": "",
+    "error": "",
+    "rate_limit": "",
+    "already_exists": "",
+    "early_bird_badge": "",
+    "early_bird_message": "",
+    "regular_message": "",
+    "share_prompt": "",
+    "share_text": "",
+    "phase_info": "",
+    "aria_labels": {
+      "email_input": "",
+      "submit_button": "",
+      "share_facebook": "",
+      "share_whatsapp": ""
+    },
+    "errors": {
+      "invalid_email": "",
+      "already_subscribed": "",
+      "rate_limited": "",
+      "server_error": ""
+    }
+  },
+  "gdpr": {
+    "consent_text": "",
+    "privacy_policy_link": "",
+    "required": ""
+  },
+  "status": {
+    "launching_soon": ""
+  }
+}
