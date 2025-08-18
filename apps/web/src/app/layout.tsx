@@ -1,7 +1,7 @@
 import React from 'react';
 import { Inter, Lexend } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
-import { RootErrorBoundary } from '../components/error-boundaries/RootErrorBoundary';
+// import { RootErrorBoundary } from '../components/error-boundaries/RootErrorBoundary';
 import { ClientProviders } from '../components/providers/ClientProviders';
 import { GlassMorphismInit } from '../components/features/GlassMorphismInit';
 import '../styles/globals.css';
@@ -85,9 +85,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="font-primary antialiased">
         <GlassMorphismInit />
-        <RootErrorBoundary>
-          <ClientProviders>{children}</ClientProviders>
-        </RootErrorBoundary>
+        {/* <RootErrorBoundary> */}
+        <ClientProviders>{children}</ClientProviders>
+        {/* </RootErrorBoundary> */}
         <Analytics />
       </body>
     </html>

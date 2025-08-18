@@ -24,6 +24,3 @@ export * from './shopping-list-item';
 
 // Animated components
 export * from './animated';
-
-// Navigation components
-export * from './navigation';

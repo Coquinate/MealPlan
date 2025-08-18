@@ -3,7 +3,7 @@ import {
   getAIPreloaderService,
   type PreloadConfig,
   type PreloadStatus,
-} from '@meal-plan/shared/utils/ai-preloader';
+} from '@coquinate/shared/utils/ai-preloader';
 
 /**
  * Hook options for recipe preloader

@@ -2,7 +2,52 @@
   "hero": {
     "title": "",
     "subtitle": "",
-    "cta": ""
+    "cta": "",
+    "title_line1": "",
+    "title_line2": "",
+    "description": "",
+    "description_highlight": ""
+  },
+  "trust": {
+    "hours_saved": "",
+    "hours_saved_desc": "",
+    "waste_reduced": "",
+    "waste_reduced_desc": "",
+    "money_saved": "",
+    "money_saved_desc": ""
+  },
+  "nav": {
+    "coming_soon": ""
+  },
+  "features": {
+    "title": "",
+    "local": {
+      "title": "",
+      "description": ""
+    },
+    "shopping": {
+      "title": "",
+      "description": ""
+    },
+    "zero_waste": {
+      "title": "",
+      "description": ""
+    },
+    "chef_ai": {
+      "title": "",
+      "description": "",
+      "description_highlight": "",
+      "description_end": ""
+    }
+  },
+  "cta": {
+    "title": "",
+    "subtitle": "",
+    "button": ""
+  },
+  "footer": {
+    "copyright": "",
+    "privacy": ""
   },
   "benefits": {
     "title": "",
@@ -62,5 +107,21 @@
   },
   "status": {
     "launching_soon": ""
+  },
+  "workflow": {
+    "title": "",
+    "subtitle": "",
+    "cook": {
+      "title": "",
+      "description": ""
+    },
+    "reuse": {
+      "title": "",
+      "description": ""
+    },
+    "reinvent": {
+      "title": "",
+      "description": ""
+    }
   }
 }

@@ -38,7 +38,11 @@ export async function decryptString(
   iv: Uint8Array,
   key: CryptoKey
 ): Promise<string> {
-  const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, encrypted);
+  const decrypted = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv: iv as ArrayBufferView },
+    key,
+    encrypted
+  );
 
   const decoder = new TextDecoder();
   return decoder.decode(decrypted);

@@ -1,150 +1,132 @@
-# Dependencies
-node_modules/
-.pnpm-store/
-.pnp
-.pnp.js
 
-# Testing (exclude all test files from git)
-coverage/
-.nyc_output/
-*.test.ts
-*.test.tsx  
-*.test.js
-*.test.jsx
-*.spec.ts
-*.spec.tsx
-*.spec.js
-*.spec.jsx
-**/tests/
-**/test/
-**/__tests__/
-**/e2e/
-test-results/
-playwright-report/
-.playwright/
-vitest.config.*
-playwright.config.*
-**/*test-utils*
-**/*test-setup*
-**/*test-db*
-**/*test-cleanup*
-**/*factories*
-**/page-objects/
-
-# Specific test files that were created
-apps/web/tests/integration/auth/authentication.test.ts
-packages/i18n/src/config/__tests__/
-packages/i18n/src/utils/__tests__/
-packages/ui/src/tests/
+*~
+apps/admin/e2e/
 apps/admin/src/test/
 apps/admin/tests/
-apps/admin/e2e/
 apps/web/tests/admin/
-apps/web/tests/helpers/
 apps/web/tests/factories/
-
-# Build outputs
-.next/
-out/
+apps/web/tests/helpers/
+apps/web/tests/integration/auth/authentication.test.ts
+.bmad-core/
 build/
-dist/
-*.tsbuildinfo
-
-# Misc
-.DS_Store
-*.pem
-
+# Build outputs
+.claude/
+CLAUDE.md
+.coquinate/
+coverage/
 # Debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-lerna-debug.log*
-
-# Local env files
-.env
-.env*.local
-.env.development
-.env.production
-.env.test
-.mcp.json
-
-
-# Vercel
-.vercel
-
-# TypeScript
-next-env.d.ts
-
-# Turbo
-.turbo/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-Thumbs.db
-
+# Dependencies
+# Dependency directories
+dev-debug.log
+dist/
 # Docs
 docs/deployment/
 docs/guides/
 docs/validation/
-CLAUDE.md
+.DS_Store
+**/e2e/
+# Editor directories and files
+.env
+.env.development
+# Environment variables
+.env*.local
+.env.production
+.env.test
+**/*factories*
+.gemini/
+GEMINI.md
+.history
+.history/
+.husky/
+# IDE
+.idea
+.idea/
+.ignore/
+lerna-debug.log*
+# Local env files
+*.log
+logs
+# Logs
+.mcp.json
+# Misc
+.next/
+next-env.d.ts
+*.njsproj
+node_modules/
+npm-debug.log*
+*.ntvs*
+.nyc_output/
+# Old project directories (cleanup)
+# OS
+# OS specific
+out/
+packages/i18n/src/config/__tests__/
+packages/i18n/src/utils/__tests__/
+packages/i18n/TYPESCRIPT_STRATEGIC_ANYS.md
+packages/ui/src/tests/
+**/page-objects/
+*.pem
+.playwright/
+playwright.config.*
+playwright-report/
+.pnp
+.pnp.js
+.pnpm-debug.log*
+.pnpm-store/
+*.sln
+# Specific test files that were created
+*.spec.js
+*.spec.jsx
+*.spec.ts
+*.spec.tsx
+*storybook.log
+storybook-static
+*.suo
 supabase/migrations/
 supabase/SEED_PASSWORDS.md
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-*.temp
-
-# Logs
-*.log
-watcher.log
-
-# Task Master (keeping task files in git as per CLAUDE.md instructions)
-# Uncomment these if you don't want to track tasks:
-# .taskmaster/tasks/
-# .taskmaster/reports/
-
-# Old project directories (cleanup)
-.bmad-core/
-.coquinate/
-.gemini/
-.ignore/
-web-bundles/
-.claude/
-.husky/
-.taskmaster/
-
-.history/
-
-logs
-dev-debug.log
-# Dependency directories
-# Environment variables
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
+supabase/seed.sql
+supabase/seed-with-env.sh
 *.sw?
-# OS specific
+*.swo
+*.swp
+.taskmaster/
+# Task Master (keeping task files in git as per CLAUDE.md instructions)
+# .taskmaster/reports/
+# .taskmaster/tasks/
+*.temp
+temp/
+# Temporary files
+**/test/
+**/*test-cleanup*
+**/*test-db*
+# Testing (exclude all test files from git)
+*.test.js
+*.test.jsx
+test-results/
+**/__tests__/
+**/tests/
+**/*test-setup*
+*.test.ts
+*.test.tsx  
+**/*test-utils*
+Thumbs.db
+*.tmp
+tmp/
+*.tsbuildinfo
+.turbo/
+# Turbo
+# TypeScript
+# Uncomment these if you don't want to track tasks:
+.vercel
+# Vercel
+vitest.config.*
+.vscode
+.vscode/
+watcher.log
+web-bundles/
+yarn-debug.log*
+yarn-error.log*
 
 # Task files
 # tasks.json
 # tasks/ 
-supabase/seed.sql
-supabase/seed-with-env.sh
-GEMINI.md
-packages/i18n/TYPESCRIPT_STRATEGIC_ANYS.md
-
-*storybook.log
-storybook-static

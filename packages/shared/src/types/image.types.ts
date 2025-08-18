@@ -40,6 +40,13 @@ export interface ImageUploadProgress {
   error?: string;
 }
 
+export interface ImageUploadResult {
+  success: boolean;
+  imageUrl?: string;
+  error?: string;
+  path?: string;
+}
+
 export interface ImageValidationRules {
   maxSize: number; // in bytes
   allowedFormats: string[];

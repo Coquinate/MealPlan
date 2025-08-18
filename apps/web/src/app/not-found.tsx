@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Button, Card } from '@coquinate/ui';
+// import { Button, Card } from '@coquinate/ui';
 
 /**
  * 404 Not Found Page
@@ -14,7 +14,7 @@ export default function NotFoundPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-surface flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <Card className="p-8 text-center space-y-6">
+        <div className="p-8 text-center space-y-6 bg-white rounded-lg shadow-lg">
           <div className="space-y-4">
             <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-warning-100">
               <span className="text-4xl">🔍</span>
@@ -36,22 +36,22 @@ export default function NotFoundPage() {
 
           <div className="space-y-3">
             <Link href="/dashboard" className="block">
-              <Button className="w-full" size="lg">
+              <button className="w-full px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-600">
                 Înapoi la panoul principal
-              </Button>
+              </button>
             </Link>
 
             <div className="flex space-x-3">
               <Link href="/" className="flex-1">
-                <Button variant="secondary" className="w-full">
+                <button className="w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
                   Pagina principală
-                </Button>
+                </button>
               </Link>
 
               <Link href="/auth/login" className="flex-1">
-                <Button variant="secondary" className="w-full">
+                <button className="w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
                   Autentificare
-                </Button>
+                </button>
               </Link>
             </div>
           </div>
@@ -71,7 +71,7 @@ export default function NotFoundPage() {
               </a>
             </p>
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   );

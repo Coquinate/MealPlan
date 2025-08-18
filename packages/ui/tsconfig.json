@@ -7,7 +7,7 @@
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
-    "composite": false,
+    "composite": true,
     "incremental": false,
     "baseUrl": ".",
     "paths": {

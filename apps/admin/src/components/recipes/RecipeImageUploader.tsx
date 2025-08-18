@@ -11,8 +11,9 @@ import {
   uploadRecipeImage,
   validateImageFile,
   generateImagePath,
-} from '@mealplan/shared/utils/image.utils';
-import type { ImageUploadProgress, ImageUploadResult } from '@mealplan/shared/types/image.types';
+  type ImageUploadProgress,
+  type ImageUploadResult,
+} from '@coquinate/shared';
 
 interface RecipeImageUploaderProps {
   recipeId: string;
@@ -60,7 +61,7 @@ export function RecipeImageUploader({
 
         // Simulate upload progress (since Supabase doesn't provide real progress)
         const progressInterval = setInterval(() => {
-          setUploadProgress((prev) => ({
+          setUploadProgress((prev: ImageUploadProgress) => ({
             ...prev,
             progress: Math.min(prev.progress + 10, 90),
           }));
@@ -102,7 +103,11 @@ export function RecipeImageUploader({
           throw new Error(result.error || 'Eroare la încărcarea imaginii');
         }
       } catch (error) {
-        setUploadProgress({ progress: 0, isUploading: false, error: error.message });
+        setUploadProgress({
+          progress: 0,
+          isUploading: false,
+          error: error instanceof Error ? error.message : 'Eroare necunoscută',
+        });
         onError(error instanceof Error ? error.message : 'Eroare necunoscută');
 
         // Reset preview

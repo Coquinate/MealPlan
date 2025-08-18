@@ -96,6 +96,7 @@ export default {
         // Border colors
         border: {
           DEFAULT: designTokens.colors.border,
+          light: designTokens.colors['border-light'],
           strong: designTokens.colors['border-strong'],
           subtle: designTokens.colors['border-subtle'],
           muted: designTokens.colors['border-muted'],
@@ -115,6 +116,11 @@ export default {
         'surface-glass': 'var(--color-surface-glass)',
         'surface-glass-elevated': 'var(--color-surface-glass-elevated)',
         'surface-glass-border': 'var(--color-surface-glass-border)',
+
+        // Dark surface colors for feature sections
+        'dark-surface': 'var(--color-dark-surface)',
+        'dark-surface-raised': 'var(--color-dark-surface-raised)',
+        'text-light': 'var(--color-text-light)',
       },
 
       // Semantic font sizes matching component usage
@@ -147,6 +153,18 @@ export default {
       // Box shadow system
       boxShadow: {
         ...designTokens.boxShadow,
+        // Custom glow shadow for hover states
+        glow: '0 0 20px oklch(58% 0.08 200 / 0.3), 0 8px 25px rgba(0,0,0,0.15)',
+      },
+
+      // Max width system
+      maxWidth: {
+        ...designTokens.maxWidth,
+      },
+
+      // Height values using spacing
+      height: {
+        ...designTokens.spacing,
       },
     },
   },
@@ -185,11 +203,46 @@ export default {
           '&:focus-visible': {
             outline: 'none',
             boxShadow:
-              '0 0 0 2px var(--color-surface-glass), 0 0 0 5px var(--color-primary-warm), 0 0 20px var(--color-primary-warm/30), 0 8px 25px rgba(0,0,0,0.15)',
+              '0 0 0 2px var(--color-surface-glass), 0 0 0 5px var(--color-primary-warm), 0 0 20px oklch(58% 0.08 200 / 0.3), 0 8px 25px rgba(0,0,0,0.15)',
             backdropFilter: 'blur(12px)',
             background: 'var(--color-surface-glass-elevated)',
             transition: 'all 0.2s ease-out',
           },
+        },
+
+        // Premium focus state for primary buttons
+        '.focus-premium-warm': {
+          '&:focus-visible': {
+            outline: 'none',
+            boxShadow: '0 0 0 3px var(--color-primary-warm), 0 0 0 6px oklch(58% 0.08 200 / 0.2)',
+            transition: 'box-shadow 0.2s ease-out',
+          },
+        },
+
+        // Glass input styling
+        '.glass-input': {
+          background: 'var(--color-surface-glass)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          border: '2px solid var(--color-surface-glass-border)',
+          borderRadius: '8px',
+          padding: '12px 16px',
+          transition: 'all 0.2s ease-out',
+          '&:focus': {
+            background: 'var(--color-surface-glass-elevated)',
+            borderColor: 'var(--color-primary-warm)',
+            boxShadow: '0 0 0 3px oklch(58% 0.08 200 / 0.1)',
+          },
+          '&::placeholder': {
+            color: 'var(--color-text-muted)',
+          },
+        },
+
+        // Romanian text style for emphasis
+        '.text-romanian': {
+          fontFeatureSettings: '"locl"',
+          hyphens: 'auto',
+          textRendering: 'optimizeLegibility',
         },
       });
     },

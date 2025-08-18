@@ -72,7 +72,7 @@ export function QuickActions() {
       {/* Emergency Mode Toggle */}
       <div className="relative">
         <Button
-          variant={emergencyMode ? 'danger' : 'secondary'}
+          variant={emergencyMode ? 'secondary' : 'secondary'}
           size="sm"
           onClick={handleEmergencyMode}
           data-testid="emergency-mode-button"
@@ -105,7 +105,7 @@ export function QuickActions() {
             )}
             <div className="flex gap-2">
               <Button
-                variant={emergencyMode ? 'secondary' : 'danger'}
+                variant={'secondary'}
                 size="sm"
                 onClick={handleEmergencyMode}
                 disabled={!emergencyMode && emergencyConfirmText.toUpperCase() !== 'EMERGENCY'}

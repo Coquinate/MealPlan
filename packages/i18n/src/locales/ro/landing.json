@@ -2,7 +2,52 @@
   "hero": {
     "title": "Gata cu 'Ce gătim azi?'",
     "subtitle": "Economisește 3+ ore săptămânal cu planificarea automată a meselor",
-    "cta": "Anunță-mă când lansăm"
+    "cta": "Anunță-mă când lansăm",
+    "title_line1": "Spune adio întrebării",
+    "title_line2": "„Ce mâncăm azi?",
+    "description": "Primește săptămânal un plan de mese inteligent, conceput să elimine efortul și risipa. Descoperă rețete creative unde ",
+    "description_highlight": "gătești o singură dată și mănânci de trei ori."
+  },
+  "trust": {
+    "hours_saved": "Până la 5 Ore",
+    "hours_saved_desc": "economisiți săptămânal",
+    "waste_reduced": "Până la 50%",
+    "waste_reduced_desc": "risipă alimentară redusă",
+    "money_saved": "Până la 400",
+    "money_saved_desc": "RON economisiți lunar"
+  },
+  "nav": {
+    "coming_soon": "În curând"
+  },
+  "features": {
+    "title": "Tot ce ai nevoie, într-un singur loc",
+    "local": {
+      "title": "Gătești cu Ingrediente Locale",
+      "description": "Folosim doar ingrediente comune, ușor de găsit în orice magazin din România. Gătitul devine simplu și fără stres."
+    },
+    "shopping": {
+      "title": "Listă de Cumpărături Interactivă",
+      "description": "Primești o listă optimizată, organizată pe categorii. Ai nevoie de mai puțin? Modifici cifrele direct în listă."
+    },
+    "zero_waste": {
+      "title": "Zero Risipă, Zero Stres",
+      "description": "Fiecare ingredient este folosit la maximum. Planul este special gândit pentru a refolosi creativ orice surplus."
+    },
+    "chef_ai": {
+      "title": "Fă cunoștință cu Chef AI",
+      "description": "Acum ai propriul tău asistent bucătar, ",
+      "description_highlight": "Chef AI",
+      "description_end": "! Poartă o conversație naturală, în limba română, pentru a te ghida."
+    }
+  },
+  "cta": {
+    "title": "Gata să transformi haosul din bucătărie în armonie?",
+    "subtitle": "Înscrie-te acum pe lista de așteptare. Locurile pentru acces beta sunt limitate!",
+    "button": "Prinde oferta!"
+  },
+  "footer": {
+    "copyright": "© 2025 Coquinate. Dezvoltat cu pasiune pentru familiile din România.",
+    "privacy": "Politică de Confidențialitate"
   },
   "benefits": {
     "title": "De ce Coquinate?",
@@ -24,6 +69,7 @@
     }
   },
   "email": {
+    "special_offer_title": "Înscrie-te pe lista de așteptare",
     "label": "Email pentru notificări",
     "placeholder": "adresa@email.com",
     "button": "Înscrie-te",
@@ -62,5 +108,33 @@
   },
   "status": {
     "launching_soon": "Lansare în curând"
+  },
+  "workflow": {
+    "title": "Cum funcționează Coquinate?",
+    "subtitle": "Transformă felul în care gătești cu doar 3 pași simpli",
+    "cook": {
+      "title": "Gătești Duminică",
+      "description": "Pregătești 2-3 rețete pentru întreaga săptămână"
+    },
+    "reuse": {
+      "title": "Refolosești Luni",
+      "description": "Combini inteligent ingredientele pregătite"
+    },
+    "reinvent": {
+      "title": "Reinventezi Marți",
+      "description": "Transformi resturile în mese complet noi"
+    },
+    "cook_sunday": {
+      "title": "Gătești Duminică",
+      "description": "Prepari o masă principală."
+    },
+    "reuse_monday": {
+      "title": "Refolosești Luni",
+      "description": "Transformi într-un prânz rapid."
+    },
+    "reinvent_tuesday": {
+      "title": "Reinventezi Marți",
+      "description": "Creezi o cină nouă."
+    }
   }
 }

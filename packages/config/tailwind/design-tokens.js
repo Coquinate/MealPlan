@@ -78,6 +78,7 @@ export const semanticColors = {
 
   // Surface system - Simplified hierarchy
   surface: 'oklch(98% 0 0)', // Base surface
+  'surface-eggshell': 'oklch(98% 0.004 75)', // Eggshell background (from mockup)
   'surface-raised': 'oklch(100% 0 0)', // Elevated cards
   'surface-sunken': 'oklch(96% 0 0)', // Inset areas
   'surface-hover': 'oklch(94% 0 0)', // Hover states
@@ -98,10 +99,16 @@ export const semanticColors = {
 
   // Border system - Multiple weights
   border: 'oklch(92% 0 0)', // Default border
+  'border-light': 'oklch(94% 0 0)', // Light borders (for sections)
   'border-strong': 'oklch(85% 0 0)', // Strong borders
   'border-subtle': 'oklch(96% 0 0)', // Subtle dividers
   'border-muted': 'oklch(94% 0 0)', // Muted borders
   'border-focus': 'oklch(58% 0.08 200)', // Focus borders - Updated to new primary
+
+  // Dark surface variants for feature sections
+  'dark-surface': 'oklch(15% 0.01 200)', // Dark background with subtle teal
+  'dark-surface-raised': 'oklch(18% 0.01 200)', // Elevated dark cards
+  'text-light': 'oklch(92% 0 0)', // Light text for dark backgrounds
 };
 
 // Modern Hearth Dark Mode Colors (Expert Feedback: Reduce coral saturation by 10-15%)
@@ -337,6 +344,7 @@ export const spacing = {
   72: '288px', // Added
   80: '320px', // Added
   96: '384px', // Added
+  workflow: '500px', // Workflow visualization height
 };
 
 // Border Radius Values
@@ -348,9 +356,9 @@ export const borderRadius = {
   xl: '16px', // Hero cards
   full: '9999px', // Pills, avatars
 
-  // Semantic names
+  // Semantic names - Updated to match mockup (16px for cards)
   button: '8px',
-  card: '12px',
+  card: '16px', // Updated from 12px to 16px per audit report
   input: '8px',
   modal: '16px',
 };
@@ -359,7 +367,7 @@ export const borderRadius = {
 export const boxShadow = {
   none: 'none',
 
-  // Subtle depth system
+  // Subtle depth system - Updated to match mockup specifications
   sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', // Subtle borders
   md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', // Cards
   lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', // Modals
@@ -369,6 +377,11 @@ export const boxShadow = {
   card: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
   modal: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   button: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+
+  // Landing page specific shadows (from audit report)
+  'email-card': '0 4px 12px rgba(0, 0, 0, 0.08)', // Mockup specification for email capture
+  'feature-card': '0 2px 4px rgba(0, 0, 0, 0.05)', // Minimal elevation for feature cards
+  'workflow-card': '0 2px 8px rgba(0, 0, 0, 0.06)', // Subtle workflow card shadows
 
   // Context-specific shadows
   'meal-card': '0 2px 4px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04)',
@@ -534,6 +547,7 @@ export const maxWidth = {
   '7xl': '80rem', // 1280px
   full: '100%',
   prose: '65ch', // Readable width
+  content: '550px', // Content max width for landing page
 };
 
 // Aspect ratios
@@ -559,6 +573,8 @@ export const gridTemplateColumns = {
   // Custom meal grid layouts
   'meal-week': 'repeat(7, minmax(280px, 1fr))', // Desktop week view
   'meal-day': 'repeat(4, 1fr)', // Meals per day
+  // Landing page hero grid (slightly more space for content)
+  'hero-split': '1.1fr 1fr', // Content-focused split for hero section
 };
 
 // Grid template rows

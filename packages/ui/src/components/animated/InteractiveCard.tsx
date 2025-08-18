@@ -77,8 +77,8 @@ export function InteractiveCard({
 
   const variantClasses = {
     default: 'bg-surface border border-surface-dim shadow-sm',
-    glass: 'glass',
-    elevated: 'bg-surface-raised shadow-lg',
+    glass: 'glass shadow-feature-card',
+    elevated: 'bg-surface-raised shadow-feature-card',
   };
 
   const interactiveClasses =
@@ -100,7 +100,7 @@ export function InteractiveCard({
 
       {/* Hover glow effect for elevated cards */}
       {variant === 'elevated' && !prefersReducedMotion && (
-        <div className="absolute inset-0 rounded-card opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+        <div className="absolute inset-0 rounded-xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-br from-primary-warm/10 to-accent-coral/10" />
         </div>
       )}

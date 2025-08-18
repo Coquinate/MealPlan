@@ -3,9 +3,16 @@ import { resolve } from 'node:path';
 
 export default defineConfig({
   entry: ['src/index.ts'],
-  dts: false, // TODO: Fix dts generation on Vercel
+  dts: true,
   format: ['esm'],
-  external: ['react', 'react-dom', '@coquinate/i18n', '@coquinate/shared', '@coquinate/config'],
+  external: [
+    'react',
+    'react-dom',
+    'next/navigation',
+    '@coquinate/i18n',
+    '@coquinate/shared',
+    '@coquinate/config',
+  ],
   treeshake: true,
   sourcemap: true,
   clean: true,

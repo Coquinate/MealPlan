@@ -39,7 +39,7 @@ export const initializeI18n = async () => {
   await i18n.use(initReactI18next).init({
     // Primary language configuration
     lng: 'ro', // Romanian as primary
-    fallbackLng: 'en', // English fallback for development
+    fallbackLng: 'ro', // Romanian fallback (no English needed)
 
     // Namespace configuration
     defaultNS: 'common',

@@ -7,3 +7,4 @@ export * from './components';
 export * from './auth';
 export * from './recipe';
 export * from './subscribe';
+export * from './image.types';

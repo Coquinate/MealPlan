@@ -50,7 +50,7 @@ export interface EmailCaptureProps {
   /**
    * Component variant for styling
    */
-  variant?: 'glass' | 'simple' | 'inline';
+  variant?: 'glass' | 'simple' | 'inline' | 'mockup';
   /**
    * Enable Modern Hearth floating elements
    */
@@ -98,6 +98,7 @@ export function EmailCapture({
   const { t } = useTranslation('common');
 
   const [email, setEmail] = useState('');
+  const [gdprConsent, setGdprConsent] = useState(false);
   const [status, setStatus] = useState<EmailCaptureStatus>({ kind: 'idle' });
   const abortRef = useRef<AbortController | null>(null);
   const isMountedRef = useRef(true);
@@ -116,6 +117,11 @@ export function EmailCapture({
 
     // Guard against multiple submissions
     if (status.kind === 'loading') return;
+
+    // Guard for mockup variant - require GDPR consent
+    if (variant === 'mockup' && !gdprConsent) {
+      return;
+    }
 
     setStatus({ kind: 'loading' });
 
@@ -163,9 +169,9 @@ export function EmailCapture({
         {withFloatingElements && <FloatingElements orbs={FloatingOrbPresets.standard} />}
 
         {/* Main Glass Container */}
-        <div className="glass glass-elevated rounded-lg p-6 sm:p-8 relative z-10 hover-lift">
+        <div className="glass glass-elevated rounded-card p-6 sm:p-8 relative z-10 hover-lift">
           {/* Subtle Inner Glow */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-warm/5 to-accent-coral/5 rounded-lg pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-warm/5 to-accent-coral/5 rounded-card pointer-events-none" />
 
           {/* Content Wrapper */}
           <div className="relative z-10">
@@ -186,7 +192,7 @@ export function EmailCapture({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={placeholder ?? t('email.placeholder')}
-                  className="glass-input w-full focus-glass text-text placeholder-text-muted transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="glass-input w-full focus-glass text-text placeholder:text-text-muted/60 placeholder:font-normal transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
                   disabled={isLoading}
                   required
                   aria-label={t('email.label')}
@@ -202,13 +208,13 @@ export function EmailCapture({
               <button
                 type="submit"
                 className={clsx(
-                  'w-full h-11 px-6 font-semibold rounded-lg flex items-center justify-center',
+                  'w-full h-11 px-6 font-semibold rounded-md flex items-center justify-center',
                   'transition-all duration-300 font-display focus-premium-warm',
                   'disabled:hover:shadow-none',
                   {
                     'bg-primary-warm/70 cursor-wait': isLoading,
                     'bg-success-600 text-white': isSuccess,
-                    'bg-gradient-to-r from-primary-warm to-primary-warm-light text-white hover:shadow-glow':
+                    'bg-gradient-to-r from-primary-warm to-primary-warm-light text-white hover:shadow-sm':
                       !isLoading && !isSuccess,
                     'opacity-50 cursor-not-allowed': email.length === 0 || isLoading,
                   }
@@ -286,7 +292,7 @@ export function EmailCapture({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={placeholder ?? t('email.placeholder')}
-            className="w-full px-4 py-3 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-warm focus:border-primary-warm transition-all duration-200 disabled:opacity-60"
+            className="w-full px-6 py-3 border border-border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-warm focus:border-primary-warm transition-all duration-200 disabled:opacity-60 placeholder:text-text-muted/60 placeholder:font-normal"
             disabled={isLoading}
             required
             aria-invalid={hasError}
@@ -300,7 +306,7 @@ export function EmailCapture({
         <button
           type="submit"
           disabled={email.length === 0 || isLoading}
-          className="w-full px-6 py-3 bg-primary-warm text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-6 py-3 bg-primary-warm text-white font-semibold rounded-md hover:bg-primary-dark transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           aria-busy={isLoading}
         >
           {isLoading ? t('email.loading') : (buttonText ?? t('email.button'))}
@@ -320,6 +326,89 @@ export function EmailCapture({
     );
   }
 
+  // Mockup variant - exact replica of HTML mockup design
+  if (variant === 'mockup') {
+    return (
+      <div className={`max-w-lg mx-auto ${className}`}>
+        <div className="bg-surface-raised border border-border-light rounded-card p-8 shadow-email-card">
+          {/* Offer Title */}
+          <h3 className="font-display text-lg font-semibold mb-4 text-text">
+            {t('email.special_offer_title')}
+          </h3>
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Email Form */}
+            <div className="flex gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="adresa@email.com"
+                className="flex-1 px-6 py-3 border border-border-subtle rounded-lg bg-surface-eggshell focus:outline-none focus:ring-2 focus:ring-primary-warm focus:border-primary-warm transition-all duration-200 disabled:opacity-60 placeholder:text-text-muted/60 placeholder:font-normal"
+                disabled={isLoading}
+                required
+                aria-invalid={hasError}
+              />
+              <button
+                type="submit"
+                disabled={email.length === 0 || isLoading || !gdprConsent}
+                className="px-8 py-3 bg-primary-warm text-white font-semibold rounded-md hover:bg-primary-warm-dark transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
+                aria-busy={isLoading}
+              >
+                {isLoading ? 'Se trimite...' : 'Prinde oferta!'}
+              </button>
+            </div>
+
+            {/* GDPR Consent */}
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="gdpr-consent"
+                checked={gdprConsent}
+                onChange={(e) => setGdprConsent(e.target.checked)}
+                required
+                className="mt-0.5 h-4 w-4 text-primary-warm border-border-light rounded focus:ring-primary-warm"
+              />
+              <label htmlFor="gdpr-consent" className="text-xs text-text-muted leading-relaxed">
+                Sunt de acord cu{' '}
+                <a
+                  href="/politica-de-confidentialitate"
+                  target="_blank"
+                  className="text-text-muted underline hover:text-text"
+                >
+                  Politica de Confidențialitate
+                </a>{' '}
+                și doresc să primesc comunicări prin e-mail.
+              </label>
+            </div>
+
+            {/* Status Messages */}
+            {hasError && (
+              <p role="alert" className="text-error text-sm font-medium">
+                {t(`email.errors.${status.code}`)}
+              </p>
+            )}
+            {isSuccess && (
+              <p role="status" className="text-success text-sm font-medium">
+                {t('email.success')}
+              </p>
+            )}
+          </form>
+
+          {/* Benefits List */}
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-accent-coral font-bold">✓</span>
+              <span className="text-sm text-text-muted">
+                <strong>Toți înscrișii</strong> primesc un trial extins la 7 zile!
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Inline variant - horizontal layout
   return (
     <form onSubmit={handleSubmit} className={`flex gap-2 items-end ${className}`}>
@@ -333,7 +422,7 @@ export function EmailCapture({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder={placeholder ?? t('email.placeholder')}
-          className="w-full px-3 py-2 border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-warm focus:border-primary-warm transition-all duration-200 disabled:opacity-60"
+          className="w-full px-5 py-2 border border-border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-warm focus:border-primary-warm transition-all duration-200 disabled:opacity-60 placeholder:text-text-muted/60 placeholder:font-normal"
           disabled={isLoading}
           required
           aria-invalid={hasError}
@@ -347,7 +436,7 @@ export function EmailCapture({
       <button
         type="submit"
         disabled={email.length === 0 || isLoading}
-        className="px-4 py-2 bg-primary-warm text-white font-medium rounded-lg hover:bg-primary-dark transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+        className="px-4 py-2 bg-primary-warm text-white font-medium rounded-md hover:bg-primary-dark transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
         aria-busy={isLoading}
       >
         {isLoading ? '...' : (buttonText ?? t('email.button'))}

@@ -4,6 +4,14 @@ import { createServerClient } from '@/lib/supabase/server';
 import { emailSignupLimiter } from '@/lib/rate-limit';
 
 /**
+ * Extended NextRequest type with ip property
+ * Next.js 15 provides this when behind a proxy
+ */
+interface NextRequestWithIp extends NextRequest {
+  ip?: string;
+}
+
+/**
  * Validation schema for email signup
  */
 const emailSignupSchema = z.object({
@@ -14,9 +22,9 @@ const emailSignupSchema = z.object({
 /**
  * Get client IP address from request
  */
-function getClientIp(request: NextRequest): string {
+function getClientIp(request: NextRequestWithIp): string {
   // Next.js 15 provides request.ip when behind a proxy
-  const directIp = (request as any).ip as string | undefined;
+  const directIp = request.ip;
   if (directIp) return directIp;
 
   // Try various headers that might contain the real IP
@@ -38,9 +46,12 @@ function getClientIp(request: NextRequest): string {
  * Anonymize IP address for GDPR compliance
  */
 function anonymizeIp(ip: string): string {
+  // Remove zone ID if present (e.g., %eth0 in fe80::1%eth0)
+  const cleanIp = ip.split('%')[0];
+
   // Handle IPv4-mapped IPv6 addresses (e.g., ::ffff:192.168.1.1)
-  if (ip.startsWith('::ffff:')) {
-    const ipv4Part = ip.substring(7);
+  if (cleanIp.startsWith('::ffff:')) {
+    const ipv4Part = cleanIp.substring(7);
     const parts = ipv4Part.split('.');
     if (parts.length === 4) {
       // Convert back to IPv4-mapped IPv6 with anonymized last octet
@@ -49,26 +60,26 @@ function anonymizeIp(ip: string): string {
   }
 
   // Regular IPv6: Keep first 4 segments
-  if (ip.includes(':')) {
-    const segments = ip.split(':');
+  if (cleanIp.includes(':')) {
+    const segments = cleanIp.split(':');
     // Take first 4 segments and pad with :: for anonymization
     if (segments.length >= 4) {
       return `${segments.slice(0, 4).join(':')}::`;
     }
     // If less than 4 segments, just add ::
-    return `${ip}::`.replace(/::+/, '::'); // Avoid multiple ::
+    return `${cleanIp}::`.replace(/::+/, '::'); // Avoid multiple ::
   }
 
   // Regular IPv4: Zero out last octet
-  const parts = ip.split('.');
-  return parts.length === 4 ? `${parts[0]}.${parts[1]}.${parts[2]}.0` : ip;
+  const parts = cleanIp.split('.');
+  return parts.length === 4 ? `${parts[0]}.${parts[1]}.${parts[2]}.0` : cleanIp;
 }
 
 /**
  * POST /api/email-signup
  * Handle email signup with rate limiting and early bird tracking
  */
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequestWithIp) {
   try {
     // Get client IP for rate limiting
     const clientIp = getClientIp(request);
@@ -91,7 +102,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse and validate request body
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (error) {
+      return NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 });
+    }
     const validation = emailSignupSchema.safeParse(body);
 
     if (!validation.success) {
@@ -129,7 +145,6 @@ export async function POST(request: NextRequest) {
       .insert({
         email: normalizedEmail,
         gdpr_consent: gdprConsent,
-        gdpr_consent_date: new Date().toISOString(),
         ip_address: anonymizedIp,
       })
       .select('id, signup_order, is_early_bird')

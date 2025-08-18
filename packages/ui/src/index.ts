@@ -19,5 +19,8 @@ export * from './motion';
 // Utility exports
 export * from './utils';
 
+// Navigation component exports
+export * from './navigation';
+
 // Re-export specific utilities for convenience
 export { cn } from './utils/cn';

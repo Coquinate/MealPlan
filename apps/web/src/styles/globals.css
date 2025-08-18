@@ -47,6 +47,17 @@ body {
   }
 }
 
+/* Subtle pulse animation for launch badge */
+@keyframes subtle-pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 .animate-spin {
   animation: spin 1s linear infinite;
 }
@@ -293,6 +304,23 @@ body {
   /* Tabular numbers for prices, timers, etc */
   .tabular-nums {
     font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Mobile Workflow Connectors */
+@layer utilities {
+  /* Vertical connectors for mobile */
+  @media (max-width: 639px) {
+    .workflow-node:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      bottom: -2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 2rem;
+      background: linear-gradient(180deg, oklch(var(--color-neutral-300) / 0.5), transparent);
+    }
   }
 }
 

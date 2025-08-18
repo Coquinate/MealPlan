@@ -81,9 +81,15 @@
 
     /* Surface Colors */
     --color-surface: oklch(98% 0 0);
+    --color-surface-eggshell: oklch(98% 0.004 75);
     --color-surface-raised: oklch(100% 0 0);
     --color-surface-sunken: oklch(96% 0 0);
     --color-surface-hover: oklch(94% 0 0);
+
+    /* Dark Surface Variants for Feature Sections */
+    --color-dark-surface: oklch(15% 0.01 200);
+    --color-dark-surface-raised: oklch(18% 0.01 200);
+    --color-text-light: oklch(92% 0 0);
 
     /* Text Colors */
     --color-text: oklch(20% 0 0);
@@ -95,6 +101,7 @@
 
     /* Border Colors */
     --color-border: oklch(92% 0 0);
+    --color-border-light: oklch(94% 0 0);
     --color-border-strong: oklch(85% 0 0);
     --color-border-subtle: oklch(96% 0 0);
     --color-border-muted: oklch(94% 0 0);

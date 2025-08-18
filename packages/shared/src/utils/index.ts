@@ -2,7 +2,19 @@ export { cn } from './cn';
 export * from './error-logging';
 export * from './email-notifications';
 export * from './payment-alerts';
-export * from './image.utils';
+export {
+  generateImagePath,
+  generateImageUrl,
+  getFileExtension,
+  validateImageFile,
+  uploadRecipeImage,
+  deleteRecipeImage,
+  generateBlurDataUrl,
+  extractRecipeIdFromPath,
+  isSupabaseImageUrl,
+  RECIPE_IMAGES_BUCKET,
+  type ImageUploadOptions,
+} from './image.utils';
 export * from './subscribe-client';
 export * from './ai-service';
 export {
