@@ -33,54 +33,55 @@ export default function ComingSoonPage() {
       {/* Main Content */}
       <main>
         {/* Hero Section */}
-        <section className="bg-surface-eggshell py-16">
-          <div className="mx-auto max-w-6xl px-6 lg:px-8">
-            <div className="grid lg:grid-cols-hero-split gap-12 items-start">
+        <section className="bg-surface-50 py-24">
+          <div className="mx-auto max-w-[1200px] px-8">
+            <div className="grid lg:grid-cols-[1.1fr_1fr] gap-16 items-center">
               {/* Left Column: Text & Form */}
               <div>
-                <h1 className="font-display text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                <h1 className="font-display text-[3.5rem] font-bold leading-[1.15] tracking-[-0.03em] mb-6">
                   {t('hero.title_line1')}
                   <br />
-                  <span className="bg-gradient-to-r from-primary-warm to-accent-coral bg-clip-text text-transparent italic">
+                  <span className="bg-gradient-to-r from-primary-600 to-accent-coral bg-clip-text text-transparent">
                     {t('hero.title_line2')}
                   </span>
                 </h1>
 
-                <p className="text-xl text-text-secondary mb-10 max-w-content leading-relaxed">
-                  {t('hero.description')}
-                  <span className="font-semibold italic">{t('hero.description_highlight')}</span>
+                <p className="text-[1.2rem] text-text-secondary mb-10 max-w-[550px] leading-[1.6]">
+                  {t('hero.description')} <strong>{t('hero.description_highlight')}</strong>
                 </p>
 
                 {/* Trust Statistics */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 py-6 border-y border-border-subtle mb-10">
+                <div className="grid grid-cols-3 gap-6 py-6 border-y border-surface-200 mb-10">
                   <div>
-                    <div className="font-display text-2xl font-semibold text-primary-warm">
+                    <div className="font-display text-[1.75rem] font-semibold text-primary-600 leading-[1.2]">
                       {t('trust.hours_saved')}
                     </div>
-                    <div className="text-sm text-text-muted mt-1 leading-relaxed">
+                    <div className="text-[0.85rem] text-text-muted mt-1">
                       {t('trust.hours_saved_desc')}
                     </div>
                   </div>
                   <div>
-                    <div className="font-display text-2xl font-semibold text-primary-warm">
+                    <div className="font-display text-[1.75rem] font-semibold text-primary-600 leading-[1.2]">
                       {t('trust.waste_reduced')}
                     </div>
-                    <div className="text-sm text-text-muted mt-1 leading-relaxed">
+                    <div className="text-[0.85rem] text-text-muted mt-1">
                       {t('trust.waste_reduced_desc')}
                     </div>
                   </div>
                   <div>
-                    <div className="font-display text-2xl font-semibold text-primary-warm">
+                    <div className="font-display text-[1.75rem] font-semibold text-primary-600 leading-[1.2]">
                       {t('trust.money_saved')}
                     </div>
-                    <div className="text-sm text-text-muted mt-1 leading-relaxed">
+                    <div className="text-[0.85rem] text-text-muted mt-1">
                       {t('trust.money_saved_desc')}
                     </div>
                   </div>
                 </div>
 
                 {/* Email Capture - Mockup Design */}
-                <EmailCapture variant="mockup" className="max-w-md justify-self-start" />
+                <div id="email-capture">
+                  <EmailCapture variant="mockup" />
+                </div>
               </div>
 
               {/* Right Column: Workflow Visualization */}
@@ -91,86 +92,90 @@ export default function ComingSoonPage() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="bg-dark-surface py-20">
-          <div className="mx-auto max-w-6xl px-6 lg:px-8">
-            <h2 className="text-center font-display text-4xl font-bold text-text-light mb-16">
-              {t('features.title')}
-            </h2>
+        {/* Features Section - Dark Theme */}
+        <section className="bg-surface-900 py-24">
+          <div className="mx-auto max-w-[1200px] px-8">
+            <div className="text-center mb-16">
+              <h2 className="font-display text-[2.5rem] font-bold text-white">
+                {t('features.title')}
+              </h2>
+            </div>
 
-            <StaggerList className="grid md:grid-cols-2 gap-8" animation="fade" startDelay={200}>
+            <div className="grid md:grid-cols-2 gap-8">
               {/* Feature 1 */}
-              <InteractiveCard variant="glass" className="bg-dark-surface-raised p-6">
-                <div className="w-12 h-12 bg-accent-coral/15 rounded-2xl flex items-center justify-center mb-4">
-                  <IconMapPin className="w-6 h-6 text-accent-coral stroke-1" />
+              <div className="bg-surface-800 p-8 rounded-xl border border-surface-700 hover:-translate-y-1 hover:bg-surface-700 hover:border-accent-coral transition-all duration-300">
+                <div className="w-10 h-10 bg-accent-coral/20 rounded-lg flex items-center justify-center mb-6">
+                  <IconMapPin className="w-5 h-5 text-accent-coral" stroke={2} />
                 </div>
-                <h3 className="font-display text-lg font-semibold text-text-light mb-2">
+                <h3 className="font-display text-[1.25rem] font-semibold text-white mb-3">
                   {t('features.local.title')}
                 </h3>
-                <p className="text-sm text-text-light/50 leading-relaxed">
-                  {t('features.local.description')}
-                </p>
-              </InteractiveCard>
+                <p className="text-base text-white opacity-80">{t('features.local.description')}</p>
+              </div>
 
               {/* Feature 2 */}
-              <InteractiveCard variant="glass" className="bg-dark-surface-raised p-6">
-                <div className="w-12 h-12 bg-accent-coral/15 rounded-2xl flex items-center justify-center mb-4">
-                  <IconClipboardList className="w-6 h-6 text-accent-coral stroke-1" />
+              <div className="bg-surface-800 p-8 rounded-xl border border-surface-700 hover:-translate-y-1 hover:bg-surface-700 hover:border-accent-coral transition-all duration-300">
+                <div className="w-10 h-10 bg-accent-coral/20 rounded-lg flex items-center justify-center mb-6">
+                  <IconClipboardList className="w-5 h-5 text-accent-coral" stroke={2} />
                 </div>
-                <h3 className="font-display text-lg font-semibold text-text-light mb-2">
+                <h3 className="font-display text-[1.25rem] font-semibold text-white mb-3">
                   {t('features.shopping.title')}
                 </h3>
-                <p className="text-sm text-text-light/50 leading-relaxed">
+                <p className="text-base text-white opacity-80">
                   {t('features.shopping.description')}
                 </p>
-              </InteractiveCard>
+              </div>
 
               {/* Feature 3 */}
-              <InteractiveCard variant="glass" className="bg-dark-surface-raised p-6">
-                <div className="w-12 h-12 bg-accent-coral/15 rounded-2xl flex items-center justify-center mb-4">
-                  <IconCircleCheck className="w-6 h-6 text-accent-coral stroke-1" />
+              <div className="bg-surface-800 p-8 rounded-xl border border-surface-700 hover:-translate-y-1 hover:bg-surface-700 hover:border-accent-coral transition-all duration-300">
+                <div className="w-10 h-10 bg-accent-coral/20 rounded-lg flex items-center justify-center mb-6">
+                  <IconCircleCheck className="w-5 h-5 text-accent-coral" stroke={2} />
                 </div>
-                <h3 className="font-display text-lg font-semibold text-text-light mb-2">
+                <h3 className="font-display text-[1.25rem] font-semibold text-white mb-3">
                   {t('features.zero_waste.title')}
                 </h3>
-                <p className="text-sm text-text-light/50 leading-relaxed">
+                <p className="text-base text-white opacity-80">
                   {t('features.zero_waste.description')}
                 </p>
-              </InteractiveCard>
+              </div>
 
               {/* Feature 4 */}
-              <InteractiveCard variant="glass" className="bg-dark-surface-raised p-6">
-                <div className="w-12 h-12 bg-accent-coral/15 rounded-2xl flex items-center justify-center mb-4">
-                  <IconHeart className="w-6 h-6 text-accent-coral stroke-1" />
+              <div className="bg-surface-800 p-8 rounded-xl border border-surface-700 hover:-translate-y-1 hover:bg-surface-700 hover:border-accent-coral transition-all duration-300">
+                <div className="w-10 h-10 bg-accent-coral/20 rounded-lg flex items-center justify-center mb-6">
+                  <IconHeart className="w-5 h-5 text-accent-coral" stroke={2} />
                 </div>
-                <h3 className="font-display text-lg font-semibold text-text-light mb-2">
+                <h3 className="font-display text-[1.25rem] font-semibold text-white mb-3">
                   {t('features.chef_ai.title')}
                 </h3>
-                <p className="text-sm text-text-light/50 leading-relaxed">
+                <p className="text-base text-white opacity-80">
                   {t('features.chef_ai.description')}
                   <strong>{t('features.chef_ai.description_highlight')}</strong>
                   {t('features.chef_ai.description_end')}
                 </p>
-              </InteractiveCard>
-            </StaggerList>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="bg-gradient-to-br from-primary-warm to-accent-coral py-24">
-          <div className="mx-auto max-w-4xl px-6 lg:px-8 text-center">
-            <h2 className="font-display text-4xl font-bold text-white mb-6">{t('cta.title')}</h2>
-            <p className="text-xl text-white/95 mb-10 leading-relaxed">{t('cta.subtitle')}</p>
-            <button
-              type="button"
-              aria-controls="email-capture"
-              onClick={() =>
-                document.getElementById('email-capture')?.scrollIntoView({ behavior: 'smooth' })
-              }
-              className="bg-white text-primary-warm px-12 py-4 rounded-lg font-semibold text-lg hover:-translate-y-0.5 transition-transform shadow-button hover:shadow-button"
+        <section className="bg-gradient-to-r from-primary-600 to-accent-coral py-24 px-8">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="font-display text-[2.5rem] font-bold text-white mb-4 tracking-[-0.02em]">
+              {t('cta.title')}
+            </h2>
+            <p className="text-[1.25rem] text-white opacity-95 mb-10 max-w-[600px] mx-auto">
+              {t('cta.subtitle')}
+            </p>
+            <a
+              href="#email-capture"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('email-capture')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-white text-primary-600 px-12 py-4 rounded-lg font-bold text-[1.125rem] hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200 shadow-md inline-block cursor-pointer"
             >
               {t('cta.button')}
-            </button>
+            </a>
           </div>
         </section>
       </main>
