@@ -224,69 +224,123 @@ export function EmailCapture({
     );
   }
 
-  // Promo variant - promotional design with special offer
+  // Promo variant - COMPACT horizontal layout matching column width
   if (variant === 'promo') {
     return (
-      <div className={cn('max-w-lg mx-auto', className)}>
-        <div className="bg-white border-2 border-border-light rounded-xl p-8 shadow-email-card">
-          {/* Offer Title */}
-          <h3 className="font-display text-form-title font-semibold mb-4 text-text-high-contrast leading-relaxed">
-            {PROMO_VARIANT_CONFIG.title}
-          </h3>
+      <div className={cn('w-full', className)}>
+        {/* COMPACT VIBRANT GRADIENT CONTAINER with reduced padding */}
+        <div className="bg-gradient-to-br from-primary-warm/8 via-accent-coral/4 to-primary-warm-light/8 backdrop-blur-sm border-2 border-primary-warm/20 rounded-xl p-4 shadow-xl shadow-primary-warm/15 relative overflow-hidden">
+          
+          {/* Subtle animated background glow */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-warm/3 via-transparent to-accent-coral/3 animate-pulse" />
+          
+          {/* Content with relative positioning */}
+          <div className="relative z-10">
+            {/* COMPACT COLORFUL TITLE */}
+            <h3 className="font-display text-base font-bold mb-3 bg-gradient-to-r from-primary-warm via-accent-coral to-primary-warm-light bg-clip-text text-transparent leading-tight text-center">
+              {PROMO_VARIANT_CONFIG.title}
+            </h3>
 
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Email Form */}
-            <div className="flex gap-3 mb-2">
-              <input
-                type="email"
-                value={validation.email}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => validation.setEmail(e.target.value)}
-                placeholder="adresa@email.com"
-                className="flex-1 px-5 py-[0.875rem] border-2 border-border-subtle rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-primary focus:shadow-[0_0_0_3px_oklch(58%_0.08_200_/_0.2)] transition-all duration-200 disabled:opacity-60 placeholder:text-text-muted-secondary placeholder:opacity-60 placeholder:font-normal text-base text-text-high-contrast"
-                disabled={submission.isLoading}
-                required
-                aria-invalid={submission.hasError}
-              />
-              <button
-                type="submit"
-                disabled={!validation.isValid || submission.isLoading || !validation.gdprConsent}
-                className="px-8 py-[0.875rem] bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-200 disabled:bg-[#cccccc] disabled:cursor-not-allowed hover:-translate-y-0.5 text-base"
-                aria-busy={submission.isLoading}
-              >
-                {submission.isLoading ? PROMO_VARIANT_CONFIG.loadingText : PROMO_VARIANT_CONFIG.buttonText}
-              </button>
-            </div>
+            <form className="space-y-3" onSubmit={handleSubmit}>
+              {/* COMPACT EMAIL FORM - Horizontal layout */}
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <input
+                    type="email"
+                    value={validation.email}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => validation.setEmail(e.target.value)}
+                    placeholder="adresa@email.com"
+                    className={cn(
+                      'w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-0 transition-all duration-300 disabled:opacity-60 text-sm font-medium',
+                      // SIMPLE CLEAN BACKGROUND
+                      'bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm',
+                      // COLORFUL BORDERS and focus states
+                      'border-primary-warm/25 hover:border-primary-warm/40 focus:border-primary-warm focus:shadow-lg focus:shadow-primary-warm/20',
+                      // CLEAN TEXT COLORS
+                      'text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 placeholder:font-normal',
+                      // VALIDATION COLORS
+                      submission.hasError && '!border-red-500 !bg-red-50/90 dark:!bg-red-900/20 !shadow-lg !shadow-red-500/20 !text-red-700 dark:!text-red-400',
+                      validation.isValid && validation.email.length > 0 && '!border-green-500 !bg-green-50/90 dark:!bg-green-900/20 !shadow-lg !shadow-green-500/20 !text-green-700 dark:!text-green-400'
+                    )}
+                    disabled={submission.isLoading}
+                    required
+                    aria-invalid={submission.hasError}
+                  />
+                  {/* COMPACT validation icons */}
+                  {(submission.hasError || (validation.isValid && validation.email.length > 0)) && (
+                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                      <svg className={cn('w-4 h-4', 
+                        submission.hasError ? 'text-red-500' : 'text-green-500'
+                      )} fill="currentColor" viewBox="0 0 20 20">
+                        {submission.hasError ? (
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        ) : (
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        )}
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                
+                {/* COMPACT VIBRANT GRADIENT BUTTON - Horizontal with input */}
+                <button
+                  type="submit"
+                  disabled={!validation.isValid || submission.isLoading || !validation.gdprConsent}
+                  className={cn(
+                    'px-5 py-2 font-bold rounded-lg transition-all duration-300 disabled:cursor-not-allowed text-sm shadow-lg whitespace-nowrap',
+                    // DRAMATIC GRADIENT BACKGROUND
+                    'bg-gradient-to-r from-primary-warm to-accent-coral text-white',
+                    'hover:from-primary-warm-dark hover:to-accent-coral-deep hover:shadow-xl hover:shadow-primary-warm/25 hover:scale-[1.02]',
+                    'active:scale-[0.98]',
+                    // DISABLED STATE with muted gradient
+                    'disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none disabled:scale-100'
+                  )}
+                  aria-busy={submission.isLoading}
+                >
+                  {submission.isLoading ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="animate-spin h-3 w-3 border-2 border-white border-t-transparent rounded-full" />
+                      <span className="hidden sm:inline">{PROMO_VARIANT_CONFIG.loadingText}</span>
+                    </div>
+                  ) : (
+                    PROMO_VARIANT_CONFIG.buttonText
+                  )}
+                </button>
+              </div>
 
-            {/* GDPR Consent */}
-            <GDPRCheckbox
-              checked={validation.gdprConsent}
-              onChange={validation.setGdprConsent}
-            />
+              {/* COMPACT COLORFUL GDPR Consent */}
+              <div className="bg-gradient-to-r from-primary-warm/4 to-accent-coral/4 rounded-lg p-3 border border-primary-warm/15">
+                <GDPRCheckbox
+                  checked={validation.gdprConsent}
+                  onChange={validation.setGdprConsent}
+                />
+              </div>
 
-            {/* Status Messages */}
-            {submission.hasError && submission.status.kind === 'error' && (
-              <Alert variant="destructive">
-                <AlertDescription>
-                  {t(`email.errors.${submission.status.code}`)}
-                </AlertDescription>
-              </Alert>
-            )}
-            {submission.isSuccess && (
-              <Alert className="border-success-600 text-success-600">
-                <AlertDescription>
-                  {t('email.success')}
-                </AlertDescription>
-              </Alert>
-            )}
-          </form>
+              {/* COMPACT VIBRANT Status Messages */}
+              {submission.hasError && submission.status.kind === 'error' && (
+                <Alert variant="destructive" className="bg-red-50 border-red-200 shadow-md shadow-red-500/15">
+                  <AlertDescription className="text-red-700 font-medium text-sm">
+                    {t(`email.errors.${submission.status.code}`)}
+                  </AlertDescription>
+                </Alert>
+              )}
+              {submission.isSuccess && (
+                <Alert className="border-green-200 bg-green-50 text-green-700 shadow-md shadow-green-500/15">
+                  <AlertDescription className="font-medium text-sm">
+                    {t('email.success')}
+                  </AlertDescription>
+                </Alert>
+              )}
+            </form>
 
-          {/* Benefits List */}
-          <div className="mt-4 flex flex-col gap-2 text-sm text-text-muted-secondary">
-            <div className="flex items-center gap-2">
-              <span className="text-accent-coral font-bold">✓</span>
-              <span>
-                <strong>Toți înscrișii</strong> primesc un trial extins la 7 zile!
-              </span>
+            {/* COMPACT COLORFUL Benefits List */}
+            <div className="mt-4 bg-gradient-to-r from-accent-coral/8 to-primary-warm/8 rounded-lg p-3 border border-accent-coral/15">
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-accent-coral text-lg font-bold">✓</span>
+                <span className="bg-gradient-to-r from-primary-warm-dark to-accent-coral-deep bg-clip-text text-transparent font-semibold">
+                  <strong>Toți înscrișii</strong> primesc un trial extins la 7 zile!
+                </span>
+              </div>
             </div>
           </div>
         </div>

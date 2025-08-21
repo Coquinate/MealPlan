@@ -41,9 +41,9 @@ export const emailInputVariants = cva('', {
   variants: {
     variant: {
       glass: 'glass-input w-full focus-glass text-text placeholder:text-text-muted/60 placeholder:font-normal transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed',
-      simple: 'w-full px-6 py-3 border border-border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-warm focus:border-primary-warm transition-all duration-200 disabled:opacity-60 placeholder:text-text-muted/60 placeholder:font-normal',
-      inline: 'w-full px-5 py-2 border border-border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-warm focus:border-primary-warm transition-all duration-200 disabled:opacity-60 placeholder:text-text-muted/60 placeholder:font-normal',
-      mockup: 'flex-1 px-5 py-[0.875rem] border-2 border-border-subtle rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-primary focus:shadow-[0_0_0_3px_oklch(58%_0.08_200_/_0.2)] transition-all duration-200 disabled:opacity-60 placeholder:text-text-muted-secondary placeholder:opacity-60 placeholder:font-normal text-base text-text-high-contrast',
+      simple: 'w-full px-6 py-3 border border-border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-warm focus:border-primary-warm transition-all duration-200 disabled:opacity-60 placeholder:text-text-muted/60 placeholder:font-normal min-h-[44px]',
+      inline: 'w-full px-5 py-2 border border-border-subtle rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-warm focus:border-primary-warm transition-all duration-200 disabled:opacity-60 placeholder:text-text-muted/60 placeholder:font-normal min-h-[44px]',
+      mockup: 'flex-1 px-5 py-[0.875rem] border-2 border-border-subtle rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-primary focus:shadow-[0_0_0_3px_oklch(58%_0.08_200_/_0.2)] transition-all duration-200 disabled:opacity-60 placeholder:text-text-muted-secondary placeholder:opacity-60 placeholder:font-normal text-base text-text-high-contrast min-h-[44px]',
     },
   },
   defaultVariants: {
@@ -52,17 +52,44 @@ export const emailInputVariants = cva('', {
 });
 
 /**
+ * Get conditional input styling based on validation state
+ */
+export const getInputValidationStyles = (
+  variant: 'glass' | 'simple' | 'inline' | 'mockup',
+  hasError: boolean,
+  isValid: boolean,
+  hasValue: boolean
+) => {
+  // Base styles remain the same for glass variant
+  if (variant === 'glass') {
+    return '';
+  }
+
+  // Conditional styling using design tokens
+  if (hasError) {
+    return 'border-error focus:border-error focus:ring-4 focus:ring-error/20';
+  }
+  
+  if (isValid && hasValue) {
+    return 'border-success focus:border-success focus:ring-4 focus:ring-success/20';
+  }
+  
+  // Default focus state with primary color
+  return 'focus:border-primary focus:ring-4 focus:ring-primary/20';
+};
+
+/**
  * Submit button base styles
  */
 export const submitButtonBaseVariants = cva(
-  'font-semibold rounded-md flex items-center justify-center transition-all duration-300 focus-premium-warm disabled:hover:shadow-none',
+  'font-semibold rounded-md flex items-center justify-center transition-all duration-300 focus-premium-warm disabled:hover:shadow-none disabled:hover:transform-none',
   {
     variants: {
       variant: {
-        glass: 'w-full h-11 px-6 font-display',
-        simple: 'w-full px-6 py-3 rounded-md transition-all duration-200',
-        inline: 'px-4 py-2 font-medium whitespace-nowrap transition-all duration-200',
-        mockup: 'px-8 py-[0.875rem] rounded-lg transition-all duration-200 hover:-translate-y-0.5 text-base',
+        glass: 'w-full h-11 px-6 font-display hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0',
+        simple: 'w-full px-6 py-3 rounded-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0',
+        inline: 'px-4 py-2 font-medium whitespace-nowrap transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm active:translate-y-0',
+        mockup: 'px-8 py-[0.875rem] rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 text-base',
       },
     },
     defaultVariants: {
@@ -147,4 +174,47 @@ export const mockupContainerStyles = {
   benefitsList: 'mt-4 flex flex-col gap-2 text-sm text-text-muted-secondary',
   benefitItem: 'flex items-center gap-2',
   checkIcon: 'text-accent-coral font-bold',
+};
+
+/**
+ * Animation and feedback styles
+ */
+export const animationStyles = {
+  // Success state animations
+  successContainer: 'animate-fade-in-up',
+  successIcon: 'animate-bounce',
+  
+  // Loading spinner
+  loadingSpinner: 'animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full',
+  
+  // Validation feedback icons
+  validationIcon: 'absolute right-3 top-1/2 transform -translate-y-1/2 transition-all duration-200',
+  
+  // Input container for icon positioning  
+  inputContainer: 'relative',
+  
+  // Success state background
+  successBg: 'bg-success/10 text-success border border-success/20 p-4 rounded-lg text-center text-sm',
+  
+  // Missing animation properties for promo variant
+  hover: 'transition-all duration-200 hover:shadow-lg hover:transform hover:-translate-y-0.5',
+  fadeInUp: 'animate-fade-in-up',
+  bounce: 'animate-bounce',
+};;
+
+/**
+ * Get validation icon based on state
+ */
+export const getValidationIconStyles = (hasError: boolean, isValid: boolean, hasValue: boolean) => {
+  if (!hasValue) return 'opacity-0';
+  
+  if (hasError) {
+    return 'text-error opacity-100';
+  }
+  
+  if (isValid) {
+    return 'text-success opacity-100';
+  }
+  
+  return 'opacity-0';
 };

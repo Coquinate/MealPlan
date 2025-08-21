@@ -17,7 +17,6 @@ export { CTASection } from './components/landing/sections/CTASection';
 export { ScrollProgress } from './components/landing/effects/ScrollProgress';
 export { ProgressIndicator } from './components/landing/components/ProgressIndicator';
 export { ShareWidget } from './components/landing/components/ShareWidget';
-export { WorkflowNodes } from './components/landing/components/WorkflowNodes';
 export { ConfettiEffect } from './components/landing/effects/ConfettiEffect';
 export { useScrollAnimation } from './components/landing/hooks/useScrollAnimation';
 

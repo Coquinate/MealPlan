@@ -5,7 +5,7 @@ import * as i18nModule from '@coquinate/i18n';
 import type { TranslationNamespace } from '@coquinate/i18n';
 import { useSubscriberCount } from '../../../hooks';
 import { EmailCapture } from '../../email-capture/EmailCapture';
-import { WorkflowNodes } from '../components/WorkflowNodes';
+import { WorkflowVisualization } from '../components/workflow/WorkflowVisualization';
 import { ConfettiEffect } from '../effects/ConfettiEffect';
 import { ProgressIndicator } from '../components/ProgressIndicator';
 import { ShareWidget } from '../components/ShareWidget';
@@ -148,7 +148,7 @@ function HeroSection({
                 role="img"
                 aria-label="Workflow visualization"
               >
-                <WorkflowNodes />
+                <WorkflowVisualization />
               </div>
             )}
           </div>

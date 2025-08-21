@@ -103,8 +103,9 @@ export function WorkflowStep({
       animate="visible"
       whileHover={{ 
         scale: 1.03,
-        boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-        transition: { duration: 0.2 }
+        y: -8,
+        boxShadow: "0 0 30px oklch(70% 0.18 20 / 0.3), 0 20px 40px oklch(0% 0 0 / 0.15)",
+        transition: { duration: 0.3 }
       }}
       whileTap={{ scale: 0.98 }}
     >

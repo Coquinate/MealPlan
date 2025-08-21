@@ -8,4 +8,4 @@ export { BenefitCards } from './BenefitCards';
 export { EmailCapture } from './EmailCapture';
 export { HealthStatus } from './HealthStatus';
 export { FloatingElements, FloatingOrbPresets } from './FloatingElements';
-export { WorkflowNodes } from './WorkflowNodes';
+// export { WorkflowNodes } from './WorkflowNodes'; // Removed - using WorkflowVisualization from @coquinate/ui
