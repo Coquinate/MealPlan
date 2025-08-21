@@ -1,7 +1,22 @@
 import * as React from 'react'
 import { cn } from '../utils/cn'
-import { useTranslation, useRomanianFormatters } from '@coquinate/i18n'
+import * as i18nModule from '@coquinate/i18n'
 import type { ShoppingListItemProps } from '@coquinate/shared'
+import type { TranslationNamespace } from '@coquinate/i18n'
+
+// Robust translation hook with fallback mechanism
+const useTranslation = (namespace?: TranslationNamespace | TranslationNamespace[]) => {
+  if (i18nModule && typeof i18nModule.useTranslation === 'function') {
+    return i18nModule.useTranslation(namespace);
+  }
+  
+  // Fallback implementation
+  return {
+    t: (key: string) => key,
+    i18n: null,
+    ready: false
+  };
+};
 
 /**
  * ShoppingListItem component for grocery shopping lists
@@ -22,8 +37,12 @@ const ShoppingListItem = React.forwardRef<HTMLDivElement, ShoppingListItemProps>
     notes,
     ...props 
   }, ref) => {
-    const { t } = useTranslation('shopping')
-    const formatters = useRomanianFormatters()
+    const { t } = useTranslation('shopping' as TranslationNamespace)
+    const formatters = i18nModule?.useRomanianFormatters() || {
+      formatCurrency: (value: number) => `${value} Lei`,
+      formatDate: (date: Date) => date.toLocaleDateString('ro-RO'),
+      formatNumber: (value: number) => value.toString()
+    }
     const [isSwipeActive, setIsSwipeActive] = React.useState(false)
     const startXRef = React.useRef(0)
     

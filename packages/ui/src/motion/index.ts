@@ -1,8 +1,10 @@
 /**
  * Motion system exports for Modern Hearth Theme
  * Provides hooks and utilities for animations
+ * Updated pentru Framer Motion v12+ compatibility
  */
 
+// Existing exports
 export { useMotionPolicy } from './useMotionPolicy';
 export type { MotionPolicy } from './useMotionPolicy';
 export { useReducedMotion } from './useReducedMotion';
@@ -16,7 +18,28 @@ export {
   removeGPUAcceleration,
 } from './useGPUOptimization';
 export { usePerformanceMonitor, useAdaptiveQuality } from './usePerformanceMonitor';
-export { MotionProvider, useMotionSettings, MotionDebugPanel } from './MotionProvider';
+export { useMotionSettings, MotionDebugPanel } from './MotionProvider';
+
+// Framer Motion v12+ configuration și variants
+export { 
+  MotionProvider, 
+  MotionProviderMax, 
+  motionConfig,
+  m  // Lazy motion component
+} from './config';
+export * from './variants';
+
+// Framer Motion v12+ hooks
+export {
+  useScrollMotion,
+  useScrollProgress,
+  useParallaxScroll,
+  useScrollFadeIn,
+  useScrollScale,
+  useScrollVelocity,
+  useStickyHeader,
+  scrollHooks,
+} from './hooks/useScrollMotion';
 
 // Re-export motion CSS for easy importing
 export const motionStyles = '/styles/motion.css';

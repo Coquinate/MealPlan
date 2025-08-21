@@ -24,40 +24,54 @@ export const semanticColors = {
   'primary-warm-light': 'var(--color-primary-warm-light)', // Light warm
   'primary-warm-dark': 'var(--color-primary-warm-dark)', // Dark warm
 
-  // Grayscale system - Perfect for UI elements
-  gray: 'oklch(50% 0 0)', // Base gray
-  'gray-50': 'oklch(98% 0 0)', // Almost white
-  'gray-100': 'oklch(96% 0 0)', // Very light
-  'gray-200': 'oklch(92% 0 0)', // Light
-  'gray-300': 'oklch(86% 0 0)', // Medium light
-  'gray-400': 'oklch(70% 0 0)', // Medium
-  'gray-500': 'oklch(50% 0 0)', // Base
-  'gray-600': 'oklch(45% 0 0)', // Medium dark
-  'gray-700': 'oklch(35% 0 0)', // Dark
-  'gray-800': 'oklch(25% 0 0)', // Very dark
-  'gray-900': 'oklch(15% 0 0)', // Darkest
+  // Grayscale system - Unified with CSS variables for theming
+  gray: 'var(--color-gray)', // Base gray
+  'gray-50': 'var(--color-gray-50)', // Almost white
+  'gray-100': 'var(--color-gray-100)', // Very light
+  'gray-200': 'var(--color-gray-200)', // Light
+  'gray-300': 'var(--color-gray-300)', // Medium light
+  'gray-400': 'var(--color-gray-400)', // Medium
+  'gray-600': 'var(--color-gray-600)', // Medium dark
+  'gray-700': 'var(--color-gray-700)', // Dark
+  'gray-800': 'var(--color-gray-800)', // Very dark
+  'gray-900': 'var(--color-gray-900)', // Darkest
 
-  // Status colors - Flat for easy customization
-  error: 'oklch(60% 0.2 25)', // Base error
-  'error-50': 'oklch(96% 0.08 25)', // Error background
-  'error-100': 'oklch(92% 0.12 25)', // Light error
-  'error-500': 'oklch(60% 0.2 25)', // Base
-  'error-700': 'oklch(45% 0.25 25)', // Dark error
-  'error-900': 'oklch(30% 0.22 25)', // Darkest error
+  // Status colors - Complete CSS variable scales for consistent theming
+  error: 'var(--color-error)', // Base error (500)
+  'error-50': 'var(--color-error-50)', // Lightest error
+  'error-100': 'var(--color-error-100)', // Very light error
+  'error-200': 'var(--color-error-200)', // Light error
+  'error-300': 'var(--color-error-300)', // Medium-light error
+  'error-400': 'var(--color-error-400)', // Medium error
+  'error-500': 'var(--color-error-500)', // Base error
+  'error-600': 'var(--color-error-600)', // Medium-dark error
+  'error-700': 'var(--color-error-700)', // Dark error
+  'error-800': 'var(--color-error-800)', // Very dark error
+  'error-900': 'var(--color-error-900)', // Darkest error
 
-  success: 'oklch(65% 0.15 145)', // Base success
-  'success-50': 'oklch(95% 0.06 145)', // Success background
-  'success-100': 'oklch(90% 0.1 145)', // Light success
-  'success-500': 'oklch(65% 0.15 145)', // Base
-  'success-700': 'oklch(50% 0.18 145)', // Dark success
-  'success-900': 'oklch(35% 0.16 145)', // Darkest success
+  success: 'var(--color-success)', // Base success (500)
+  'success-50': 'var(--color-success-50)', // Lightest success
+  'success-100': 'var(--color-success-100)', // Very light success
+  'success-200': 'var(--color-success-200)', // Light success
+  'success-300': 'var(--color-success-300)', // Medium-light success
+  'success-400': 'var(--color-success-400)', // Medium success
+  'success-500': 'var(--color-success-500)', // Base success
+  'success-600': 'var(--color-success-600)', // Medium-dark success
+  'success-700': 'var(--color-success-700)', // Dark success
+  'success-800': 'var(--color-success-800)', // Very dark success
+  'success-900': 'var(--color-success-900)', // Darkest success
 
-  warning: 'oklch(75% 0.15 85)', // Base warning
-  'warning-50': 'oklch(96% 0.06 85)', // Warning background
-  'warning-100': 'oklch(92% 0.1 85)', // Light warning
-  'warning-500': 'oklch(75% 0.15 85)', // Base
-  'warning-700': 'oklch(65% 0.18 85)', // Dark warning
-  'warning-900': 'oklch(45% 0.16 85)', // Darkest warning
+  warning: 'var(--color-warning)', // Base warning (500)
+  'warning-50': 'var(--color-warning-50)', // Lightest warning
+  'warning-100': 'var(--color-warning-100)', // Very light warning
+  'warning-200': 'var(--color-warning-200)', // Light warning
+  'warning-300': 'var(--color-warning-300)', // Medium-light warning
+  'warning-400': 'var(--color-warning-400)', // Medium warning
+  'warning-500': 'var(--color-warning-500)', // Base warning
+  'warning-600': 'var(--color-warning-600)', // Medium-dark warning
+  'warning-700': 'var(--color-warning-700)', // Dark warning
+  'warning-800': 'var(--color-warning-800)', // Very dark warning
+  'warning-900': 'var(--color-warning-900)', // Darkest warning
 
   // Modern Hearth Coral Accent System (using CSS variables)
   'accent-coral': 'var(--color-accent-coral)', // Base coral accent
@@ -76,12 +90,13 @@ export const semanticColors = {
   'accent-coral-soft': 'var(--color-accent-coral-soft)', // Soft coral
   'accent-coral-deep': 'var(--color-accent-coral-deep)', // Deep coral
 
-  // Surface system - Simplified hierarchy
-  surface: 'oklch(98% 0 0)', // Base surface
-  'surface-eggshell': 'oklch(98% 0.004 75)', // Eggshell background (from mockup)
-  'surface-raised': 'oklch(100% 0 0)', // Elevated cards
-  'surface-sunken': 'oklch(96% 0 0)', // Inset areas
-  'surface-hover': 'oklch(94% 0 0)', // Hover states
+  // Surface system - Unified CSS variables for theming
+  surface: 'var(--color-surface)', // Base surface
+  'surface-white': 'var(--color-surface-white)', // Pure white (for nav, cards)
+  'surface-eggshell': 'var(--color-surface-eggshell)', // Eggshell background (from mockup)
+  'surface-raised': 'var(--color-surface-raised)', // Elevated cards
+  'surface-sunken': 'var(--color-surface-sunken)', // Inset areas
+  'surface-hover': 'var(--color-surface-hover)', // Hover states
 
   // Modern Hearth Glass Morphism Surfaces (using CSS variables)
   'surface-glass': 'var(--color-surface-glass)', // Glass base
@@ -89,129 +104,106 @@ export const semanticColors = {
   'surface-glass-border': 'var(--color-surface-glass-border)', // Glass borders
   'surface-glass-subtle': 'var(--color-surface-glass-subtle)', // Subtle glass
 
-  // Text system - Multiple variants
-  text: 'oklch(20% 0 0)', // Primary text
-  'text-secondary': 'oklch(45% 0 0)', // Secondary text
-  'text-muted': 'oklch(65% 0 0)', // Muted text
-  'text-subtle': 'oklch(75% 0 0)', // Subtle text
-  'text-inverse': 'oklch(95% 0 0)', // On dark backgrounds
-  'text-disabled': 'oklch(80% 0 0)', // Disabled state
+  // Text system - Unified CSS variables for theming
+  text: 'var(--color-text)', // Primary text
+  'text-secondary': 'var(--color-text-secondary)', // Secondary text
+  'text-muted': 'var(--color-text-muted)', // Muted text
+  'text-subtle': 'var(--color-text-subtle)', // Subtle text
+  'text-inverse': 'var(--color-text-inverse)', // On dark backgrounds
+  'text-disabled': 'var(--color-text-disabled)', // Disabled state
 
-  // Border system - Multiple weights
-  border: 'oklch(92% 0 0)', // Default border
-  'border-light': 'oklch(94% 0 0)', // Light borders (for sections)
-  'border-strong': 'oklch(85% 0 0)', // Strong borders
-  'border-subtle': 'oklch(96% 0 0)', // Subtle dividers
-  'border-muted': 'oklch(94% 0 0)', // Muted borders
-  'border-focus': 'oklch(58% 0.08 200)', // Focus borders - Updated to new primary
+  // Border system - Unified CSS variables for theming
+  border: 'var(--color-border)', // Default border
+  'border-light': 'var(--color-border-light)', // Light borders (for sections)
+  'border-strong': 'var(--color-border-strong)', // Strong borders
+  'border-subtle': 'var(--color-border-subtle)', // Subtle dividers
+  'border-muted': 'var(--color-border-muted)', // Muted borders
+  'border-focus': 'var(--color-border-focus)', // Focus borders - Updated to new primary
 
-  // Dark surface variants for feature sections
-  'dark-surface': 'oklch(15% 0.01 200)', // Dark background with subtle teal
-  'dark-surface-raised': 'oklch(18% 0.01 200)', // Elevated dark cards
-  'text-light': 'oklch(92% 0 0)', // Light text for dark backgrounds
+  // Dark surface variants for feature sections - CSS variables for consistency
+  'dark-surface': 'var(--color-dark-surface)', // Dark background with subtle teal
+  'dark-surface-raised': 'var(--color-dark-surface-raised)', // Elevated dark cards
+  'text-light': 'var(--color-text-light)', // Light text for dark backgrounds
+  
+  // Brand colors for social media integrations
+  'brand-facebook': '#1877F2', // Facebook brand blue
+  'brand-facebook-hover': '#166FE5', // Facebook hover blue
+  'brand-whatsapp': '#25D366', // WhatsApp brand green
+  'brand-whatsapp-hover': '#22C55E', // WhatsApp hover green
+  
+  // Semantic text colors - Unified CSS variables (formerly surface-XX tokens)
+  'text-muted-secondary': 'var(--color-text-muted-secondary)', // Medium gray text (was surface-60)
+  'text-high-contrast': 'var(--color-text-high-contrast)', // Dark text (was surface-20)
+  'text-medium-contrast': 'var(--color-text-medium-contrast)', // Medium dark text (was surface-45)
+  // Note: border-light and border-subtle already defined above in border system
 };
 
-// Modern Hearth Dark Mode Colors (Expert Feedback: Reduce coral saturation by 10-15%)
-export const darkModeColors = {
-  // Primary warm teal in dark mode
-  primary: 'oklch(65% 0.08 200)',
-  'primary-50': 'oklch(25% 0.06 200)', // Inverted hierarchy for dark
-  'primary-100': 'oklch(30% 0.06 200)',
-  'primary-200': 'oklch(35% 0.07 200)',
-  'primary-300': 'oklch(45% 0.07 200)',
-  'primary-400': 'oklch(55% 0.08 200)',
-  'primary-500': 'oklch(65% 0.08 200)', // Base (DEFAULT)
-  'primary-600': 'oklch(70% 0.07 200)',
-  'primary-700': 'oklch(75% 0.06 200)',
-  'primary-800': 'oklch(80% 0.05 200)',
-  'primary-900': 'oklch(90% 0.03 200)', // Lightest in dark
+// UNIFIED DARK MODE STRATEGY
+// ===========================
+// Dark mode is now handled through CSS variables defined in the global CSS.
+// All colors in semanticColors use var(--color-*) which automatically adapt
+// to light/dark themes through CSS custom properties.
+//
+// Benefits:
+// - Single source of truth for colors
+// - Runtime theme switching
+// - Easier maintenance and consistency
+// - Better performance (no duplicate definitions)
+//
+// Implementation:
+// Light mode values are defined as :root CSS variables
+// Dark mode values override these in .dark or [data-theme="dark"] selectors
+//
+// Example CSS structure:
+// :root {
+//   --color-primary: /* light mode primary color */;
+//   --color-surface: /* light mode surface color */;
+// }
+// .dark {
+//   --color-primary: /* dark mode primary color */;
+//   --color-surface: /* dark mode surface color */;
+// }
 
-  'primary-warm': 'oklch(65% 0.08 200)',
-  'primary-warm-light': 'oklch(75% 0.06 200)',
-  'primary-warm-dark': 'oklch(55% 0.09 200)',
-
-  // Modern coral accent - REDUCED saturation for dark mode (0.18 → 0.15, -17%)
-  'accent-coral': 'oklch(75% 0.15 20)', // Reduced from 0.18 to 0.15
-  'accent-coral-50': 'oklch(45% 0.13 20)', // Dark base
-  'accent-coral-100': 'oklch(50% 0.13 20)',
-  'accent-coral-200': 'oklch(55% 0.14 20)',
-  'accent-coral-300': 'oklch(60% 0.14 20)',
-  'accent-coral-400': 'oklch(65% 0.15 20)',
-  'accent-coral-500': 'oklch(75% 0.15 20)', // Base
-  'accent-coral-600': 'oklch(80% 0.14 20)',
-  'accent-coral-700': 'oklch(85% 0.13 20)',
-  'accent-coral-800': 'oklch(90% 0.12 20)',
-  'accent-coral-900': 'oklch(95% 0.10 20)', // Lightest
-
-  'accent-coral-soft': 'oklch(82% 0.10 20)', // Reduced from 0.12 to 0.10
-  'accent-coral-deep': 'oklch(65% 0.17 20)', // For buttons with more contrast
-
-  // Dark surfaces with warmth
-  surface: 'oklch(15% 0.01 200)', // Slight teal tint
-  'surface-raised': 'oklch(18% 0.01 200)',
-  'surface-sunken': 'oklch(12% 0.01 200)',
-  'surface-hover': 'oklch(20% 0.01 200)',
-  'surface-glass': 'var(--color-surface-glass)',
-  'surface-glass-elevated': 'var(--color-surface-glass-elevated)',
-  'surface-glass-border': 'var(--color-surface-glass-border)',
-  'surface-glass-subtle': 'var(--color-surface-glass-subtle)',
-
-  // Text hierarchy for dark
-  text: 'oklch(92% 0 0)',
-  'text-secondary': 'oklch(70% 0 0)',
-  'text-muted': 'oklch(50% 0 0)',
-  'text-subtle': 'oklch(40% 0 0)',
-  'text-inverse': 'oklch(15% 0 0)',
-  'text-disabled': 'oklch(45% 0 0)',
-
-  // Borders softer in dark
-  border: 'oklch(25% 0.01 200)',
-  'border-strong': 'oklch(35% 0.01 200)',
-  'border-subtle': 'oklch(20% 0.01 200)',
-  'border-muted': 'oklch(22% 0.01 200)',
-  'border-focus': 'oklch(65% 0.08 200)',
-};
-
-// Context-Aware Color Modes (Updated for Modern Hearth)
+// Context-Aware Color Modes - Unified with CSS Variables (Duplications Removed)
 export const contextColors = {
-  // Planning Mode - Calm decision-making with warm teal
+  // Planning Mode - Uses default color system (references base colors)
   planning: {
-    primary: 'oklch(58% 0.08 200)', // Modern Hearth warm teal
-    surface: 'oklch(98% 0 0)', // Clean white
-    'surface-raised': 'oklch(100% 0 0)', // Pure white cards
-    text: 'oklch(20% 0 0)', // Near black
-    'text-secondary': 'oklch(45% 0 0)', // Subdued gray
-    border: 'oklch(92% 0 0)', // Light borders
+    primary: 'var(--color-primary)', // References main primary color
+    surface: 'var(--color-surface)', // References main surface
+    'surface-raised': 'var(--color-surface-raised)', // References main raised surface
+    text: 'var(--color-text)', // References main text
+    'text-secondary': 'var(--color-text-secondary)', // References main secondary text
+    border: 'var(--color-border)', // References main border
   },
 
-  // Shopping Mode - High contrast for stores/sunlight
+  // Shopping Mode - High contrast for stores/sunlight (unique values only)
   shopping: {
-    primary: 'oklch(20% 0 0)', // Maximum contrast black
-    surface: 'oklch(100% 0 0)', // Pure white
-    checked: 'oklch(55% 0.18 145)', // Check-off green
-    text: 'oklch(10% 0 0)', // Pure black
-    highlight: 'oklch(95% 0.15 85)', // Yellow highlight
-    border: 'oklch(85% 0 0)', // Stronger borders
+    primary: 'var(--color-gray-900)', // Maximum contrast - reference existing gray
+    surface: 'var(--color-surface-white)', // Pure white
+    checked: 'var(--color-success)', // Check-off green - reference success
+    text: 'var(--color-gray-900)', // Pure black - reference existing gray
+    highlight: 'var(--color-warning-100)', // Yellow highlight - reference warning light
+    border: 'var(--color-border-strong)', // Stronger borders - reference existing
   },
 
-  // Cooking Mode - Warm and engaging
+  // Cooking Mode - Warm and engaging (unique context-specific colors)
   cooking: {
-    primary: 'oklch(65% 0.18 35)', // Energetic orange
-    surface: 'oklch(98% 0.02 40)', // Warm white
-    'active-step': 'oklch(70% 0.2 30)', // Current step highlight
-    'timer-urgent': 'oklch(60% 0.2 25)', // Timer warning
-    complete: 'oklch(65% 0.15 145)', // Step complete
-    text: 'oklch(25% 0.02 40)', // Warm black
+    primary: 'var(--color-cooking-primary)', // Energetic orange - unique context color
+    surface: 'var(--color-cooking-surface)', // Warm white - unique context color
+    'active-step': 'var(--color-cooking-active-step)', // Current step highlight - unique
+    'timer-urgent': 'var(--color-error)', // References main error color
+    complete: 'var(--color-success)', // References main success color
+    text: 'var(--color-cooking-text)', // Warm black - unique context color
   },
 };
 
-// Food Freshness Indicator Colors (Sustainability Feature)
+// Food Freshness Indicator Colors - Unified with Main Color System (Duplications Removed)
 export const freshnessColors = {
-  fresh: 'oklch(65% 0.15 145)', // >7 days - green
-  good: 'oklch(70% 0.08 145)', // 4-7 days - muted green
-  'use-soon': 'oklch(75% 0.15 85)', // 2-3 days - yellow
-  'use-today': 'oklch(70% 0.18 45)', // 1 day - orange
-  expired: 'oklch(60% 0.2 25)', // 0 days - red
+  fresh: 'var(--color-success)', // >7 days - references main success color
+  good: 'var(--color-freshness-good)', // 4-7 days - unique muted green
+  'use-soon': 'var(--color-warning)', // 2-3 days - references main warning color
+  'use-today': 'var(--color-freshness-use-today)', // 1 day - unique orange
+  expired: 'var(--color-error)', // 0 days - references main error color
 };
 
 // Modern Hearth Font Families (Shared Design System)
@@ -259,6 +251,11 @@ export const fontSize = {
   timer: ['1.75rem', { lineHeight: '1.2', fontWeight: '700' }], // 28px - Glanceable
   ingredients: ['1.125rem', { lineHeight: '1.6', fontWeight: '400' }], // 18px minimum
   'next-step': ['1rem', { lineHeight: '1.5', fontWeight: '400' }], // 16px - Preview
+
+  // Landing page specific sizes
+  logo: ['1.875rem', { lineHeight: '1.2', fontWeight: '600' }], // 30px - Main logo
+  'footer-logo': ['1.5rem', { lineHeight: '1.2', fontWeight: '600' }], // 24px - Footer logo  
+  'form-title': ['1.125rem', { lineHeight: '1.4', fontWeight: '600' }], // 18px - Email capture title
 
   // Standard sizes
   xs: ['0.75rem', { lineHeight: '1rem' }], // 12px
@@ -374,6 +371,8 @@ export const boxShadow = {
   xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)', // Dropdowns
 
   // Semantic shadows
+  soft: '0 4px 20px rgba(0, 0, 0, 0.06)', // Soft shadow from mock
+  hover: '0 8px 30px rgba(0, 0, 0, 0.1)', // Hover shadow from mock
   card: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
   modal: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   button: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
@@ -428,7 +427,8 @@ export const zIndex = {
   70: '70', // Notifications
   80: '80', // Tooltips
   90: '90', // Critical overlays
-  100: '100', // Maximum priority
+  100: '100', // Maximum priority - navigation
+  confetti: '9999', // Confetti overlay effect
 };
 
 // Opacity Scale
@@ -460,6 +460,26 @@ export const width = {
   // Form elements
   'input-min': '200px', // Minimum input width
   'select-min': '150px', // Minimum select width
+  
+  // Landing page workflow nodes
+  'workflow-card': '220px', // Width for workflow visualization cards
+};
+
+// Component-specific heights
+export const height = {
+  // Navigation and layout
+  header: '88px', // Main header height
+  'progress-bar': '2px', // Progress indicator height
+};
+
+// Minimum height values
+export const minHeight = {
+  // Landing page workflow
+  'workflow-min': '500px', // Minimum height for workflow visualization container
+  // Standard values for consistency
+  0: '0px',
+  full: '100%',
+  screen: '100vh',
 };
 
 // Ring widths for focus states
@@ -548,7 +568,9 @@ export const maxWidth = {
   full: '100%',
   prose: '65ch', // Readable width
   content: '550px', // Content max width for landing page
+  container: '1200px', // Main layout container max width
 };
+
 
 // Aspect ratios
 export const aspectRatio = {
@@ -609,50 +631,12 @@ export const transitionTimingFunction = {
   'in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
 };
 
-// Romanian-Specific Formatting Tokens
-export const romanianFormats = {
-  // Number formatting
-  numberFormat: {
-    locale: 'ro-RO',
-    decimal: ',',
-    thousands: '.',
-    precision: 2,
-  },
 
-  // Currency formatting
-  currencyFormat: {
-    locale: 'ro-RO',
-    currency: 'RON',
-    symbol: 'lei',
-    position: 'suffix', // "25 lei"
-    spacing: true,
-  },
-
-  // Date formatting
-  dateFormat: {
-    locale: 'ro-RO',
-    weekStartsOn: 1, // Monday
-    formats: {
-      short: 'DD.MM.YYYY',
-      long: 'D MMMM YYYY',
-      dayMonth: 'D MMM',
-      weekday: 'dddd',
-      time: 'HH:mm',
-    },
-  },
-
-  // Time formatting
-  timeFormat: {
-    use24Hour: true,
-    separator: ':',
-  },
-};
-
-// Complete Design Tokens Export
+// Complete Design Tokens Export - Unified CSS Variables Strategy
 export const designTokens = {
   colors: {
     ...semanticColors,
-    dark: darkModeColors,
+    // Note: Dark mode now handled through CSS variables, no separate dark object needed
     context: contextColors,
     freshness: freshnessColors,
   },
@@ -667,6 +651,8 @@ export const designTokens = {
   zIndex,
   opacity,
   width,
+  height,
+  minHeight, // Minimum height tokens
   ringWidth,
   ringOffsetWidth,
   lineClamp,
@@ -679,11 +665,8 @@ export const designTokens = {
   gridTemplateRows,
   transitionDuration,
   transitionTimingFunction,
-  romanian: romanianFormats,
 };
 
-// Romanian utilities alias
-export const romanianUtils = romanianFormats;
 
 // Default export for Tailwind config
 export default designTokens;

@@ -14,6 +14,7 @@ export * from './toast';
 // Landing page components
 export * from './email-capture';
 export * from './floating-elements';
+export * from './navigation';
 
 // Meal-specific components
 export * from './meal-card';

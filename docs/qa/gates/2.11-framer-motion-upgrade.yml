@@ -1,0 +1,94 @@
+schema: 1
+story: '2.11'
+story_title: 'Framer Motion Upgrade - Brownfield Enhancement'
+gate: FAIL
+status_reason: 'CRITICAL RUNTIME FAILURES CONFIRMED: ShareWidget completely unusable due to animation instability. Email signup API fails with 5+ minute timeout. Core functionality is broken in production.'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-01-20T14:30:00Z'
+
+top_issues:
+  - severity: critical
+    category: runtime
+    description: 'ShareWidget completely broken - TimeoutError after 5s, elements unstable due to FloatingParticles animations'
+    refs: ['packages/ui/src/components/landing/components/ShareWidget.tsx', '.playwright-mcp/email-form-loading-stuck.png']
+    suggested_owner: dev
+  - severity: critical
+    category: api
+    description: 'Email signup API timeout - POST /api/subscribe fails with UND_ERR_HEADERS_TIMEOUT after 306 seconds'
+    refs: ['apps/web/src/app/api/subscribe/route.ts:54', '.playwright-mcp/email-form-loading-stuck.png']
+    suggested_owner: dev
+  - severity: high
+    category: performance
+    description: 'Bundle size 893KB exceeds recommended limits, impacting initial load performance'
+    refs: ['apps/web/.next/build-manifest.json']
+    suggested_owner: dev
+  - severity: medium
+    category: testing
+    description: 'Test coverage gaps - missing unit tests for motion hooks and performance benchmarks'
+    refs: ['tests/framer-motion.spec.ts']
+    suggested_owner: dev
+  - severity: medium
+    category: compatibility
+    description: 'React 19.1 experimental version may cause runtime instability'
+    refs: ['package.json']
+    suggested_owner: po
+
+waiver: { active: false }
+
+quality_score: 20  # 100 - (20*2 critical) - (10*4 other) = 20
+
+expires: '2025-02-03T14:30:00Z'
+
+evidence:
+  tests_reviewed: 15
+  risks_identified: 4
+  trace:
+    ac_covered: [1, 2, 3, 4, 5]
+    ac_gaps: []
+
+nfr_validation:
+  security:
+    status: PASS
+    notes: 'No security vulnerabilities identified. LocalStorage handling properly implemented.'
+  performance:
+    status: CONCERNS
+    notes: 'Bundle size 893KB is excessive. Particle count reduced from 15 to 8 for performance. No runtime performance monitoring.'
+  reliability:
+    status: CONCERNS
+    notes: 'Runtime errors reported in changelog 1.15. Components not rendering despite fixes. No error boundaries for animation failures.'
+  maintainability:
+    status: PASS
+    notes: 'Good SOLID principles applied. Proper component decomposition. Clear separation of concerns.'
+
+recommendations:
+  immediate:
+    - action: 'Validate runtime fixes in staging environment with full E2E testing'
+      refs: ['packages/ui/src/motion/config.tsx']
+    - action: 'Implement bundle optimization - code splitting and tree shaking (target <600KB)'
+      refs: ['packages/ui/package.json', 'apps/web/next.config.js']
+    - action: 'Add error boundaries to all motion components'
+      refs: ['packages/ui/src/components/landing/components/']
+  future:
+    - action: 'Implement runtime performance monitoring dashboard'
+      refs: ['apps/web/src/lib/monitoring.ts']
+    - action: 'Add unit tests for all motion hooks'
+      refs: ['packages/ui/src/motion/hooks/']
+    - action: 'Create performance benchmark tests with FPS monitoring'
+      refs: ['tests/performance/']
+    - action: 'Consider downgrading to stable React 18.x for production'
+      refs: ['package.json']
+
+test_architecture_notes: |
+  The implementation demonstrates good architectural patterns with proper SOLID decomposition.
+  However, the test pyramid is inverted - heavy on E2E tests but lacking unit tests for 
+  individual motion hooks and components. Test selectors using data-testid may not match
+  actual implementation, creating false positives.
+  
+  Critical gaps:
+  - No LazyMotion failure scenario tests
+  - No hydration mismatch tests  
+  - No performance benchmark tests
+  - Missing unit tests for motion utilities
+  
+  The runtime issues discovered in changelog 1.15 indicate insufficient integration testing
+  during development. A staging environment validation is critical before production deployment.

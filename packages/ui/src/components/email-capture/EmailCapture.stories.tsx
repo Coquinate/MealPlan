@@ -23,7 +23,7 @@ const meta: Meta<typeof EmailCapture> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['glass', 'simple', 'inline'],
+      options: ['glass', 'simple', 'inline', 'promo'],
       description: 'Component variant for different styling approaches',
     },
     withFloatingElements: {
@@ -123,6 +123,42 @@ export const Inline: Story = {
       const successElement = canvas.getByRole('status');
       expect(successElement).toBeInTheDocument();
     }).toPass({ timeout: 2000 });
+  },
+};
+
+/**
+ * 🎯 Promo Variant - Promotional design with special offer
+ */
+export const Promo: Story = {
+  args: {
+    variant: 'promo',
+    onSuccess: fn(),
+    onError: fn(),
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('User types email address', async () => {
+      const input = canvas.getByPlaceholderText('adresa@email.com');
+      await userEvent.type(input, 'test@mockup.com');
+      expect(input).toHaveValue('test@mockup.com');
+    });
+
+    await step('User accepts GDPR consent', async () => {
+      const checkbox = canvas.getByRole('checkbox');
+      await userEvent.click(checkbox);
+      expect(checkbox).toBeChecked();
+    });
+
+    await step('User submits form', async () => {
+      const button = canvas.getByRole('button', { name: /prinde oferta/i });
+      await userEvent.click(button);
+    });
+
+    await step('Success message appears', async () => {
+      const successMessage = await canvas.findByRole('status');
+      expect(successMessage).toBeInTheDocument();
+    });
   },
 };
 

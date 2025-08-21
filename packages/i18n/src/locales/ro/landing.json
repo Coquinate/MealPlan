@@ -4,7 +4,7 @@
     "subtitle": "Economisește 3+ ore săptămânal cu planificarea automată a meselor",
     "cta": "Anunță-mă când lansăm",
     "title_line1": "Spune adio întrebării",
-    "title_line2": "„Ce mâncăm azi?",
+    "title_line2": "\"Ce mâncăm azi?\"",
     "description": "Primește săptămânal un plan de mese inteligent, conceput să elimine efortul și risipa. Descoperă rețete creative unde ",
     "description_highlight": "gătești o singură dată și mănânci de trei ori."
   },
@@ -69,7 +69,7 @@
     }
   },
   "email": {
-    "special_offer_title": "Înscrie-te pe lista de așteptare",
+    "special_offer_title": "Primii 500 înscriși primesc o lună de acces gratuit!",
     "label": "Email pentru notificări",
     "placeholder": "adresa@email.com",
     "button": "Înscrie-te",
@@ -108,6 +108,22 @@
   },
   "status": {
     "launching_soon": "Lansare în curând"
+  },
+  "share": {
+    "title": "Coquinate - Spune adio întrebării \"Ce mâncăm azi?\"",
+    "description": "Platformă românească de planificare meniuri și urmărire nutrițională cu funcții AI pentru personalizarea meselor.",
+    "help_us": "Îți place ideea? Ajută-ne să ajungem la mai multe familii!",
+    "share": "Distribuie",
+    "copied": "Copiat!",
+    "copy": "Copiază link",
+    "facebook": "Facebook",
+    "whatsapp": "WhatsApp",
+    "email": "Email"
+  },
+  "progress": {
+    "spots_taken": "{{current}} din {{total}} locuri ocupate",
+    "spots_remaining": "{{remaining}} rămase",
+    "percentage_reserved": "din locurile gratuite sunt deja rezervate"
   },
   "workflow": {
     "title": "Cum funcționează Coquinate?",

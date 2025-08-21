@@ -113,5 +113,49 @@
   "app": {
     "title": "Coquinate",
     "demo": "Demo"
+  },
+  "hero": {
+    "cta": "Anunță-mă când lansăm"
+  },
+  "email": {
+    "special_offer_title": "Primii 500 înscriși primesc o lună de acces gratuit!",
+    "label": "Email pentru notificări",
+    "placeholder": "adresa@email.com",
+    "button": "Înscrie-te",
+    "loading": "Se trimite...",
+    "success": "Te-ai înscris cu succes! Ești în grupul primilor 500 utilizatori!",
+    "phase_info": "În curând - Implementare Faza 3",
+    "errors": {
+      "invalid_email": "Te rugăm să introduci o adresă de email validă",
+      "already_subscribed": "Ești deja abonat la newsletter",
+      "rate_limited": "Prea multe încercări. Încearcă din nou în 5 minute.",
+      "server_error": "Eroare de server. Te rugăm să încerci din nou."
+    }
+  },
+  "error": {
+    "notFound": {
+      "title": "Pagina nu a fost găsită",
+      "description": "Ne pare rău, pagina pe care o cauți nu există sau a fost mutată.",
+      "errorCode": "Cod eroare",
+      "backToMain": "Înapoi la panoul principal",
+      "homePage": "Pagina principală",
+      "login": "Autentificare",
+      "contactMessage": "Dacă crezi că aceasta este o eroare, contactează-ne la"
+    },
+    "boundary": {
+      "title": "Ceva nu a mers bine",
+      "description": "Ne pare rău pentru inconvenient. A apărut o problemă neașteptată.",
+      "errorId": "ID eroare",
+      "tryAgain": "Încearcă din nou",
+      "reloadPage": "Reîncarcă pagina",
+      "goHome": "Înapoi acasă",
+      "persistMessage": "Dacă problema persistă, contactează suportul la",
+      "mentionId": "și menționează ID-ul erorii"
+    },
+    "general": {
+      "title": "Eroare",
+      "description": "A apărut o eroare neașteptată",
+      "backToPrivacy": "Înapoi la pagina principală"
+    }
   }
 }

@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO de Bază -->
+    <title>Coquinate - Planificarea inteligentă a meselor pentru familiile din România</title>
+    <meta name="description" content="Spune adio întrebării „Ce mâncăm azi?". Coquinate îți oferă planuri de mese săptămânale, liste de cumpărături inteligente și rețete creative pentru a economisi timp și a reduce risipa.">
+    
+    <!-- Favicon (de înlocuit cu fișierele reale) -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <style>
+        /* --- Reset & Font Import --- */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+        /* --- Paleta de Culori & Variabile --- */
+        :root {
+            --primary-warm: oklch(58% 0.08 200);
+            --primary-warm-dark: oklch(45% 0.09 200);
+            --accent-coral: oklch(70% 0.18 20);
+            --accent-coral-soft: oklch(78% 0.12 20);
+            
+            --surface-eggshell: oklch(98% 0.004 75);
+            --surface-white: oklch(100% 0 0);
+            
+            --dark-surface: oklch(15% 0.01 200);
+            --dark-surface-raised: oklch(18% 0.01 200);
+            
+            --text-primary: oklch(20% 0 0);
+            --text-secondary: oklch(45% 0 0);
+            --text-light: oklch(92% 0 0);
+            --text-muted: oklch(60% 0 0);
+            
+            --border-light: oklch(90% 0 0);
+            --shadow-soft: 0 4px 20px oklch(0% 0 0 / 0.06);
+            --shadow-hover: 0 8px 30px oklch(0% 0 0 / 0.1);
+        }
+
+        /* --- Stiluri de Bază --- */
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--surface-eggshell);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lexend', sans-serif;
+            font-weight: 700;
+        }
+
+        /* --- Container & Spacing Utilities --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .container { padding: 0 1.5rem; }
+        }
+        
+        @media (min-width: 1024px) {
+            .container { padding: 0 2rem; }
+        }
+
+        /* --- Navigation Responsive --- */
+        nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        
+        @media (min-width: 768px) {
+            nav { padding: 0.75rem 0; }
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-warm);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        @media (min-width: 640px) {
+            .logo { font-size: 1.875rem; }
+        }
+        
+        .logo:hover {
+            transform: scale(1.05) rotate(1deg);
+            color: var(--accent-coral);
+        }
+        
+        /* Progress Counter Responsive */
+        .progress-counter-nav {
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: var(--surface-eggshell);
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        
+        @media (min-width: 640px) {
+            .progress-counter-nav { display: flex; }
+        }
+        
+        .progress-counter-mobile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--surface-eggshell);
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (min-width: 640px) {
+            .progress-counter-mobile { display: none; }
+        }
+        
+        .pulse-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            background: var(--accent-coral);
+            border-radius: 50%;
+            animation: subtle-pulse 2s ease-in-out infinite;
+        }
+        
+        @media (min-width: 640px) {
+            .pulse-dot {
+                width: 0.625rem;
+                height: 0.625rem;
+            }
+        }
+
+        /* --- Hero Section Responsive --- */
+        .hero {
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+        
+        @media (min-width: 768px) {
+            .hero { padding: 3rem 0; }
+        }
+        
+        @media (min-width: 1024px) {
+            .hero { padding: 4rem 0; }
+        }
+        
+        /* Mobile Layout (Default) */
+        .hero-mobile {
+            display: block;
+        }
+        
+        .hero-desktop {
+            display: none;
+        }
+        
+        @media (min-width: 1024px) {
+            .hero-mobile { display: none; }
+            .hero-desktop { 
+                display: grid;
+                grid-template-columns: 1.1fr 1fr;
+                gap: 4rem;
+                align-items: center;
+            }
+        }
+        
+        .hero-title {
+            font-size: 2.75rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        @media (min-width: 1024px) {
+            .hero-title {
+                font-size: 3.5rem;
+                text-align: left;
+            }
+        }
+        
+        .hero-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        @media (min-width: 1024px) {
+            .hero-description {
+                font-size: 1.25rem;
+                text-align: left;
+            }
+        }
+        
+        /* Stats Grid Responsive */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem 0;
+        }
+        
+        @media (min-width: 1024px) {
+            .stats-grid {
+                gap: 1.5rem;
+                margin-bottom: 2.5rem;
+                padding: 1.5rem 0;
+            }
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-warm);
+        }
+        
+        @media (min-width: 1024px) {
+            .stat-number { font-size: 2rem; }
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        @media (min-width: 1024px) {
+            .stat-label { font-size: 0.875rem; }
+        }
+
+        /* --- Workflow Section Responsive --- */
+        .workflow-section {
+            padding: 3rem 0;
+            background: var(--surface-white);
+            position: relative;
+        }
+        
+        @media (min-width: 640px) {
+            .workflow-section { padding: 4rem 0; }
+        }
+        
+        @media (min-width: 768px) {
+            .workflow-section { padding: 5rem 0; }
+        }
+        
+        /* Mobile Workflow (Timeline) */
+        .workflow-mobile {
+            display: block;
+            max-width: 280px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        @media (min-width: 1024px) {
+            .workflow-mobile { display: none; }
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-coral), var(--primary-warm), var(--accent-coral));
+            opacity: 0.3;
+        }
+        
+        .timeline-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .timeline-item:nth-child(odd) { flex-direction: row-reverse; }
+        .timeline-item:nth-child(even) { flex-direction: row; }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background: var(--accent-coral);
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        
+        .timeline-card {
+            background: var(--surface-white);
+            border: 1px solid var(--border-light);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            box-shadow: var(--shadow-soft);
+            width: 45%;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-card { margin-right: 55%; }
+        .timeline-item:nth-child(even) .timeline-card { margin-left: 55%; }
+        
+        .timeline-icon {
+            background: var(--accent-coral-soft);
+            border-radius: 0.375rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline-title {
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.125rem;
+        }
+        
+        .timeline-description {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+        }
+        
+        /* Desktop Workflow (SVG Curves) */
+        .workflow-desktop {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 450px;
+        }
+        
+        @media (min-width: 1024px) {
+            .workflow-desktop { display: block; }
+        }
+        
+        .workflow-node {
+            position: absolute;
+            background: var(--surface-white);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-soft);
+            width: 220px;
+            z-index: 1;
+            transition: all 0.3s ease;
+            cursor: grab;
+        }
+        
+        .workflow-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 140, 97, 0.3);
+            background: linear-gradient(135deg, rgba(255, 140, 97, 0.05) 0%, rgba(255, 107, 53, 0.05) 100%);
+            border-color: var(--accent-coral-soft);
+        }
+        
+        .node-1 { top: 0; left: 20%; }
+        .node-2 { top: 45%; left: 0; }
+        .node-3 { top: 80%; left: 40%; }
+
+        /* --- Features Section Responsive --- */
+        .features {
+            padding: 4rem 0;
+            background: var(--dark-surface);
+            color: var(--text-light);
+        }
+        
+        @media (min-width: 640px) {
+            .features { padding: 5rem 0; }
+        }
+        
+        @media (min-width: 768px) {
+            .features { padding: 6rem 0; }
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .features-grid { gap: 1.5rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+        
+        .feature-card {
+            background: var(--dark-surface-raised);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid oklch(25% 0.01 200);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        @media (min-width: 640px) {
+            .feature-card { padding: 1.5rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .feature-card {
+                padding: 2rem;
+                text-align: left;
+            }
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 140, 97, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg) translateY(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .feature-card:hover::before {
+            transform: rotate(45deg) translateY(100%);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            background: oklch(20% 0.01 200);
+            border-color: var(--accent-coral-soft);
+            box-shadow: 0 20px 40px rgba(255, 140, 97, 0.2);
+        }
+        
+        .feature-icon {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+        }
+        
+        @media (min-width: 768px) {
+            .feature-icon {
+                margin-bottom: 1.5rem;
+                justify-content: flex-start;
+            }
+        }
+        
+        .feature-title {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (min-width: 640px) {
+            .feature-title { font-size: 1.125rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .feature-title { font-size: 1.25rem; }
+        }
+        
+        .feature-description {
+            font-size: 0.875rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        
+        @media (min-width: 640px) {
+            .feature-description { font-size: 1rem; }
+        }
+
+        /* --- Email Capture Responsive --- */
+        .email-capture {
+            background: var(--surface-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-soft);
+            margin-top: 2rem;
+        }
+        
+        @media (min-width: 640px) {
+            .email-capture { padding: 2rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .email-capture { padding: 2.5rem; }
+        }
+        
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .email-form {
+                flex-direction: row;
+                align-items: flex-end;
+            }
+        }
+        
+        .email-input {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            min-height: 44px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        @media (min-width: 640px) {
+            .email-input {
+                font-size: 1rem;
+                flex: 1;
+            }
+        }
+        
+        .email-input:focus {
+            outline: none;
+            border-color: var(--accent-coral);
+            box-shadow: 0 0 0 3px rgba(255, 140, 97, 0.1);
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-coral-soft) 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            min-height: 44px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @media (min-width: 640px) {
+            .submit-button {
+                font-size: 1rem;
+                padding: 0.75rem 3rem;
+            }
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 140, 97, 0.3);
+        }
+
+        /* --- CTA Section Responsive --- */
+        .cta-section {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--primary-warm) 0%, var(--primary-warm-dark) 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        @media (min-width: 640px) {
+            .cta-section { padding: 5rem 0; }
+        }
+        
+        @media (min-width: 768px) {
+            .cta-section { padding: 6rem 0; }
+        }
+        
+        .cta-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (min-width: 640px) {
+            .cta-title { font-size: 1.875rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .cta-title { font-size: 2.25rem; }
+        }
+        
+        .cta-button {
+            background: white;
+            color: var(--primary-warm);
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            min-height: 48px;
+            line-height: 24px;
+        }
+        
+        @media (min-width: 640px) {
+            .cta-button {
+                padding: 1rem 3rem;
+                font-size: 1.125rem;
+            }
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- Footer Responsive --- */
+        footer {
+            padding: 2rem 0;
+            background: var(--dark-surface);
+            color: var(--text-light);
+            text-align: center;
+        }
+        
+        @media (min-width: 640px) {
+            footer { padding: 3rem 0; }
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.75rem;
+        }
+        
+        @media (min-width: 640px) {
+            .footer-links {
+                gap: 2rem;
+                font-size: 0.875rem;
+            }
+        }
+        
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            opacity: 1;
+        }
+        
+        .footer-copyright {
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+        
+        @media (min-width: 640px) {
+            .footer-copyright { font-size: 0.875rem; }
+        }
+
+        /* --- Animations --- */
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        
+        @keyframes breathing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        /* --- Helper Classes --- */
+        .hover-lift {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-8px);
+        }
+        
+        .hover-glow {
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .hover-glow:hover {
+            box-shadow: 0 20px 40px rgba(255, 140, 97, 0.2);
+        }
+        
+        .animate {
+            animation: fade-in-up 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        @media (min-width: 640px) {
+            .section-header { margin-bottom: 3rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .section-header { margin-bottom: 4rem; }
+        }
+        
+        .section-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (min-width: 640px) {
+            .section-header h2 { font-size: 1.875rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .section-header h2 { font-size: 2.25rem; }
+        }
+
+        /* --- Floating Particles --- */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--accent-coral-soft);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        /* --- Scroll Progress Bar --- */
+        #scroll-progress-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(229, 213, 206, 0.3);
+        }
+        
+        #scroll-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #FF8C61 0%, #FF6B35 100%);
+            transition: width 150ms ease-out;
+        }
+
+        /* --- Mobile Optimizations --- */
+        @media (max-width: 639px) {
+            /* Touch targets minimum 44px */
+            button, a, input, select, textarea {
+                min-height: 44px;
+            }
+            
+            /* Prevent horizontal scroll */
+            html, body {
+                overflow-x: hidden;
+            }
+            
+            /* Optimize animations for mobile */
+            @media (prefers-reduced-motion: reduce) {
+                * {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles -->
+    <div class="particles" id="particles-container"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="logo">Coquinate</a>
+            
+            <!-- Desktop Counter -->
+            <div class="progress-counter-nav">
+                <span class="pulse-dot"></span>
+                <span id="nav-counter-desktop">347/500 înscriși</span>
+            </div>
+            
+            <!-- Mobile Counter -->
+            <div class="progress-counter-mobile">
+                <span class="pulse-dot"></span>
+                <span id="nav-counter-mobile">347/500</span>
+            </div>
+        </div>
+        
+        <!-- Scroll Progress Bar -->
+        <div id="scroll-progress-container">
+            <div id="scroll-progress-bar"></div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <!-- Mobile Layout -->
+            <div class="hero-mobile">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Spune adio întrebării <span style="color: var(--accent-coral);">„Ce mâncăm azi?"</span>
+                    </h1>
+                    <p class="hero-description">
+                        Planuri de mese inteligente care îți economisesc timp și bani. 
+                        Gătești o dată, mănânci de trei ori. 🍽️
+                    </p>
+                    
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">3h</div>
+                            <div class="stat-label">economisești/săpt</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">40%</div>
+                            <div class="stat-label">mai puțină risipă</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">120lei</div>
+                            <div class="stat-label">economie lunară</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Email Capture -->
+                    <div class="email-capture">
+                        <h3 style="font-size: 1rem; margin-bottom: 1rem; text-align: center;">
+                            Primii 500 înscriși primesc o lună de acces gratuit!
+                        </h3>
+                        <form class="email-form" id="email-form-mobile">
+                            <input type="email" class="email-input" placeholder="Adresa ta de email" required>
+                            <button type="submit" class="submit-button">Vreau Acces Gratuit</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Workflow Visualization Mobile -->
+                <div style="margin-top: 2rem;">
+                    <h3 style="text-align: center; font-size: 1.125rem; margin-bottom: 1rem;">
+                        Cum funcționează?
+                    </h3>
+                    <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                        Un singur efort, trei mese delicioase
+                    </p>
+                    
+                    <div class="workflow-mobile">
+                        <div class="timeline-line"></div>
+                        
+                        <!-- Step 1 -->
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-icon">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral)" stroke-width="2">
+                                        <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z"></path>
+                                        <path d="M6.161 17.009l11.839 -.009"></path>
+                                    </svg>
+                                </div>
+                                <div class="timeline-title">Gătești Duminică</div>
+                                <div class="timeline-description">Prepari o masă principală</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Arrow -->
+                        <div style="text-align: center; margin: 0.5rem 0;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary-warm)" stroke-width="2">
+                                <path d="M12 5v14"></path>
+                                <path d="M19 12l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-icon">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral)" stroke-width="2">
+                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                        <path d="M9 9l1 0"></path>
+                                        <path d="M9 13l6 0"></path>
+                                        <path d="M9 17l6 0"></path>
+                                    </svg>
+                                </div>
+                                <div class="timeline-title">Refolosești Luni</div>
+                                <div class="timeline-description">Transformi într-un prânz rapid</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Arrow -->
+                        <div style="text-align: center; margin: 0.5rem 0;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary-warm)" stroke-width="2">
+                                <path d="M12 5v14"></path>
+                                <path d="M19 12l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-icon">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral)" stroke-width="2">
+                                        <path d="M12 6l-8 4l8 4l8 -4l-8 -4"></path>
+                                        <path d="M4 14l8 4l8 -4"></path>
+                                    </svg>
+                                </div>
+                                <div class="timeline-title">Reinvenezi Marți</div>
+                                <div class="timeline-description">Creezi o cină nouă</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop Layout -->
+            <div class="hero-desktop">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Spune adio întrebării <span style="color: var(--accent-coral);">„Ce mâncăm azi?"</span>
+                    </h1>
+                    <p class="hero-description">
+                        Planuri de mese inteligente care îți economisesc timp și bani. 
+                        Gătești o dată, mănânci de trei ori. 🍽️
+                    </p>
+                    
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">3h</div>
+                            <div class="stat-label">economisești/săpt</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">40%</div>
+                            <div class="stat-label">mai puțină risipă</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">120lei</div>
+                            <div class="stat-label">economie lunară</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Email Capture -->
+                    <div class="email-capture">
+                        <h3 style="font-size: 1.125rem; margin-bottom: 1rem;">
+                            Primii 500 înscriși primesc o lună de acces gratuit!
+                        </h3>
+                        <form class="email-form" id="email-form-desktop">
+                            <input type="email" class="email-input" placeholder="Adresa ta de email" required>
+                            <button type="submit" class="submit-button">Vreau Acces Gratuit</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Workflow Visualization Desktop -->
+                <div class="workflow-desktop">
+                    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet">
+                        <path d="M 110 40 C 40 100, 40 150, 85 175 C 130 200, 180 240, 210 280" 
+                              stroke="var(--border-light)" 
+                              fill="transparent" 
+                              stroke-width="2" 
+                              stroke-dasharray="4 4"/>
+                    </svg>
+                    
+                    <!-- Node 1 -->
+                    <div class="workflow-node node-1 animate">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                            <div style="background: var(--accent-coral-soft); border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral)" stroke-width="2">
+                                    <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z"></path>
+                                    <path d="M6.161 17.009l11.839 -.009"></path>
+                                </svg>
+                            </div>
+                            <span style="font-family: 'Lexend', sans-serif; font-weight: 600;">Gătești Duminică</span>
+                        </div>
+                        <p style="font-size: 0.875rem; color: var(--text-muted);">Prepari o masă principală.</p>
+                    </div>
+                    
+                    <!-- Node 2 -->
+                    <div class="workflow-node node-2 animate" style="animation-delay: 0.5s;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                            <div style="background: var(--accent-coral-soft); border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral)" stroke-width="2">
+                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                    <path d="M9 9l1 0"></path>
+                                    <path d="M9 13l6 0"></path>
+                                    <path d="M9 17l6 0"></path>
+                                </svg>
+                            </div>
+                            <span style="font-family: 'Lexend', sans-serif; font-weight: 600;">Refolosești Luni</span>
+                        </div>
+                        <p style="font-size: 0.875rem; color: var(--text-muted);">Transformi într-un prânz rapid.</p>
+                    </div>
+                    
+                    <!-- Node 3 -->
+                    <div class="workflow-node node-3 animate" style="animation-delay: 1s;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                            <div style="background: var(--accent-coral-soft); border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral)" stroke-width="2">
+                                    <path d="M12 6l-8 4l8 4l8 -4l-8 -4"></path>
+                                    <path d="M4 14l8 4l8 -4"></path>
+                                </svg>
+                            </div>
+                            <span style="font-family: 'Lexend', sans-serif; font-weight: 600;">Reinvenezi Marți</span>
+                        </div>
+                        <p style="font-size: 0.875rem; color: var(--text-muted);">Creezi o cină nouă.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 style="color: var(--text-light);">Tot ce ai nevoie, într-un singur loc</h2>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card animate">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral-soft)" stroke-width="2">
+                            <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                            <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Gătești cu Ingrediente Locale</h3>
+                    <p class="feature-description">
+                        Folosim doar ingrediente comune, ușor de găsit în orice magazin din România. 
+                        Gătitul devine simplu și fără stres.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card animate" style="animation-delay: 0.2s;">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral-soft)" stroke-width="2">
+                            <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path>
+                            <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"></path>
+                            <path d="M9 14l2 2l4 -4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Listă de Cumpărături Interactivă</h3>
+                    <p class="feature-description">
+                        Primești o listă optimizată, organizată pe categorii. 
+                        Ai nevoie de mai puțin? Modifici cifrele direct în listă.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card animate" style="animation-delay: 0.4s;">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral-soft)" stroke-width="2">
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                            <path d="M9 12l2 2l4 -4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Zero Risipă, Zero Stres</h3>
+                    <p class="feature-description">
+                        Fiecare ingredient este folosit la maximum. 
+                        Planul este special gândit pentru a refolosi creativ orice surplus.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card animate" style="animation-delay: 0.6s;">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral-soft)" stroke-width="2">
+                            <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z"></path>
+                            <path d="M6.161 17.009l11.839 -.009"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Fă cunoștință cu Chef AI</h3>
+                    <p class="feature-description">
+                        Acum ai propriul tău asistent bucătar, <strong>Chef AI</strong>! 
+                        Poartă o conversație naturală, în limba română, pentru a te ghida.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Pregătit să revoluționezi modul în care gătești?</h2>
+            <p style="font-size: 1.125rem; margin-bottom: 2rem; opacity: 0.9;">
+                Alătură-te celor peste 300 de familii care economisesc timp și bani cu Coquinate
+            </p>
+            <a href="#email-form-mobile" class="cta-button">Începe Gratuit Acum</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Termeni și Condiții</a>
+                <a href="#" class="footer-link">Politica de Confidențialitate</a>
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Despre Noi</a>
+            </div>
+            <p class="footer-copyright">
+                &copy; 2024 Coquinate. Toate drepturile rezervate.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Floating Particles
+        function initFloatingParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = window.innerWidth < 768 ? 3 : 5;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 20 + 20) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize Scroll Progress
+        function initScrollProgress() {
+            const progressBar = document.getElementById('scroll-progress-bar');
+            
+            function updateScrollProgress() {
+                const scrollPx = document.documentElement.scrollTop;
+                const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = Math.min((scrollPx / winHeightPx) * 100, 100);
+                progressBar.style.width = scrolled + '%';
+            }
+            
+            window.addEventListener('scroll', updateScrollProgress);
+            window.addEventListener('resize', updateScrollProgress);
+            updateScrollProgress();
+        }
+
+        // Initialize Scroll Animations
+        function initScrollAnimations() {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                },
+                { threshold: 0.1 }
+            );
+            
+            document.querySelectorAll('.animate').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Handle Email Form Submission
+        function handleEmailSubmit(e) {
+            e.preventDefault();
+            const email = e.target.querySelector('input[type="email"]').value;
+            
+            // Add success animation
+            const button = e.target.querySelector('button');
+            const originalText = button.textContent;
+            button.textContent = '✓ Înregistrat cu succes!';
+            button.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+            
+            // Reset after 3 seconds
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+                e.target.reset();
+            }, 3000);
+            
+            // Trigger confetti effect
+            createConfetti();
+        }
+
+        // Create Confetti Effect
+        function createConfetti() {
+            const colors = ['#FF8C61', '#FF6B35', '#FFA500', '#FFD700'];
+            const confettiCount = 50;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.opacity = Math.random();
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.style.transition = 'all 3s ease-out';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.zIndex = '9999';
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.style.top = '100%';
+                    confetti.style.transform = `rotate(${Math.random() * 720}deg)`;
+                    confetti.style.opacity = '0';
+                }, 10);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+
+        // Initialize Everything
+        document.addEventListener('DOMContentLoaded', function() {
+            initFloatingParticles();
+            initScrollProgress();
+            initScrollAnimations();
+            
+            // Attach form handlers
+            document.getElementById('email-form-mobile').addEventListener('submit', handleEmailSubmit);
+            document.getElementById('email-form-desktop').addEventListener('submit', handleEmailSubmit);
+            
+            // Update counters
+            document.getElementById('nav-counter-desktop').textContent = '347/500 înscriși';
+            document.getElementById('nav-counter-mobile').textContent = '347/500';
+        });
+    </script>
+</body>
+</html>

@@ -133,3 +133,225 @@
     - [Design Handoff Checklist](./next-steps.md#design-handoff-checklist)
     - [Tech Stack Decisions (Confirmed)](./next-steps.md#tech-stack-decisions-confirmed)
     - [Open Architectural Questions for Design Architect](./next-steps.md#open-architectural-questions-for-design-architect)
+  - **[Multi-Domain Considerations](#multi-domain-considerations)** 🌐
+    - [Domain Strategy Overview](#domain-strategy-overview)
+    - [Domain-Specific UI Considerations](#domain-specific-ui-considerations)
+    - [SEO and Metadata Management](#seo-and-metadata-management)
+    - [Domain Detection Utilities](#domain-detection-utilities)
+    - [Implementation Guidelines](#implementation-guidelines)
+
+---
+
+## Multi-Domain Considerations
+
+### Domain Strategy Overview
+
+Coquinate operează pe două domenii principale pentru a deservi diferite piețe și audiențe:
+
+#### Primary Domains
+- **coquinate.ro** - Domeniul principal pentru piața românească
+  - Target: Utilizatori români
+  - Limba principală: Română (ro-RO)
+  - Conținut: Rețete românești, ingrediente locale, prețuri în RON
+  - SEO Focus: Cuvinte cheie românești pentru planificare mese
+
+- **coquinate.com** - Domeniul internațional pentru expansiune
+  - Target: Utilizatori internaționali (viitoare implementare)
+  - Limba principală: Engleză (en-US)
+  - Conținut: Rețete internaționale, ingrediente generale
+  - SEO Focus: Cuvinte cheie engleze pentru meal planning
+
+#### Domain Architecture
+```mermaid
+graph TD
+    A[User Request] --> B{Domain Detection}
+    B -->|coquinate.ro| C[Romanian Experience]
+    B -->|coquinate.com| D[International Experience]
+    
+    C --> E[Romanian Content]
+    C --> F[Romanian SEO]
+    C --> G[Romanian Locale]
+    
+    D --> H[International Content]
+    D --> I[International SEO]
+    D --> J[English Locale]
+```
+
+### Domain-Specific UI Considerations
+
+#### Romanian Domain (.ro) Specifics
+- **Typography**: Suport complet pentru diacritice românești (ă, â, î, ș, ț)
+- **Currency**: Afișare prețuri în RON cu formatare românească
+- **Date Format**: DD.MM.YYYY (format european)
+- **Cultural Context**: 
+  - Rețete tradiționale românești în evidență
+  - Categorii de alimente specifice (ex: "Băuturi tradiționale")
+  - Terminologie culinară românească
+
+#### International Domain (.com) Considerations
+- **Typography**: Focus pe Latin Extended pentru suport internațional
+- **Currency**: Flexible currency display (USD/EUR based on region)
+- **Date Format**: MM/DD/YYYY sau DD/MM/YYYY based on locale detection
+- **Cultural Context**: 
+  - International recipes as primary content
+  - Generic food categories
+  - International culinary terminology
+
+### SEO and Metadata Management
+
+#### Canonical URLs and Hreflang
+```typescript
+// Implemented in apps/web/src/app/layout.tsx
+alternates: {
+  canonical: '/',
+  languages: {
+    'ro-RO': 'https://coquinate.ro',
+    'en-US': 'https://coquinate.com',
+  },
+}
+```
+
+#### Sitemap Configuration
+Both domains have dedicated sitemaps:
+- `https://coquinate.ro/sitemap.xml` - Romanian content
+- `https://coquinate.com/sitemap.xml` - International content
+
+#### Robots.txt Strategy
+Unified robots.txt supports both domains with appropriate crawl directives:
+```
+# Located: apps/web/public/robots.txt
+Sitemap: https://coquinate.ro/sitemap.xml
+Sitemap: https://coquinate.com/sitemap.xml
+```
+
+#### Meta Tags Strategy
+Domain-specific metadata implemented via:
+```typescript
+// Environment-based configuration
+metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://coquinate.ro')
+
+// Domain-specific OpenGraph
+openGraph: {
+  locale: domain === 'ro' ? 'ro_RO' : 'en_US',
+  url: getCanonicalUrl(pathname, domain),
+}
+```
+
+### Domain Detection Utilities
+
+#### Core Domain Utils (`apps/web/src/lib/domain-utils.ts`)
+
+```typescript
+// Domain detection from headers
+export function getDomain(headers?: Headers): 'ro' | 'com' {
+  const host = headers.get('host') || '';
+  return host.includes('coquinate.com') ? 'com' : 'ro';
+}
+
+// Canonical URL generation
+export function getCanonicalUrl(pathname: string, domain?: 'ro' | 'com'): string {
+  const baseDomain = domain === 'com' 
+    ? 'https://coquinate.com' 
+    : 'https://coquinate.ro';
+  return `${baseDomain}${pathname}`;
+}
+
+// Alternate URLs for hreflang
+export function getAlternateUrls(pathname: string) {
+  return {
+    ro: `https://coquinate.ro${pathname}`,
+    com: `https://coquinate.com${pathname}`,
+  };
+}
+```
+
+#### Environment Configuration
+```bash
+# Primary domain configuration
+NEXT_PUBLIC_SITE_URL=https://coquinate.ro      # Primary Romanian
+NEXT_PUBLIC_SITE_URL_ALT=https://coquinate.com # International alternative
+```
+
+### Implementation Guidelines
+
+#### 1. Component Development
+- **Always use domain-aware URLs** in components
+- **Never hardcode domain names** in components
+- **Use `getCanonicalUrl()` for internal links**
+
+```tsx
+// GOOD - Domain-aware link
+import { getCanonicalUrl } from '@/lib/domain-utils';
+
+const MyComponent = () => {
+  const recipeUrl = getCanonicalUrl('/retete/papanasi');
+  return <Link href={recipeUrl}>Papanași</Link>;
+}
+
+// BAD - Hardcoded domain
+const BadComponent = () => (
+  <Link href="https://coquinate.ro/retete/papanasi">Papanași</Link>
+);
+```
+
+#### 2. Content Localization
+- **Romanian Domain (.ro)**:
+  - All content must use Romanian i18n keys
+  - Apply `.text-romanian` CSS class for proper typography
+  - Use `romanianUtils` from design tokens for formatting
+
+- **International Domain (.com)**:
+  - Content should fall back to English
+  - Use international formatting utilities
+  - Generic cultural references
+
+#### 3. SEO Implementation
+- **Always generate hreflang tags** for both domains
+- **Use structured data** with correct domain URLs
+- **Implement proper canonical tags** to prevent duplicate content issues
+
+```tsx
+// Example: Domain-aware structured data
+const getStructuredData = (domain: 'ro' | 'com') => ({
+  "@type": "WebSite",
+  "url": domain === 'ro' ? "https://coquinate.ro" : "https://coquinate.com",
+  "name": domain === 'ro' ? "Coquinate - Planificare Mese" : "Coquinate - Meal Planning"
+});
+```
+
+#### 4. Email and Communications
+- **Domain-specific email addresses**:
+  - `contact@coquinate.ro` - Romanian support
+  - `support@coquinate.com` - International support
+  - `admin@coquinate.ro` - Admin notifications (Romanian primary)
+
+#### 5. Analytics and Tracking
+- **Separate tracking** for each domain to analyze market performance
+- **Domain-specific conversion funnels** to understand user behavior
+- **Regional performance metrics** for feature rollout decisions
+
+#### 6. Future Considerations
+- **Subdomain strategy**: Currently both use root domains
+- **CDN configuration**: Domain-specific content delivery
+- **Regional compliance**: GDPR (.com) vs Romanian data protection (.ro)
+- **Payment processing**: Different providers per region if needed
+
+#### 7. Testing Strategy
+- **Cross-domain testing**: Ensure features work on both domains
+- **Locale-specific testing**: Romanian diacritics, currency formatting
+- **SEO validation**: Canonical tags, hreflang implementation
+- **Performance testing**: Both domains should meet performance targets
+
+### Technical Implementation Checklist
+
+- ✅ Domain detection utilities implemented
+- ✅ Environment variables configured
+- ✅ Metadata and SEO tags support both domains
+- ✅ Robots.txt configured for both sitemaps
+- ✅ Romanian typography support (`.text-romanian`)
+- ✅ Currency and date formatting utilities
+- 🔄 International content strategy (future)
+- 🔄 Domain-specific analytics setup (future)
+- 🔄 Regional compliance implementation (future)
+
+This multi-domain architecture provides flexibility for international expansion while maintaining optimal SEO and user experience for both Romanian and international audiences.

@@ -11,5 +11,5 @@
     },
     "userDataDir": "/home/alexandru/.playwright_profiles/my_app_profile"
   },
-  "capabilities": ["vision", "tabs", "pdf"]
+  "capabilities": ["vision", "tabs", "pdf", "isolated"]
 }

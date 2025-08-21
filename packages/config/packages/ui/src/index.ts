@@ -19,4 +19,7 @@
 export * from "./utils/cn"
 
 // Re-export design tokens for convenience
-export { designTokens, romanianUtils } from "@coquinate/config/tailwind/design-tokens"
+export { designTokens } from "@coquinate/config/tailwind/design-tokens"
+
+// Re-export romanian utils from their new location
+export { romanianUtils } from "@coquinate/i18n/src/config/ro-formats"

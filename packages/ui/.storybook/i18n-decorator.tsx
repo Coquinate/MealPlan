@@ -1,85 +1,9 @@
 import React from 'react';
 import type { Decorator } from '@storybook/react';
+import { I18nProvider } from '@coquinate/i18n';
 
-// Mock translations for Storybook
-const mockTranslations = {
-  ro: {
-    common: {
-      submit: 'Trimite',
-      cancel: 'Anulează',
-      save: 'Salvează',
-      delete: 'Șterge',
-      edit: 'Editează',
-      loading: 'Se încarcă...',
-      error: 'Eroare',
-      success: 'Succes',
-      close: 'Închide',
-    },
-    hero: {
-      cta: 'Primește rețete personalizate și planuri de mese',
-    },
-    email: {
-      label: 'Adresa de email',
-      placeholder: 'numele@exemplu.ro',
-      button: 'Începe acum',
-      loading: 'Se încarcă...',
-      success: 'Mulțumim! Vei primi primul plan săptămânal în curând.',
-      phase_info: 'Aplicația este în dezvoltare. Te vom contacta când va fi gata!',
-      errors: {
-        invalid_email: 'Te rugăm să introduci o adresă de email validă',
-        already_subscribed: 'Această adresă de email este deja înregistrată',
-        rate_limited: 'Prea multe încercări. Te rugăm să aștepți câteva minute',
-        server_error: 'A apărut o eroare. Te rugăm să încerci din nou',
-      },
-    },
-    auth: {
-      login: 'Autentificare',
-      logout: 'Deconectare',
-      register: 'Înregistrare',
-      forgot_password: 'Ai uitat parola?',
-      reset_password: 'Resetează parola',
-    },
-    meal: {
-      breakfast: 'Mic dejun',
-      lunch: 'Prânz',
-      dinner: 'Cină',
-      snack: 'Gustare',
-      servings: 'porții',
-      prep_time: 'Timp preparare',
-      cook_time: 'Timp gătire',
-      total_time: 'Timp total',
-      ingredients: 'Ingrediente',
-      instructions: 'Instrucțiuni',
-      nutrition: 'Informații nutriționale',
-      calories: 'Calorii',
-      protein: 'Proteine',
-      carbs: 'Carbohidrați',
-      fat: 'Grăsimi',
-    },
-    navigation: {
-      home: 'Acasă',
-      recipes: 'Rețete',
-      meal_plan: 'Plan mese',
-      shopping_list: 'Listă cumpărături',
-      profile: 'Profil',
-      settings: 'Setări',
-    },
-  },
-  en: {
-    common: {
-      submit: 'Submit',
-      cancel: 'Cancel',
-      save: 'Save',
-      delete: 'Delete',
-      edit: 'Edit',
-      loading: 'Loading...',
-      error: 'Error',
-      success: 'Success',
-      close: 'Close',
-    },
-    // Add English translations as needed
-  },
-};
+// Re-export useTranslation from the actual i18n package
+// export { useTranslation } from 'react-i18next';
 
 // Mock i18n context
 const I18nContext = React.createContext({

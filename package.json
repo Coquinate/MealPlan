@@ -22,6 +22,7 @@
     "lint": "pnpm --filter './apps/**' --filter './packages/**' lint",
     "format": "pnpm --filter './apps/**' --filter './packages/**' format",
     "clean": "pnpm --filter './apps/**' --filter './packages/**' clean && rm -rf node_modules",
+    "validate:tokens": "pnpm --filter @coquinate/config validate:tokens",
     "history:watch": "node watch-backup.mjs",
     "history:purge": "node -e \"import('fs').then(fs=>fs.rmSync('.history',{recursive:true,force:true}))\""
   },

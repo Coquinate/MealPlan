@@ -4,7 +4,7 @@
  * @module romanian-utils
  */
 
-import { romanianFormats } from './design-tokens.js'
+import { romanianFormats } from '../../i18n/src/config/ro-formats.js'
 
 /**
  * Format number according to Romanian standards

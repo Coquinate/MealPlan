@@ -162,6 +162,19 @@
     - [Simple Deployment Setup](./deployment.md#simple-deployment-setup)
     - [CI/CD - Minimal GitHub Actions](./deployment.md#cicd-minimal-github-actions)
     - [Environments](./deployment.md#environments)
+  - [Launch Mode System](./launch-mode-system.md)
+    - [Overview](./launch-mode-system.md#overview)
+    - [How It Works](./launch-mode-system.md#how-it-works)
+    - [Launch Modes](./launch-mode-system.md#launch-modes)
+    - [Configuration](./launch-mode-system.md#configuration)
+    - [Implementation Files](./launch-mode-system.md#implementation-files)
+    - [Testing Launch Modes](./launch-mode-system.md#testing-launch-modes)
+    - [Security Benefits](./launch-mode-system.md#security-benefits)
+  - [Multi-Domain Support](#multi-domain-support)
+    - [Domain Configuration](#domain-configuration)
+    - [Domain Detection](#domain-detection)
+    - [URL Generation](#url-generation)
+    - [Implementation Files](#implementation-files-1)
   - [Security and Performance](./security-and-performance.md)
     - [Security - Keep It Simple](./security-and-performance.md#security-keep-it-simple)
     - [Performance Requirements](./security-and-performance.md#performance-requirements)
@@ -224,3 +237,77 @@
       - [Backup Workflow Architecture](./admin-backup-and-restore-system.md#backup-workflow-architecture)
       - [Restore Process Implementation](./admin-backup-and-restore-system.md#restore-process-implementation)
     - [Final Status: ARCHITECTURE COMPLETE ✅](./admin-backup-and-restore-system.md#final-status-architecture-complete)
+
+## Multi-Domain Support
+
+Coquinate supports multiple domains to serve different markets and languages while maintaining a unified codebase and infrastructure.
+
+### Domain Configuration
+
+The application operates on two primary domains:
+
+- **coquinate.ro** - Primary Romanian market domain
+- **coquinate.com** - International/English market domain
+
+Both domains share the same Next.js application, database, and backend services, with domain-specific customization handled through runtime detection and configuration.
+
+### Domain Detection
+
+The system automatically detects the current domain through request headers and provides appropriate domain-specific behavior:
+
+```typescript
+// Domain detection based on request headers
+function getDomain(headers?: Headers): 'ro' | 'com' {
+  const host = headers.get('host') || '';
+  if (host.includes('coquinate.com')) {
+    return 'com';
+  }
+  return 'ro'; // Default to .ro
+}
+```
+
+### URL Generation
+
+Canonical and alternate URL generation ensures proper SEO and cross-domain navigation:
+
+```typescript
+// Generate canonical URLs for current domain
+function getCanonicalUrl(pathname: string, domain?: 'ro' | 'com'): string {
+  const baseDomain = domain === 'com' 
+    ? 'https://coquinate.com' 
+    : 'https://coquinate.ro';
+  return `${baseDomain}${pathname}`;
+}
+
+// Generate alternate URLs for SEO hreflang
+function getAlternateUrls(pathname: string): { ro: string; com: string } {
+  return {
+    ro: `https://coquinate.ro${pathname}`,
+    com: `https://coquinate.com${pathname}`,
+  };
+}
+```
+
+### Implementation Files
+
+**Core Domain Utilities:**
+- `/apps/web/src/lib/domain-utils.ts` - Domain detection and URL generation utilities
+
+**Integration Points:**
+- `/apps/web/src/app/layout.tsx` - Metadata base URL configuration
+- `/apps/web/src/middleware.ts` - Domain-aware request handling
+- [Launch Mode System](./launch-mode-system.md) - Works seamlessly across both domains
+
+**Configuration Examples:**
+```typescript
+// Next.js metadata configuration
+metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://coquinate.ro'),
+alternates: {
+  languages: {
+    'ro-RO': 'https://coquinate.ro',
+    'en-US': 'https://coquinate.com',
+  },
+}
+```
+
+The multi-domain architecture ensures that both Romanian and international users receive optimized experiences while maintaining operational efficiency through a single codebase and infrastructure setup.

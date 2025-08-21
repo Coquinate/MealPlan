@@ -2,6 +2,7 @@ import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 const RESEND_FROM_EMAIL = Deno.env.get('RESEND_FROM_EMAIL') || 'welcome@coquinate.ro';
+const WELCOME_EMAIL_FN_SECRET = Deno.env.get('WELCOME_EMAIL_FN_SECRET');
 
 interface EmailRequest {
   email: string;
@@ -35,11 +36,14 @@ serve(async (req) => {
     }
 
     // Verify function secret for security
-    const fnSecret = Deno.env.get('WELCOME_EMAIL_FN_SECRET');
     const provided = req.headers.get('x-function-secret');
 
-    if (!fnSecret || provided !== fnSecret) {
-      console.error('Unauthorized edge function access attempt');
+    if (!WELCOME_EMAIL_FN_SECRET || provided !== WELCOME_EMAIL_FN_SECRET) {
+      console.error('Unauthorized edge function access attempt', {
+        hasEnvSecret: !!WELCOME_EMAIL_FN_SECRET,
+        providedHeader: !!provided,
+        match: WELCOME_EMAIL_FN_SECRET === provided
+      });
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' },

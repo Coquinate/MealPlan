@@ -10,6 +10,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js"
+    },
     "./src/utils/constants": {
       "types": "./dist/utils/constants.d.ts",
       "import": "./dist/utils/constants.js"

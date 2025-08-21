@@ -36,6 +36,10 @@ const romanianPluralRules = {
  * @returns Promise<typeof i18n> - Configured i18next instance
  */
 export const initializeI18n = async () => {
+  if (i18n.isInitialized) {
+    return i18n;
+  }
+  
   await i18n.use(initReactI18next).init({
     // Primary language configuration
     lng: 'ro', // Romanian as primary

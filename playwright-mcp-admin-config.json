@@ -1,0 +1,15 @@
+{
+  "browser": {
+    "launchOptions": {
+      "headless": true
+    },
+    "contextOptions": {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      }
+    },
+    "userDataDir": "/home/alexandru/.playwright_profiles/admin_profile"
+  },
+  "capabilities": ["vision", "tabs", "pdf", "isolated"]
+}

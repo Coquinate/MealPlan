@@ -90,6 +90,8 @@ supabase/seed-with-env.sh
 *.swo
 *.swp
 .taskmaster/
+.cursor/
+.playwright-mcp/
 # Task Master (keeping task files in git as per CLAUDE.md instructions)
 # .taskmaster/reports/
 # .taskmaster/tasks/

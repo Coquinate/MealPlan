@@ -43,6 +43,8 @@ export default {
     zIndex: designTokens.zIndex,
     opacity: designTokens.opacity,
     width: designTokens.width,
+    height: designTokens.height,
+    minHeight: designTokens.height,
     ringWidth: designTokens.ringWidth,
     ringOffsetWidth: designTokens.ringOffsetWidth,
     lineClamp: designTokens.lineClamp,

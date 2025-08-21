@@ -10,21 +10,22 @@ export function SiteFooter({
   privacyPolicyLabel = 'Politică de Confidențialitate',
 }: SiteFooterProps) {
   return (
-    <footer className="bg-dark-surface text-text-light py-8">
-      <div className="mx-auto max-w-6xl px-6 lg:px-8 text-center">
+    <footer className="bg-dark-surface py-12 text-center">
+      <div className="mx-auto max-w-container px-8">
         {/* Logo */}
-        <div className="font-display text-2xl font-bold text-primary-warm opacity-80 mb-4">
+        <div className="font-display text-footer-logo font-bold text-primary mb-4 opacity-80">
           Coquinate
         </div>
 
         {/* Copyright */}
-        <p className="text-sm opacity-70 mb-4">{copyrightText}</p>
+        <p className="text-sm text-text-light opacity-70 mb-4">{copyrightText}</p>
 
         {/* Links */}
-        <div className="flex justify-center gap-6">
+        <div className="mt-4">
           <a
             href="/politica-de-confidentialitate"
-            className="text-sm text-text-light opacity-70 hover:opacity-100 transition-opacity"
+            target="_blank"
+            className="text-sm text-text-light opacity-70 hover:opacity-100 transition-opacity no-underline"
             aria-label={privacyPolicyLabel}
           >
             {privacyPolicyLabel}

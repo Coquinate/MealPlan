@@ -6,7 +6,7 @@
 @layer base {
   :root {
     /* Modern Hearth Default Colors - Warm Teal */
-    --color-primary: oklch(58% 0.08 200);
+    --color-primary: var(--color-primary-500); /* Reference 500 variant to avoid duplication */
     --color-primary-50: oklch(96% 0.02 200);
     --color-primary-100: oklch(92% 0.03 200);
     --color-primary-200: oklch(88% 0.04 200);
@@ -19,12 +19,12 @@
     --color-primary-900: oklch(25% 0.06 200);
 
     /* Modern Hearth Warm Variants */
-    --color-primary-warm: oklch(58% 0.08 200);
+    --color-primary-warm: var(--color-primary); /* Reference primary to avoid duplication */
     --color-primary-warm-light: oklch(72% 0.06 200);
     --color-primary-warm-dark: oklch(45% 0.09 200);
 
     /* Modern Hearth Coral Accent System */
-    --color-accent-coral: oklch(70% 0.18 20);
+    --color-accent-coral: var(--color-accent-coral-500); /* Reference 500 variant to avoid duplication */
     --color-accent-coral-50: oklch(96% 0.06 20);
     --color-accent-coral-100: oklch(92% 0.08 20);
     --color-accent-coral-200: oklch(88% 0.1 20);
@@ -36,13 +36,13 @@
     --color-accent-coral-800: oklch(55% 0.18 20);
     --color-accent-coral-900: oklch(45% 0.15 20);
     --color-accent-coral-soft: oklch(78% 0.12 20);
-    --color-accent-coral-deep: oklch(60% 0.2 20);
+    --color-accent-coral-deep: var(--color-accent-coral-700); /* Reference 700 to avoid duplication */
 
-    /* Glass Morphism Surfaces */
-    --color-surface-glass: oklch(98% 0 0 / 0.8);
-    --color-surface-glass-elevated: oklch(100% 0 0 / 0.9);
-    --color-surface-glass-border: oklch(100% 0 0 / 0.2);
-    --color-surface-glass-subtle: oklch(96% 0 0 / 0.7);
+    /* Glass Morphism Surfaces - Based on gray tokens with transparency */
+    --color-surface-glass: oklch(98% 0 0 / 0.8); /* Based on gray-50 with alpha */
+    --color-surface-glass-elevated: oklch(100% 0 0 / 0.9); /* Based on surface-white with alpha */
+    --color-surface-glass-border: oklch(100% 0 0 / 0.2); /* Based on surface-white with alpha */
+    --color-surface-glass-subtle: oklch(96% 0 0 / 0.7); /* Based on gray-100 with alpha */
 
     /* Grayscale */
     --color-gray: oklch(50% 0 0);
@@ -51,78 +51,101 @@
     --color-gray-200: oklch(92% 0 0);
     --color-gray-300: oklch(86% 0 0);
     --color-gray-400: oklch(70% 0 0);
-    --color-gray-500: oklch(50% 0 0);
+    --color-gray-500: var(--color-gray); /* Reference base gray to avoid duplication */
     --color-gray-600: oklch(45% 0 0);
     --color-gray-700: oklch(35% 0 0);
     --color-gray-800: oklch(25% 0 0);
     --color-gray-900: oklch(15% 0 0);
 
-    /* Status Colors */
-    --color-error: oklch(60% 0.2 25);
+    /* Status Colors - Complete Scales */
+    --color-error: var(--color-error-500); /* Reference 500 variant to avoid duplication */
     --color-error-50: oklch(96% 0.08 25);
     --color-error-100: oklch(92% 0.12 25);
+    --color-error-200: oklch(88% 0.14 25);
+    --color-error-300: oklch(82% 0.16 25);
+    --color-error-400: oklch(71% 0.18 25);
     --color-error-500: oklch(60% 0.2 25);
+    --color-error-600: oklch(52% 0.22 25);
     --color-error-700: oklch(45% 0.25 25);
+    --color-error-800: oklch(37% 0.24 25);
     --color-error-900: oklch(30% 0.22 25);
 
-    --color-success: oklch(65% 0.15 145);
+    --color-success: var(--color-success-500); /* Reference 500 variant to avoid duplication */
     --color-success-50: oklch(95% 0.06 145);
     --color-success-100: oklch(90% 0.1 145);
+    --color-success-200: oklch(85% 0.12 145);
+    --color-success-300: oklch(78% 0.13 145);
+    --color-success-400: oklch(72% 0.14 145);
     --color-success-500: oklch(65% 0.15 145);
+    --color-success-600: oklch(57% 0.16 145);
     --color-success-700: oklch(50% 0.18 145);
+    --color-success-800: oklch(42% 0.17 145);
     --color-success-900: oklch(35% 0.16 145);
 
-    --color-warning: oklch(75% 0.15 85);
+    --color-warning: var(--color-warning-500); /* Reference 500 variant to avoid duplication */
+    /* Shared warning color to avoid duplication between light warning-300 and dark warning-500 */
+    --color-warning-shared-amber: oklch(82% 0.13 85);
     --color-warning-50: oklch(96% 0.06 85);
     --color-warning-100: oklch(92% 0.1 85);
+    --color-warning-200: oklch(88% 0.12 85);
+    --color-warning-300: var(--color-warning-shared-amber);
+    --color-warning-400: oklch(78% 0.14 85);
     --color-warning-500: oklch(75% 0.15 85);
+    --color-warning-600: oklch(70% 0.16 85);
     --color-warning-700: oklch(65% 0.18 85);
+    --color-warning-800: oklch(55% 0.17 85);
     --color-warning-900: oklch(45% 0.16 85);
 
-    /* Surface Colors */
-    --color-surface: oklch(98% 0 0);
-    --color-surface-eggshell: oklch(98% 0.004 75);
-    --color-surface-raised: oklch(100% 0 0);
-    --color-surface-sunken: oklch(96% 0 0);
-    --color-surface-hover: oklch(94% 0 0);
+    /* Surface Colors - Reference gray tokens to avoid duplications */
+    --color-surface: var(--color-surface-eggshell); /* Use eggshell as default surface */
+    --color-surface-white: oklch(100% 0 0);
+    --color-surface-eggshell: oklch(99.5% 0.003 75); /* Very subtle cream like v0 screenshot */
+    --color-surface-raised: var(--color-surface-white); /* 100% 0 0 */
+    --color-surface-sunken: var(--color-gray-100); /* 96% 0 0 */
+    --color-surface-hover: oklch(94% 0 0); /* Unique hover state */
 
     /* Dark Surface Variants for Feature Sections */
     --color-dark-surface: oklch(15% 0.01 200);
     --color-dark-surface-raised: oklch(18% 0.01 200);
-    --color-text-light: oklch(92% 0 0);
+    --color-text-light: var(--color-gray-200); /* 92% 0 0 */
 
-    /* Text Colors */
+    /* Text Colors - Reference gray tokens to avoid duplications */
     --color-text: oklch(20% 0 0);
-    --color-text-secondary: oklch(45% 0 0);
-    --color-text-muted: oklch(65% 0 0);
+    --color-text-secondary: var(--color-gray-600); /* 45% 0 0 */
+    --color-text-muted: var(--color-gray-500); /* 50% 0 0 - reference gray instead of duplicate */
     --color-text-subtle: oklch(75% 0 0);
     --color-text-inverse: oklch(95% 0 0);
-    --color-text-disabled: oklch(80% 0 0);
+    --color-text-disabled: var(--color-gray-600); /* 45% 0 0 */
+    
+    /* Semantic Text Colors (formerly surface-XX tokens) */
+    --color-text-muted-secondary: var(--color-gray-600); /* 60% 0 0 → 45% 0 0 - use gray-600 instead */
+    --color-text-high-contrast: var(--color-text); /* 20% 0 0 */
+    --color-text-medium-contrast: var(--color-gray-600); /* 45% 0 0 */
 
-    /* Border Colors */
-    --color-border: oklch(92% 0 0);
-    --color-border-light: oklch(94% 0 0);
-    --color-border-strong: oklch(85% 0 0);
-    --color-border-subtle: oklch(96% 0 0);
-    --color-border-muted: oklch(94% 0 0);
-    --color-border-focus: oklch(58% 0.08 200);
+    /* Border Colors - Reference gray tokens to avoid duplications */
+    --color-border: var(--color-gray-200); /* 92% 0 0 */
+    --color-border-light: var(--color-surface-hover); /* 94% 0 0 */
+    --color-border-strong: oklch(85% 0 0); /* Unique strong border value */
+    --color-border-subtle: var(--color-gray-100); /* 96% 0 0 */
+    --color-border-muted: var(--color-surface-hover); /* 94% 0 0 */
+    --color-border-focus: var(--color-primary); /* 58% 0.08 200 */
 
-    /* Food Freshness Indicators */
-    --color-fresh: oklch(65% 0.15 145);
-    --color-good: oklch(70% 0.08 145);
-    --color-use-soon: oklch(75% 0.15 85);
-    --color-use-today: oklch(70% 0.18 45);
-    --color-expired: oklch(60% 0.2 25);
+    /* Food Freshness Indicators - Unique Context Colors Only */
+    --color-freshness-good: oklch(70% 0.08 145); /* 4-7 days - muted green (unique) */
+    --color-freshness-use-today: oklch(70% 0.18 45); /* 1 day - orange (unique) */
+    /* Note: fresh, use-soon, expired now reference main success/warning/error colors */
+    
+    /* Cooking Mode Context Colors - Unique Colors Only */
+    /* Note: cooking mode colors defined in [data-mode='cooking'] context to avoid duplication */
+    --color-cooking-active-step: var(--color-active-step); /* Reference active step */
   }
 
-  /* Planning Mode (Default) - Modern Hearth */
+  /* Planning Mode (Default) - Modern Hearth - Reference base colors */
   [data-mode='planning'] {
-    --color-primary: oklch(58% 0.08 200);
-    --color-surface: oklch(98% 0 0);
-    --color-surface-raised: oklch(100% 0 0);
-    --color-text: oklch(20% 0 0);
-    --color-text-secondary: oklch(45% 0 0);
-    --color-border: oklch(92% 0 0);
+    /* Use default colors - no overrides needed, inherits eggshell surface from root */
+    --color-surface-raised: var(--color-surface-white);
+    --color-text-secondary: var(--color-gray-600);
+    --color-border: var(--color-gray-200);
   }
 
   /* Shopping Mode - High Contrast */
@@ -150,8 +173,8 @@
     --color-text-secondary: oklch(45% 0.01 40);
     --color-border: oklch(90% 0.02 40);
     --color-active-step: oklch(70% 0.2 30);
-    --color-timer-urgent: oklch(60% 0.2 25);
-    --color-complete: oklch(65% 0.15 145);
+    --color-timer-urgent: var(--color-error-500); /* Reference error for urgent states */
+    --color-complete: var(--color-success-500); /* Reference success for completion states */
 
     /* Warmer status colors */
     --color-error: oklch(60% 0.22 20);
@@ -163,7 +186,7 @@
   @media (prefers-color-scheme: dark) {
     :root {
       /* Primary warm teal in dark mode */
-      --color-primary: oklch(65% 0.08 200);
+      --color-primary: var(--color-primary-500); /* Reference 500 variant to avoid duplication */
       --color-primary-50: oklch(25% 0.06 200);
       --color-primary-100: oklch(30% 0.06 200);
       --color-primary-200: oklch(35% 0.07 200);
@@ -175,12 +198,12 @@
       --color-primary-800: oklch(80% 0.05 200);
       --color-primary-900: oklch(90% 0.03 200);
 
-      --color-primary-warm: oklch(65% 0.08 200);
-      --color-primary-warm-light: oklch(75% 0.06 200);
+      --color-primary-warm: var(--color-primary); /* Reference primary in dark mode too */
+      --color-primary-warm-light: var(--color-primary-700); /* Reference primary-700 to avoid duplication */
       --color-primary-warm-dark: oklch(55% 0.09 200);
 
       /* Coral accent - REDUCED saturation (0.18 → 0.15, -17%) */
-      --color-accent-coral: oklch(75% 0.15 20);
+      --color-accent-coral: var(--color-accent-coral-500); /* Reference 500 variant to avoid duplication */
       --color-accent-coral-50: oklch(45% 0.13 20);
       --color-accent-coral-100: oklch(50% 0.13 20);
       --color-accent-coral-200: oklch(55% 0.14 20);
@@ -196,6 +219,7 @@
 
       /* Dark surfaces with warmth */
       --color-surface: oklch(15% 0.01 200);
+      --color-surface-white: oklch(18% 0.01 200);
       --color-surface-raised: oklch(18% 0.01 200);
       --color-surface-sunken: oklch(12% 0.01 200);
       --color-surface-hover: oklch(20% 0.01 200);
@@ -206,18 +230,60 @@
 
       /* Text hierarchy for dark */
       --color-text: oklch(92% 0 0);
-      --color-text-secondary: oklch(70% 0 0);
-      --color-text-muted: oklch(50% 0 0);
+      --color-text-secondary: var(--color-gray-600); /* Reference gray-600 for consistency */
+      --color-text-muted: var(--color-gray-500); /* Reference gray-500 in both light and dark */
       --color-text-subtle: oklch(40% 0 0);
       --color-text-inverse: oklch(15% 0 0);
-      --color-text-disabled: oklch(45% 0 0);
+      --color-text-disabled: var(--color-gray-600); /* Reference gray-600 for consistency */
+      
+      /* Semantic Text Colors for dark mode - Reference base text colors */
+      --color-text-muted-secondary: var(--color-gray-600); /* Reference gray-600 in both light and dark */
+      --color-text-high-contrast: var(--color-text); /* Same as text in dark mode */
+      --color-text-medium-contrast: var(--color-text-secondary); /* Same as text-secondary in dark mode */
 
       /* Borders softer in dark */
-      --color-border: oklch(25% 0.01 200);
-      --color-border-strong: oklch(35% 0.01 200);
-      --color-border-subtle: oklch(20% 0.01 200);
-      --color-border-muted: oklch(22% 0.01 200);
-      --color-border-focus: oklch(65% 0.08 200);
+      --color-border: var(--color-gray-200); /* Reference gray-200 for consistency */
+      --color-border-strong: var(--color-gray-300); /* Reference gray-300 for stronger borders */
+      --color-border-subtle: var(--color-gray-100); /* Reference gray-100 for subtle borders */
+      --color-border-muted: var(--color-surface-hover); /* Reference surface-hover for consistency */
+      --color-border-focus: var(--color-primary); /* Reference primary for focus borders */
+
+      /* Status Colors for Dark Mode - Complete Scales */
+      --color-error: var(--color-error-500); /* Reference 500 variant to avoid duplication */
+      --color-error-50: oklch(35% 0.2 25);
+      --color-error-100: oklch(40% 0.18 25);
+      --color-error-200: oklch(45% 0.17 25);
+      --color-error-300: oklch(52% 0.16 25);
+      --color-error-400: oklch(60% 0.17 25);
+      --color-error-500: oklch(68% 0.18 25);
+      --color-error-600: oklch(75% 0.16 25);
+      --color-error-700: oklch(80% 0.14 25);
+      --color-error-800: oklch(86% 0.12 25);
+      --color-error-900: oklch(92% 0.1 25);
+
+      --color-success: var(--color-success-500); /* Reference 500 variant to avoid duplication */
+      --color-success-50: oklch(40% 0.14 145);
+      --color-success-100: oklch(45% 0.14 145);
+      --color-success-200: oklch(50% 0.14 145);
+      --color-success-300: oklch(57% 0.13 145);
+      --color-success-400: oklch(65% 0.13 145);
+      --color-success-500: oklch(72% 0.13 145);
+      --color-success-600: oklch(78% 0.12 145);
+      --color-success-700: oklch(82% 0.11 145);
+      --color-success-800: oklch(87% 0.1 145);
+      --color-success-900: oklch(92% 0.08 145);
+
+      --color-warning: var(--color-warning-500); /* Reference 500 variant to avoid duplication */
+      --color-warning-50: oklch(50% 0.14 85);
+      --color-warning-100: oklch(55% 0.14 85);
+      --color-warning-200: oklch(60% 0.14 85);
+      --color-warning-300: oklch(68% 0.13 85);
+      --color-warning-400: oklch(75% 0.13 85);
+      --color-warning-500: var(--color-warning-shared-amber); /* Reference shared amber to avoid duplication */
+      --color-warning-600: oklch(86% 0.12 85);
+      --color-warning-700: oklch(88% 0.11 85);
+      --color-warning-800: oklch(91% 0.1 85);
+      --color-warning-900: oklch(94% 0.08 85);
 
       /* Grayscale inverted for dark */
       --color-gray: oklch(50% 0 0);
@@ -226,7 +292,7 @@
       --color-gray-200: oklch(25% 0 0);
       --color-gray-300: oklch(35% 0 0);
       --color-gray-400: oklch(45% 0 0);
-      --color-gray-500: oklch(50% 0 0);
+      --color-gray-500: var(--color-gray); /* Reference base gray to avoid duplication */
       --color-gray-600: oklch(60% 0 0);
       --color-gray-700: oklch(70% 0 0);
       --color-gray-800: oklch(80% 0 0);
@@ -270,20 +336,20 @@
   }
   */
 
-  /* Freshness Indicator Classes */
+  /* Freshness Indicator Classes - Consistent with freshnessColors */
   .freshness-fresh {
-    color: var(--color-fresh);
+    color: var(--color-success); /* >7 days - references main success color */
   }
   .freshness-good {
-    color: var(--color-good);
+    color: var(--color-freshness-good); /* 4-7 days - unique muted green */
   }
   .freshness-use-soon {
-    color: var(--color-use-soon);
+    color: var(--color-warning); /* 2-3 days - references main warning color */
   }
   .freshness-use-today {
-    color: var(--color-use-today);
+    color: var(--color-freshness-use-today); /* 1 day - unique orange */
   }
   .freshness-expired {
-    color: var(--color-expired);
+    color: var(--color-error); /* 0 days - references main error color */
   }
 }

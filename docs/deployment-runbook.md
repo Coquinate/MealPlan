@@ -160,6 +160,11 @@ NODE_ENV="production"
 NEXT_PUBLIC_APP_URL="https://coquinate.ro"
 NEXT_PUBLIC_API_URL="https://[PROJECT_REF].supabase.co/functions/v1"
 
+# Launch Mode Configuration
+# Controls site access during different launch phases
+# Values: 'coming-soon' | 'full-launch'
+NEXT_PUBLIC_LAUNCH_MODE="coming-soon"
+
 # Authentication
 NEXTAUTH_SECRET="[generate-32-character-random-string]"
 NEXTAUTH_URL="https://coquinate.ro"
@@ -413,7 +418,16 @@ psql "postgresql://postgres:[PASSWORD]@db.[PROJECT_REF].supabase.co:5432/postgre
 
 ### 7.2 Critical Path Testing
 
-**User Registration Flow:**
+**Launch Mode Testing (CRITICAL - Test First):**
+
+1. [ ] Set `NEXT_PUBLIC_LAUNCH_MODE="coming-soon"` 
+2. [ ] Visit https://coquinate.ro - should show Coming Soon page
+3. [ ] Try /dashboard - should redirect to /
+4. [ ] Try /pricing - should redirect to /
+5. [ ] Visit /privacy - should be accessible
+6. [ ] Visit /terms - should be accessible
+
+**User Registration Flow (After Full Launch):**
 
 1. [ ] Visit https://coquinate.ro
 2. [ ] Complete registration form
@@ -509,6 +523,7 @@ WHERE schemaname = 'public';
 ### 10.1 Pre-Launch Verification
 
 - [ ] All environment variables configured correctly
+- [ ] **Launch Mode configured (NEXT_PUBLIC_LAUNCH_MODE="coming-soon")**
 - [ ] Database schema deployed and verified
 - [ ] All Edge Functions deployed and responding
 - [ ] Frontend builds and deploys successfully
@@ -519,29 +534,69 @@ WHERE schemaname = 'public';
 - [ ] Admin dashboard accessible and functional
 - [ ] Trial menu data populated
 - [ ] Monitoring and alerting configured
+- [ ] **Launch Mode routing tested (verify blocked routes redirect correctly)**
 
 ### 10.2 Launch Sequence
 
-1. **Final DNS Update**
+1. **Configure Launch Mode**
+
+   ```bash
+   # Start with Coming Soon mode
+   # In Vercel Dashboard → Environment Variables:
+   NEXT_PUBLIC_LAUNCH_MODE="coming-soon"
+   
+   # Deploy and verify only landing page is accessible
+   ```
+
+2. **Final DNS Update**
 
    ```bash
    # Update A/CNAME records to point to Vercel
    # Wait for DNS propagation (up to 48 hours)
    ```
 
-2. **Cache Warming**
+3. **Progressive Launch Phases**
 
+   **Phase 1 - Coming Soon (Week 1-2):**
    ```bash
-   # Pre-warm key pages
-   curl https://coquinate.ro
-   curl https://coquinate.ro/register
-   curl https://coquinate.ro/pricing
+   # Verify launch mode is set to 'coming-soon'
+   # Only accessible: /, /privacy, /terms
+   # Collect early bird emails
    ```
 
-3. **Announcement**
+   **Phase 2 - Soft Launch (Week 3-4):**
+   ```bash
+   # Update in Vercel Environment Variables:
+   NEXT_PUBLIC_LAUNCH_MODE="full-launch"
+   
+   # Marketing pages become accessible
+   # App features remain blocked
+   # Run beta testing with select users
+   ```
+
+   **Phase 3 - Full Launch (Week 5+):**
+   ```bash
+   # Update in Vercel Environment Variables:
+   NEXT_PUBLIC_LAUNCH_MODE="full-launch"
+   
+   # All features accessible
+   # Remove "beta" messaging
+   # Enable search engine indexing
+   ```
+
+4. **Cache Warming**
+
+   ```bash
+   # Pre-warm key pages based on launch mode
+   curl https://coquinate.ro
+   curl https://coquinate.ro/register  # (when in full-launch)
+   curl https://coquinate.ro/pricing   # (when in full-launch)
+   ```
+
+5. **Announcement**
    - Update social media profiles
-   - Send announcement to existing users (if any)
-   - Submit to Romanian startup directories
+   - Send announcement to early bird email list
+   - Submit to Romanian startup directories (after full launch)
 
 ## Phase 11: Post-Launch Maintenance
 

@@ -16,7 +16,8 @@
   "scripts": {
     "lint": "echo 'To be configured'",
     "format": "echo 'To be configured'",
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf node_modules",
+    "validate:tokens": "node tailwind/validate-design-tokens.js"
   },
   "devDependencies": {
     "tailwindcss": "4.1.11"

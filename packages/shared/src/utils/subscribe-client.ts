@@ -28,7 +28,7 @@ export async function subscribe(
   signal?: AbortSignal
 ): Promise<SubscribeResponse> {
   try {
-    const response = await fetch('/api/subscribe', {
+    const response = await fetch('/api/email-signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -52,10 +52,22 @@ export async function subscribe(
     const data = parseResult.data;
 
     // Handle API error responses
-    if (!response.ok || data.status === 'error') {
-      const code = data.status === 'error' ? data.code : 'server_error';
-      const message =
-        data.status === 'error' ? (data.message ?? 'Subscription failed') : 'Subscription failed';
+    if (!response.ok || 'error' in data) {
+      let code: SubscribeErrorCode = 'server_error';
+      
+      if ('error' in data) {
+        const errorMessage = data.error;
+        // Map specific error messages to error codes
+        if (errorMessage.includes('already registered')) {
+          code = 'already_subscribed';
+        } else if (errorMessage.includes('Invalid') || errorMessage.includes('request data')) {
+          code = 'invalid_email';
+        } else if (errorMessage.includes('Too many requests')) {
+          code = 'rate_limited';
+        }
+      }
+      
+      const message = 'error' in data ? data.error : 'Subscription failed';
       throw new SubscribeApiError(message, code, response.status);
     }
 
