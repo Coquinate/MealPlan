@@ -3,6 +3,7 @@
 import React from 'react';
 import { Button, Card } from '@coquinate/ui';
 import { logComponentError, generateRequestId } from '@coquinate/shared';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 export interface ErrorBoundaryState {
   hasError: boolean;
@@ -10,7 +11,7 @@ export interface ErrorBoundaryState {
   errorId?: string;
 }
 
-interface ErrorBoundaryProps {
+interface ErrorBoundaryProps extends WithTranslation {
   children: React.ReactNode;
 }
 
@@ -20,7 +21,7 @@ interface ErrorBoundaryProps {
  * App-wide error catching and recovery for unhandled React errors
  * Displays user-friendly error message in Romanian with recovery options
  */
-export class RootErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+class RootErrorBoundaryClass extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
@@ -72,6 +73,8 @@ export class RootErrorBoundary extends React.Component<ErrorBoundaryProps, Error
   };
 
   render() {
+    const { t } = this.props;
+    
     if (this.state.hasError) {
       return (
         <div className="min-h-screen bg-gradient-to-br from-primary-50 to-surface flex items-center justify-center p-4">
@@ -95,13 +98,13 @@ export class RootErrorBoundary extends React.Component<ErrorBoundaryProps, Error
                 </div>
 
                 <div>
-                  <h1 className="text-xl font-bold text-text mb-2">Ceva nu a mers bine</h1>
+                  <h1 className="text-xl font-bold text-text mb-2">{t('error.boundary.title')}</h1>
                   <p className="text-text-secondary">
-                    Ne pare rău pentru inconvenient. A apărut o problemă neașteptată.
+                    {t('error.boundary.description')}
                   </p>
                   {this.state.errorId && (
                     <p className="text-xs text-text-tertiary mt-2 font-mono">
-                      ID eroare: {this.state.errorId}
+                      {t('error.boundary.errorId')}: {this.state.errorId}
                     </p>
                   )}
                 </div>
@@ -118,30 +121,30 @@ export class RootErrorBoundary extends React.Component<ErrorBoundaryProps, Error
 
               <div className="space-y-3">
                 <Button onClick={this.handleReset} className="w-full" size="lg">
-                  Încearcă din nou
+                  {t('error.boundary.tryAgain')}
                 </Button>
 
                 <div className="flex space-x-3">
                   <Button onClick={this.handleReload} variant="secondary" className="flex-1">
-                    Reîncarcă pagina
+                    {t('error.boundary.reloadPage')}
                   </Button>
 
                   <Button onClick={this.handleGoHome} variant="secondary" className="flex-1">
-                    Înapoi acasă
+                    {t('error.boundary.goHome')}
                   </Button>
                 </div>
               </div>
 
               <div className="text-xs text-text-secondary">
                 <p>
-                  Dacă problema persistă, contactează suportul la{' '}
+                  {t('error.boundary.persistMessage')}{' '}
                   <a href="mailto:support@coquinate.com" className="text-primary hover:underline">
                     support@coquinate.com
                   </a>
                   {this.state.errorId && (
                     <span>
                       {' '}
-                      și menționează ID-ul erorii:{' '}
+                      {t('error.boundary.mentionId')}:{' '}
                       <code className="font-mono">{this.state.errorId}</code>
                     </span>
                   )}
@@ -156,3 +159,5 @@ export class RootErrorBoundary extends React.Component<ErrorBoundaryProps, Error
     return this.props.children;
   }
 }
+
+export const RootErrorBoundary = withTranslation('common')(RootErrorBoundaryClass);

@@ -42,7 +42,14 @@ export const metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://coquinate.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://coquinate.ro'),
+  alternates: {
+    canonical: '/',
+    languages: {
+      'ro-RO': 'https://coquinate.ro',
+      'en-US': 'https://coquinate.com',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'ro_RO',

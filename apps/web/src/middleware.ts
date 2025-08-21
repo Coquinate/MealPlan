@@ -5,6 +5,8 @@
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { isRouteAllowed, getLaunchRedirect, LAUNCH_MODE } from '@/lib/launch-config';
+import { middlewareLogger } from '@/lib/logger';
 
 // Define route protection rules
 const routeConfig = {
@@ -85,6 +87,27 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // LAUNCH MODE REWRITE - Serve different content based on launch phase
+  // This happens BEFORE any other checks to ensure the right page is served
+  if (pathname === '/' && LAUNCH_MODE === 'coming-soon') {
+    middlewareLogger.debug('Rewriting to coming-soon page', { launchMode: LAUNCH_MODE });
+    return NextResponse.rewrite(new URL('/coming-soon', request.url));
+  }
+  // For full-launch, use the default page.tsx
+
+  // LAUNCH MODE ACCESS CONTROL - Block certain routes based on launch phase
+  if (LAUNCH_MODE !== 'full-launch') {
+    if (!isRouteAllowed(pathname)) {
+      middlewareLogger.info('Route blocked by launch mode', { 
+        launchMode: LAUNCH_MODE, 
+        pathname,
+        redirectTo: getLaunchRedirect()
+      });
+      const redirectUrl = getLaunchRedirect();
+      return NextResponse.redirect(new URL(redirectUrl, request.url));
+    }
+  }
+
   // Check if we have valid Supabase configuration
   const hasSupabaseConfig =
     process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -96,26 +119,24 @@ export async function middleware(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.includes('placeholder');
 
   // Development-only auth debugging (no sensitive data)
-  if (isDevelopment) {
-    console.log('Middleware auth check:', {
-      pathname,
-      hasSupabaseConfig,
-      hasPlaceholders,
-      cookieCount: request.cookies.getAll().length,
-    });
-  }
+  middlewareLogger.debug('Auth check configuration', {
+    pathname,
+    hasSupabaseConfig,
+    hasPlaceholders,
+    cookieCount: request.cookies.getAll().length,
+  });
 
   if (!hasSupabaseConfig) {
-    console.error('Supabase configuration missing');
+    middlewareLogger.error('Supabase configuration missing');
     return NextResponse.next();
   }
 
   // In development with placeholders, skip auth middleware
   if (isDevelopment && hasPlaceholders) {
-    console.log(
-      'Development mode with placeholder config - skipping auth middleware for',
-      pathname
-    );
+    middlewareLogger.debug('Skipping auth in development mode', {
+      pathname,
+      reason: 'placeholder_supabase_config'
+    });
     return NextResponse.next();
   }
 
@@ -148,7 +169,7 @@ export async function middleware(request: NextRequest) {
 
   // Development-only cookie debugging
   if (isDevelopment) {
-    console.log('Auth cookie lookup:', { foundTokens: !!sessionTokens });
+    middlewareLogger.debug('Auth cookie lookup', { foundTokens: !!sessionTokens });
   }
 
   let session = null;
@@ -157,7 +178,7 @@ export async function middleware(request: NextRequest) {
   if (sessionTokens) {
     try {
       if (isDevelopment) {
-        console.log('Auth tokens found:', {
+        middlewareLogger.debug('Auth tokens found', {
           hasAccessToken: !!sessionTokens.access_token,
           hasRefreshToken: !!sessionTokens.refresh_token,
         });
@@ -172,10 +193,9 @@ export async function middleware(request: NextRequest) {
       error = sessionError;
     } catch (e) {
       if (isDevelopment) {
-        console.log(
-          'Failed to set session from tokens:',
-          e instanceof Error ? e.message : 'Unknown error'
-        );
+        middlewareLogger.debug('Failed to set session from tokens', {
+          error: e instanceof Error ? e.message : 'Unknown error'
+        });
       }
       error = e;
     }
@@ -187,14 +207,14 @@ export async function middleware(request: NextRequest) {
     session = sessionResult.data.session;
     error = sessionResult.error;
     if (isDevelopment) {
-      console.log('Fallback session:', { hasSession: !!session, hasError: !!error });
+      middlewareLogger.debug('Fallback session check', { hasSession: !!session, hasError: !!error });
     }
   }
 
   // No session found in middleware - let client-side handle auth redirect
   if (!session || error) {
     if (isDevelopment) {
-      console.log('No server-side session, client handling auth for:', pathname);
+      middlewareLogger.debug('No server-side session - client handling auth', { pathname });
     }
 
     // For protected routes, let the client handle the redirect rather than doing it server-side
@@ -229,7 +249,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
       }
     } catch (error) {
-      console.error('Admin check error:', error);
+      middlewareLogger.error('Admin check failed', error);
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }
@@ -260,7 +280,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/pricing', request.url));
       }
     } catch (error) {
-      console.error('Premium check error:', error);
+      middlewareLogger.error('Premium check failed', error);
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }

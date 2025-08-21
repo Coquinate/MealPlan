@@ -166,6 +166,16 @@ export default {
       height: {
         ...designTokens.spacing,
       },
+
+      // Minimum height values from design tokens
+      minHeight: {
+        ...designTokens.minHeight,
+      },
+
+      // Grid template columns from design tokens
+      gridTemplateColumns: {
+        ...designTokens.gridTemplateColumns,
+      },
     },
   },
 

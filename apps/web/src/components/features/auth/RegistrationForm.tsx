@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Button, Input, Select, Card, cn } from '@coquinate/ui';
 import { useTranslation } from '@coquinate/i18n';
+import { authLogger } from '@/lib/logger';
 
 export interface RegistrationData {
   email: string;
@@ -93,7 +94,7 @@ export const RegistrationForm = React.forwardRef<HTMLFormElement, RegistrationFo
       try {
         await onSubmit(formData);
       } catch (error) {
-        console.error('Registration error:', error);
+        authLogger.error('Registration error', error instanceof Error ? error : new Error(String(error)));
       }
     };
 

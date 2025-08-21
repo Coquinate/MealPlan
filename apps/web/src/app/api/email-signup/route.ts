@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createServerClient } from '@/lib/supabase/server';
 import { emailSignupLimiter } from '@/lib/rate-limit';
+import { apiLogger, emailLogger } from '@/lib/logger';
 
 /**
  * Extended NextRequest type with ip property
@@ -59,15 +60,28 @@ function anonymizeIp(ip: string): string {
     }
   }
 
+  // Handle special IPv6 addresses
+  if (cleanIp === '::1') {
+    // IPv6 loopback - return as is (already anonymized)
+    return '::1';
+  }
+
   // Regular IPv6: Keep first 4 segments
   if (cleanIp.includes(':')) {
-    const segments = cleanIp.split(':');
-    // Take first 4 segments and pad with :: for anonymization
+    const segments = cleanIp.split(':').filter(segment => segment !== '');
+    
+    // If we have enough segments, take first 4 and anonymize rest
     if (segments.length >= 4) {
       return `${segments.slice(0, 4).join(':')}::`;
     }
-    // If less than 4 segments, just add ::
-    return `${cleanIp}::`.replace(/::+/, '::'); // Avoid multiple ::
+    
+    // If we already have compressed notation (::), keep as is
+    if (cleanIp.includes('::')) {
+      return cleanIp;
+    }
+    
+    // Otherwise, add :: for anonymization
+    return `${cleanIp}::`;
   }
 
   // Regular IPv4: Zero out last octet
@@ -132,13 +146,11 @@ export async function POST(request: NextRequestWithIp) {
     const anonymizedIp = anonymizeIp(clientIp);
 
     // Debug logging for development
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('Email signup attempt:', {
-        originalIp: clientIp,
-        anonymizedIp,
-        email: normalizedEmail.replace(/(.{2}).*(@.*)/, '$1***$2'), // Partially mask email
-      });
-    }
+    emailLogger.debug('Email signup attempt', {
+      originalIp: clientIp,
+      anonymizedIp,
+      email: normalizedEmail.replace(/(.{2}).*(@.*)/, '$1***$2'), // Partially mask email
+    });
 
     const { data: newSignup, error: insertError } = await supabase
       .from('email_signups')
@@ -152,13 +164,10 @@ export async function POST(request: NextRequestWithIp) {
 
     if (insertError) {
       // Log error without PII
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Error inserting email signup:', {
-          code: insertError.code,
-          message: insertError.message,
-          details: insertError.details,
-        });
-      }
+      emailLogger.error('Failed to insert email signup', insertError, {
+        code: insertError.code,
+        details: insertError.details,
+      });
 
       // Check if it's a unique constraint violation
       if (insertError.code === '23505') {
@@ -172,37 +181,55 @@ export async function POST(request: NextRequestWithIp) {
     }
 
     // Log success without PII
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('Email signup successful', {
-        signupOrder: newSignup.signup_order,
-        isEarlyBird: newSignup.is_early_bird,
-      });
-    }
+    emailLogger.info('Email signup successful', {
+      signupOrder: newSignup.signup_order,
+      isEarlyBird: newSignup.is_early_bird,
+    });
 
-    // Trigger Edge Function to send welcome email
+    // Trigger Edge Function to send welcome email with timeout
     try {
       const edgeFunctionUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-welcome-email`;
       const functionSecret = process.env.WELCOME_EMAIL_FN_SECRET;
 
       if (functionSecret) {
-        await fetch(edgeFunctionUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-function-secret': functionSecret,
-          },
-          body: JSON.stringify({
-            email: normalizedEmail,
-            isEarlyBird: newSignup.is_early_bird,
-          }),
-        });
+        // Create abort controller for timeout management
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+        try {
+          const response = await fetch(edgeFunctionUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-function-secret': functionSecret,
+            },
+            body: JSON.stringify({
+              email: normalizedEmail,
+              isEarlyBird: newSignup.is_early_bird,
+            }),
+            signal: controller.signal,
+          });
+
+          clearTimeout(timeoutId);
+
+          if (!response.ok) {
+            emailLogger.warn(`Welcome email function returned status ${response.status}`);
+          }
+        } catch (fetchError) {
+          clearTimeout(timeoutId);
+          if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+            emailLogger.warn('Welcome email function timed out after 10 seconds');
+          } else {
+            throw fetchError; // Re-throw other errors to be caught by outer catch
+          }
+        }
       } else if (process.env.NODE_ENV !== 'production') {
-        console.warn('WELCOME_EMAIL_FN_SECRET not configured - email not sent');
+        emailLogger.warn('WELCOME_EMAIL_FN_SECRET not configured - email not sent');
       }
     } catch (emailError) {
       // Don't fail the signup if email fails
       if (process.env.NODE_ENV !== 'production') {
-        console.error('Failed to send welcome email (non-blocking):', emailError);
+        emailLogger.warn('Failed to send welcome email (non-blocking)', emailError instanceof Error ? emailError : new Error(String(emailError)));
       }
     }
 
@@ -212,7 +239,7 @@ export async function POST(request: NextRequestWithIp) {
       signupOrder: newSignup.signup_order,
     });
   } catch (error) {
-    console.error('Unexpected error in email signup:', error);
+    apiLogger.error('Unexpected error in email signup', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
       { error: 'An unexpected error occurred. Please try again.' },
       { status: 500 }

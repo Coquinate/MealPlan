@@ -1,14 +1,11 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { ChevronLeft } from '@tabler/icons-react';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Politica de Confidențialitate | Coquinate',
-  description:
-    'Politica de confidențialitate și protecția datelor personale pentru Coquinate - platforma de planificare a meselor',
-};
+import Link from 'next/link';
+import { ChevronLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function PrivacyPolicyPage() {
+  const { t } = useTranslation('common');
   return (
     <div className="min-h-screen bg-surface">
       {/* Navigation */}
@@ -19,7 +16,7 @@ export default function PrivacyPolicyPage() {
             className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
-            <span className="font-medium">Înapoi la pagina principală</span>
+            <span className="font-medium">{t('error.general.backToPrivacy')}</span>
           </Link>
         </div>
       </nav>

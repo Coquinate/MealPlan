@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Button, Input, Card, cn } from '@coquinate/ui';
 import { useTranslation } from '@coquinate/i18n';
+import { authLogger } from '@/lib/logger';
 
 export interface LoginFormProps {
   onSubmit: (credentials: { email: string; password: string }) => Promise<void>;
@@ -53,7 +54,7 @@ export const LoginForm = React.forwardRef<HTMLFormElement, LoginFormProps>(
         await onSubmit(formData);
       } catch (error) {
         // Error handling is managed by parent component
-        console.error('Login error:', error);
+        authLogger.error('Login error', error instanceof Error ? error : new Error(String(error)));
       }
     };
 

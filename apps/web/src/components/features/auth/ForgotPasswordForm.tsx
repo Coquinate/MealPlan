@@ -30,7 +30,7 @@ export const ForgotPasswordForm = React.forwardRef<HTMLFormElement, ForgotPasswo
         setEmailError(t('errors.emailRequired'));
         isValid = false;
       } else if (!email.includes('@')) {
-        setEmailError('Email invalid');
+        setEmailError(t('errors.emailInvalid'));
         isValid = false;
       } else {
         setEmailError('');
@@ -140,7 +140,7 @@ export const ForgotPasswordForm = React.forwardRef<HTMLFormElement, ForgotPasswo
               variant="ghost"
               size="lg"
             >
-              Înapoi la autentificare
+              {t('forgotPassword.backToLogin')}
             </Button>
           </div>
 
@@ -148,7 +148,7 @@ export const ForgotPasswordForm = React.forwardRef<HTMLFormElement, ForgotPasswo
           {!success && (
             <div className="text-center pt-space-sm border-t border-border">
               <p className="text-xs text-text-secondary">
-                Nu veți primi un email dacă această adresă nu este înregistrată în sistem
+                {t('forgotPassword.noEmailNote')}
               </p>
             </div>
           )}

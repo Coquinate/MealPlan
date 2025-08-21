@@ -7,174 +7,65 @@ export function WorkflowNodes() {
   const { t } = useTranslation('landing');
 
   return (
-    <div className="relative w-full h-full max-w-none overflow-hidden">
-      {/* SVG Connector Lines - Improved curved path connecting the cards */}
+    <div className="relative w-full h-full min-h-[500px] flex justify-center items-center">
+      {/* SVG Connector Lines */}
       <svg
-        className="absolute inset-0 w-full h-full z-0 pointer-events-none hidden lg:block"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
+        className="absolute top-0 left-0 w-full h-full z-0"
+        viewBox="0 0 500 400"
+        preserveAspectRatio="xMidYMid meet"
       >
         <path
-          d="M 75 15 Q 65 35 75 50 Q 85 65 75 85"
-          stroke="var(--color-primary-warm, #4A9B8E)"
-          strokeOpacity="0.3"
+          d="M 150 80 C 100 120, 100 200, 150 240 C 200 280, 300 320, 400 350"
+          stroke="oklch(90% 0 0)"
           fill="transparent"
-          strokeWidth="0.5"
-          strokeDasharray="2 2"
-          vectorEffect="non-scaling-stroke"
+          strokeWidth="2"
+          strokeDasharray="4 4"
         />
       </svg>
 
-      {/* Desktop Layout: 3 Nodes positioned using grid for better control */}
-      <div className="hidden lg:grid lg:grid-rows-3 lg:h-full lg:items-center lg:justify-end lg:pr-16 lg:py-16 lg:gap-8">
-        {/* Node 1: Gătești Duminică */}
-        <div className="w-56 bg-white border border-border-light rounded-card p-4 shadow-workflow-card hover:shadow-workflow-card hover:-translate-y-1 transition-all duration-300 z-20 justify-self-end">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-accent-coral/15 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <IconChefHat className="w-5 h-5 text-accent-coral stroke-1 stroke-1" />
-            </div>
-            <span className="font-display font-semibold text-base text-text">
-              {t('workflow.cook_sunday.title')}
-            </span>
+      {/* Node 1: Gătești Duminică */}
+      <div className="absolute top-[10%] right-[60%] w-[220px] bg-[oklch(100%_0_0)] border border-[oklch(90%_0_0)] rounded-xl p-4 shadow-[0_4px_20px_oklch(0%_0_0_/_0.06)] z-10 hover:-translate-y-[5px] hover:shadow-[0_8px_30px_oklch(0%_0_0_/_0.1)] transition-all duration-300">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 bg-[oklch(78%_0.12_20)] rounded-lg flex items-center justify-center">
+            <IconChefHat className="w-5 h-5 text-[oklch(70%_0.18_20)]" />
           </div>
-          <p className="text-sm text-text-muted leading-relaxed">
-            {t('workflow.cook_sunday.description')}
-          </p>
+          <span className="font-display font-semibold text-base">
+            {t('workflow.cook_sunday.title')}
+          </span>
         </div>
-
-        {/* Node 2: Refolosești Luni */}
-        <div className="w-56 bg-white border border-border-light rounded-card p-4 shadow-workflow-card hover:shadow-workflow-card hover:-translate-y-1 transition-all duration-300 z-20 justify-self-center">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-accent-coral/15 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <IconFileText className="w-5 h-5 text-accent-coral stroke-1" />
-            </div>
-            <span className="font-display font-semibold text-base text-text">
-              {t('workflow.reuse_monday.title')}
-            </span>
-          </div>
-          <p className="text-sm text-text-muted leading-relaxed">
-            {t('workflow.reuse_monday.description')}
-          </p>
-        </div>
-
-        {/* Node 3: Reinventezi Marți */}
-        <div className="w-56 bg-white border border-border-light rounded-card p-4 shadow-workflow-card hover:shadow-workflow-card hover:-translate-y-1 transition-all duration-300 z-20 justify-self-end">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-accent-coral/15 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <IconSparkles className="w-5 h-5 text-accent-coral stroke-1" />
-            </div>
-            <span className="font-display font-semibold text-base text-text">
-              {t('workflow.reinvent_tuesday.title')}
-            </span>
-          </div>
-          <p className="text-sm text-text-muted leading-relaxed">
-            {t('workflow.reinvent_tuesday.description')}
-          </p>
-        </div>
+        <p className="text-[0.875rem] text-[oklch(60%_0_0)]">
+          {t('workflow.cook_sunday.description')}
+        </p>
       </div>
 
-      {/* Tablet Layout: Simple grid with consistent content */}
-      <div className="hidden sm:block lg:hidden">
-        <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <div className="bg-white border border-border-light rounded-card p-4 shadow-workflow-card">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-accent-coral/15 rounded-2xl flex items-center justify-center">
-                <IconChefHat className="w-5 h-5 text-accent-coral stroke-1" />
-              </div>
-              <span className="font-display font-semibold text-base">
-                {t('workflow.cook_sunday.title')}
-              </span>
-            </div>
-            <p className="text-sm text-text-muted leading-relaxed">
-              {t('workflow.cook_sunday.description')}
-            </p>
+      {/* Node 2: Refolosești Luni */}
+      <div className="absolute top-[40%] right-[70%] w-[220px] bg-[oklch(100%_0_0)] border border-[oklch(90%_0_0)] rounded-xl p-4 shadow-[0_4px_20px_oklch(0%_0_0_/_0.06)] z-10 hover:-translate-y-[5px] hover:shadow-[0_8px_30px_oklch(0%_0_0_/_0.1)] transition-all duration-300">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 bg-[oklch(78%_0.12_20)] rounded-lg flex items-center justify-center">
+            <IconFileText className="w-5 h-5 text-[oklch(70%_0.18_20)]" />
           </div>
-
-          <div className="bg-white border border-border-light rounded-card p-4 shadow-workflow-card">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-accent-coral/15 rounded-2xl flex items-center justify-center">
-                <IconFileText className="w-5 h-5 text-accent-coral stroke-1" />
-              </div>
-              <span className="font-display font-semibold text-base">
-                {t('workflow.reuse_monday.title')}
-              </span>
-            </div>
-            <p className="text-sm text-text-muted leading-relaxed">
-              {t('workflow.reuse_monday.description')}
-            </p>
-          </div>
-
-          <div className="col-span-2 flex justify-center">
-            <div className="bg-white border border-border-light rounded-card p-4 shadow-workflow-card w-56">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-accent-coral/15 rounded-2xl flex items-center justify-center">
-                  <IconSparkles className="w-5 h-5 text-accent-coral stroke-1" />
-                </div>
-                <span className="font-display font-semibold text-base">
-                  {t('workflow.reinvent_tuesday.title')}
-                </span>
-              </div>
-              <p className="text-sm text-text-muted leading-relaxed">
-                {t('workflow.reinvent_tuesday.description')}
-              </p>
-            </div>
-          </div>
+          <span className="font-display font-semibold text-base">
+            {t('workflow.reuse_monday.title')}
+          </span>
         </div>
+        <p className="text-[0.875rem] text-[oklch(60%_0_0)]">
+          {t('workflow.reuse_monday.description')}
+        </p>
       </div>
 
-      {/* Mobile Layout: Vertical stack with consistent content */}
-      <div className="block sm:hidden">
-        <div className="space-y-4 max-w-sm mx-auto px-4">
-          <div className="bg-white border border-border-light rounded-card p-4 shadow-workflow-card">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-accent-coral/15 rounded-2xl flex items-center justify-center">
-                <IconChefHat className="w-5 h-5 text-accent-coral stroke-1" />
-              </div>
-              <span className="font-display font-semibold text-base">
-                {t('workflow.cook_sunday.title')}
-              </span>
-            </div>
-            <p className="text-sm text-text-muted leading-relaxed">
-              {t('workflow.cook_sunday.description')}
-            </p>
+      {/* Node 3: Reinventezi Marți */}
+      <div className="absolute bottom-[15%] right-[25%] w-[220px] bg-[oklch(100%_0_0)] border border-[oklch(90%_0_0)] rounded-xl p-4 shadow-[0_4px_20px_oklch(0%_0_0_/_0.06)] z-10 hover:-translate-y-[5px] hover:shadow-[0_8px_30px_oklch(0%_0_0_/_0.1)] transition-all duration-300">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 bg-[oklch(78%_0.12_20)] rounded-lg flex items-center justify-center">
+            <IconSparkles className="w-5 h-5 text-[oklch(70%_0.18_20)]" />
           </div>
-
-          <div className="flex justify-center py-2">
-            <div className="w-0.5 h-8 bg-border-light" />
-          </div>
-
-          <div className="bg-white border border-border-light rounded-card p-4 shadow-workflow-card">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-accent-coral/15 rounded-2xl flex items-center justify-center">
-                <IconFileText className="w-5 h-5 text-accent-coral stroke-1" />
-              </div>
-              <span className="font-display font-semibold text-base">
-                {t('workflow.reuse_monday.title')}
-              </span>
-            </div>
-            <p className="text-sm text-text-muted leading-relaxed">
-              {t('workflow.reuse_monday.description')}
-            </p>
-          </div>
-
-          <div className="flex justify-center py-2">
-            <div className="w-0.5 h-8 bg-border-light" />
-          </div>
-
-          <div className="bg-white border border-border-light rounded-card p-4 shadow-workflow-card">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-accent-coral/15 rounded-2xl flex items-center justify-center">
-                <IconSparkles className="w-5 h-5 text-accent-coral stroke-1" />
-              </div>
-              <span className="font-display font-semibold text-base">
-                {t('workflow.reinvent_tuesday.title')}
-              </span>
-            </div>
-            <p className="text-sm text-text-muted leading-relaxed">
-              {t('workflow.reinvent_tuesday.description')}
-            </p>
-          </div>
+          <span className="font-display font-semibold text-base">
+            {t('workflow.reinvent_tuesday.title')}
+          </span>
         </div>
+        <p className="text-[0.875rem] text-[oklch(60%_0_0)]">
+          {t('workflow.reinvent_tuesday.description')}
+        </p>
       </div>
     </div>
   );

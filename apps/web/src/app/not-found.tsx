@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 // import { Button, Card } from '@coquinate/ui';
 
 /**
@@ -11,6 +12,8 @@ import Link from 'next/link';
  * Includes Romanian text and navigation options back to main sections
  */
 export default function NotFoundPage() {
+  const { t } = useTranslation('common');
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-surface flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -21,15 +24,15 @@ export default function NotFoundPage() {
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold text-text mb-2">Pagina nu a fost găsită</h1>
+              <h1 className="text-2xl font-bold text-text mb-2">{t('error.notFound.title')}</h1>
               <p className="text-text-secondary">
-                Ne pare rău, pagina pe care o cauți nu există sau a fost mutată.
+                {t('error.notFound.description')}
               </p>
             </div>
 
             <div className="bg-surface-elevated p-4 rounded-lg">
               <p className="text-sm text-text-secondary">
-                <strong>Cod eroare:</strong> 404
+                <strong>{t('error.notFound.errorCode')}:</strong> 404
               </p>
             </div>
           </div>
@@ -37,20 +40,20 @@ export default function NotFoundPage() {
           <div className="space-y-3">
             <Link href="/dashboard" className="block">
               <button className="w-full px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-600">
-                Înapoi la panoul principal
+                {t('error.notFound.backToMain')}
               </button>
             </Link>
 
             <div className="flex space-x-3">
               <Link href="/" className="flex-1">
                 <button className="w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
-                  Pagina principală
+                  {t('error.notFound.homePage')}
                 </button>
               </Link>
 
               <Link href="/auth/login" className="flex-1">
                 <button className="w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
-                  Autentificare
+                  {t('error.notFound.login')}
                 </button>
               </Link>
             </div>
@@ -65,7 +68,7 @@ export default function NotFoundPage() {
             </div>
 
             <p className="text-xs text-text-secondary">
-              Dacă crezi că aceasta este o eroare, contactează-ne la{' '}
+              {t('error.notFound.contactMessage')}{' '}
               <a href="mailto:support@coquinate.com" className="text-primary hover:underline">
                 support@coquinate.com
               </a>
