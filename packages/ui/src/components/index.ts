@@ -25,3 +25,6 @@ export * from './shopping-list-item';
 
 // Animated components
 export * from './animated';
+
+// Interactive components
+export * from './sound-toggle';

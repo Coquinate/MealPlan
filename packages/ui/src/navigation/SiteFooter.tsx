@@ -1,6 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { 
+  IconBrandFacebook, 
+  IconBrandInstagram, 
+  IconBrandTwitter, 
+  IconMail, 
+  IconHeart 
+} from '@tabler/icons-react';
 
 interface SiteFooterProps {
   copyrightText?: string;
@@ -11,65 +18,127 @@ export function SiteFooter({
   copyrightText = '© 2025 Coquinate. Dezvoltat cu pasiune pentru familiile din România.',
   privacyPolicyLabel = 'Politică de Confidențialitate',
 }: SiteFooterProps) {
-  const handleCopyLink = () => {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url);
+  const [easterEggClicks, setEasterEggClicks] = useState(0);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+
+  const handleLogoClick = () => {
+    const newClicks = easterEggClicks + 1;
+    setEasterEggClicks(newClicks);
+
+    if (newClicks === 5) {
+      setShowEasterEgg(true);
+      setTimeout(() => {
+        setShowEasterEgg(false);
+        setEasterEggClicks(0);
+      }, 3000);
+    }
   };
 
-  const handleEmailShare = () => {
-    const subject = encodeURIComponent('Îți place ideea? Ajută-ne să ajungem la mai multe familii!');
-    const body = encodeURIComponent(`Descoperă Coquinate - planificarea meselor făcută ușor pentru familiile din România!\n\n${window.location.href}`);
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
-  };
+  const socialLinks = [
+    { 
+      icon: IconBrandFacebook, 
+      href: '#', 
+      label: 'Facebook', 
+      hoverColor: 'hover:text-blue-400' 
+    },
+    { 
+      icon: IconBrandInstagram, 
+      href: '#', 
+      label: 'Instagram', 
+      hoverColor: 'hover:text-pink-400' 
+    },
+    { 
+      icon: IconBrandTwitter, 
+      href: '#', 
+      label: 'Twitter', 
+      hoverColor: 'hover:text-sky-400' 
+    },
+    { 
+      icon: IconMail, 
+      href: 'mailto:contact@coquinate.ro', 
+      label: 'Email', 
+      hoverColor: 'hover:text-accent-coral' 
+    },
+  ];
 
   return (
-    <footer className="bg-dark-surface py-12 text-center">
-      <div className="mx-auto max-w-container px-8">
-        {/* Share text and buttons */}
-        <p className="text-text-light opacity-70 text-sm mb-4">
-          Îți place ideea? Ajută-ne să ajungem la mai multe familii!
-        </p>
-        <div className="flex justify-center gap-3 mb-8">
-          <button
-            onClick={handleEmailShare}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-surface-secondary/30 hover:bg-surface-secondary/50 text-text-light rounded-lg transition-colors duration-200 text-sm"
-            aria-label="Email"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            Email
-          </button>
-          <button
-            onClick={handleCopyLink}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-surface-secondary/30 hover:bg-surface-secondary/50 text-text-light rounded-lg transition-colors duration-200 text-sm"
-            aria-label="Copiază link"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-            </svg>
-            Copiază link
-          </button>
+    <footer className="bg-dark-surface text-text-light py-8 sm:py-12 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
+      {/* Easter Egg Overlay */}
+      {showEasterEgg && (
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-r from-accent-coral via-primary-warm to-accent-coral opacity-20 animate-pulse"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl animate-bounce">
+            🍳✨🥘
+          </div>
+        </div>
+      )}
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Logo with Easter Egg */}
+        <div
+          onClick={handleLogoClick}
+          className={`font-display text-xl sm:text-2xl font-bold text-primary mb-3 sm:mb-4 opacity-80 cursor-pointer transition-all duration-300 hover:opacity-100 hover:scale-105 select-none ${
+            showEasterEgg ? 'animate-bounce text-accent-coral' : ''
+          }`}
+        >
+          Coquinate
+          {showEasterEgg && (
+            <div className="text-xs mt-1 text-accent-coral animate-pulse">
+              Mulțumim că ne iubești! <IconHeart size={12} className="inline animate-pulse" />
+            </div>
+          )}
         </div>
 
-        {/* Logo */}
-        <div className="font-display text-footer-logo font-bold text-primary mb-4 opacity-80">
-          Coquinate
+        {/* Social Media Icons */}
+        <div className="flex justify-center gap-4 mb-4 sm:mb-6">
+          {socialLinks.map((social, index) => (
+            <a
+              key={social.label}
+              href={social.href}
+              className={`p-2 rounded-full bg-surface-white/10 backdrop-blur-sm border border-surface-white/20 transition-all duration-300 hover:bg-surface-white/20 hover:transform hover:-translate-y-1 ${social.hoverColor} group`}
+              title={social.label}
+              style={{ animationDelay: `${index * 100}ms` }}
+              aria-label={social.label}
+            >
+              <social.icon size={18} className="transition-transform duration-300 group-hover:scale-110" />
+            </a>
+          ))}
         </div>
 
         {/* Copyright */}
-        <p className="text-sm text-text-light opacity-70 mb-4">{copyrightText}</p>
+        <p className="opacity-70 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
+          {copyrightText}
+        </p>
 
-        {/* Links */}
-        <div className="mt-4">
+        {/* Privacy Policy Link */}
+        <div className="mt-3 sm:mt-4">
           <a
             href="/politica-de-confidentialitate"
             target="_blank"
-            className="text-sm text-text-light opacity-70 hover:opacity-100 transition-opacity no-underline"
+            rel="noreferrer"
+            className="text-text-light opacity-70 no-underline text-xs sm:text-sm hover:opacity-100 transition-all duration-200 py-2 px-1 inline-block hover:text-accent-coral"
             aria-label={privacyPolicyLabel}
           >
             {privacyPolicyLabel}
           </a>
+        </div>
+
+        {/* Made with Love in Romania */}
+        <div className="mt-8 pt-6 border-t border-border/10">
+          <p className="text-base font-semibold text-white flex items-center justify-center gap-1">
+            Făcut cu 
+            <span className="inline-block mx-1 relative">
+              <IconHeart 
+                size={24} 
+                className="text-accent-coral animate-pulse fill-accent-coral" 
+                style={{ 
+                  filter: 'drop-shadow(0 0 12px rgba(255, 107, 107, 0.8))',
+                  animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                }}
+              />
+            </span>
+            în România
+          </p>
         </div>
       </div>
     </footer>

@@ -22,7 +22,8 @@ import {
   HeroSection,
   FeaturesSection,
   CTASection,
-  ScrollProgress
+  ScrollProgress,
+  SoundToggle
 } from '@coquinate/ui';
 
 // Robust translation hook with fallback mechanism
@@ -147,6 +148,9 @@ export default function ComingSoonPage() {
 
       {/* Footer */}
       <SiteFooter copyrightText={t('footer.copyright')} privacyPolicyLabel={t('footer.privacy')} />
+
+      {/* Sound Toggle */}
+      <SoundToggle />
     </>
   );
 }
