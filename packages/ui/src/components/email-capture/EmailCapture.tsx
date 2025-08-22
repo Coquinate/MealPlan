@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { IconGift } from '@tabler/icons-react';
 import { FloatingElements, FloatingOrbPresets } from '../floating-elements';
 import { useI18nWithFallback, useEmailValidation, useEmailSubmission, useFloatingElements } from '../../hooks';
 import { Button } from '../button';
@@ -133,7 +134,7 @@ export function EmailCapture({
                   placeholder={placeholder ?? t('email.placeholder')}
                   disabled={submission.isLoading}
                   required
-                  className="glass-input focus-glass text-text placeholder:text-text-muted/60"
+                  className="glass-input focus-glass text-text placeholder:text-text-muted placeholder:opacity-60"
                   aria-describedby="email-glass-status"
                   aria-invalid={submission.hasError}
                 />
@@ -227,17 +228,27 @@ export function EmailCapture({
   // Promo variant - COMPACT horizontal layout matching column width
   if (variant === 'promo') {
     return (
-      <div className={cn('w-full', className)}>
-        {/* COMPACT VIBRANT GRADIENT CONTAINER with reduced padding */}
-        <div className="bg-gradient-to-br from-primary-warm/8 via-accent-coral/4 to-primary-warm-light/8 backdrop-blur-sm border-2 border-primary-warm/20 rounded-xl p-4 shadow-xl shadow-primary-warm/15 relative overflow-hidden">
+      <div className={cn('w-full relative', className)}>
+        {/* COMPACT CONTAINER with subtle gray background and enhanced shadow */}
+        <div 
+          className="bg-surface-secondary backdrop-blur-sm border border-border-strong rounded-xl p-5 shadow-sm transition-all duration-300 relative overflow-hidden"
+          style={{
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 30px oklch(70% 0.18 20 / 0.3), 0 20px 40px oklch(0% 0 0 / 0.15)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '';
+            e.currentTarget.style.transform = '';
+          }}
+        >
           
-          {/* Subtle animated background glow */}
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-warm/3 via-transparent to-accent-coral/3 animate-pulse" />
-          
-          {/* Content with relative positioning */}
+          {/* Content */}
           <div className="relative z-10">
-            {/* COMPACT COLORFUL TITLE */}
-            <h3 className="font-display text-base font-bold mb-3 bg-gradient-to-r from-primary-warm via-accent-coral to-primary-warm-light bg-clip-text text-transparent leading-tight text-center">
+            {/* TITLE - REVERTING TO GRADIENT TEXT */}
+            <h3 className="font-display text-base font-bold mb-3 bg-gradient-to-r from-primary-warm to-accent-coral bg-clip-text text-transparent leading-tight text-center">
               {PROMO_VARIANT_CONFIG.title}
             </h3>
 
@@ -253,14 +264,14 @@ export function EmailCapture({
                     className={cn(
                       'w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-0 transition-all duration-300 disabled:opacity-60 text-sm font-medium',
                       // SIMPLE CLEAN BACKGROUND
-                      'bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm',
+                      'bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 backdrop-blur-sm',
                       // COLORFUL BORDERS and focus states
-                      'border-primary-warm/25 hover:border-primary-warm/40 focus:border-primary-warm focus:shadow-lg focus:shadow-primary-warm/20',
+                      'border-primary-warm border-opacity-30 hover:border-primary-warm hover:border-opacity-40 focus:border-primary-warm focus:border-opacity-100 focus:shadow-lg',
                       // CLEAN TEXT COLORS
                       'text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 placeholder:font-normal',
                       // VALIDATION COLORS
-                      submission.hasError && '!border-red-500 !bg-red-50/90 dark:!bg-red-900/20 !shadow-lg !shadow-red-500/20 !text-red-700 dark:!text-red-400',
-                      validation.isValid && validation.email.length > 0 && '!border-green-500 !bg-green-50/90 dark:!bg-green-900/20 !shadow-lg !shadow-green-500/20 !text-green-700 dark:!text-green-400'
+                      submission.hasError && '!border-red-500 !bg-red-50 !bg-opacity-90 dark:!bg-red-900 dark:!bg-opacity-20 !shadow-lg !text-red-700 dark:!text-red-400',
+                      validation.isValid && validation.email.length > 0 && '!border-green-500 !bg-green-50 !bg-opacity-90 dark:!bg-green-900 dark:!bg-opacity-20 !shadow-lg !text-green-700 dark:!text-green-400'
                     )}
                     disabled={submission.isLoading}
                     required
@@ -282,18 +293,18 @@ export function EmailCapture({
                   )}
                 </div>
                 
-                {/* COMPACT VIBRANT GRADIENT BUTTON - Horizontal with input */}
+                {/* BUTTON - REVERTING TO GRADIENT BACKGROUND */}
                 <button
                   type="submit"
                   disabled={!validation.isValid || submission.isLoading || !validation.gdprConsent}
                   className={cn(
-                    'px-5 py-2 font-bold rounded-lg transition-all duration-300 disabled:cursor-not-allowed text-sm shadow-lg whitespace-nowrap',
-                    // DRAMATIC GRADIENT BACKGROUND
+                    'px-5 py-2 font-bold rounded-lg transition-all duration-300 disabled:cursor-not-allowed text-sm shadow-sm whitespace-nowrap',
+                    // REVERTING TO VIBRANT GRADIENT BACKGROUND
                     'bg-gradient-to-r from-primary-warm to-accent-coral text-white',
-                    'hover:from-primary-warm-dark hover:to-accent-coral-deep hover:shadow-xl hover:shadow-primary-warm/25 hover:scale-[1.02]',
+                    'hover:shadow-lg hover:scale-[1.02]',
                     'active:scale-[0.98]',
-                    // DISABLED STATE with muted gradient
-                    'disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none disabled:scale-100'
+                    // DISABLED STATE
+                    'disabled:from-gray-400 disabled:to-gray-500 disabled:opacity-70 disabled:shadow-none disabled:scale-100'
                   )}
                   aria-busy={submission.isLoading}
                 >
@@ -308,8 +319,8 @@ export function EmailCapture({
                 </button>
               </div>
 
-              {/* COMPACT COLORFUL GDPR Consent */}
-              <div className="bg-gradient-to-r from-primary-warm/4 to-accent-coral/4 rounded-lg p-3 border border-primary-warm/15">
+              {/* COMPACT GDPR Consent */}
+              <div className="bg-surface-secondary rounded-lg p-3">
                 <GDPRCheckbox
                   checked={validation.gdprConsent}
                   onChange={validation.setGdprConsent}
@@ -318,14 +329,14 @@ export function EmailCapture({
 
               {/* COMPACT VIBRANT Status Messages */}
               {submission.hasError && submission.status.kind === 'error' && (
-                <Alert variant="destructive" className="bg-red-50 border-red-200 shadow-md shadow-red-500/15">
+                <Alert variant="destructive" className="bg-red-50 border-red-200 shadow-md">
                   <AlertDescription className="text-red-700 font-medium text-sm">
                     {t(`email.errors.${submission.status.code}`)}
                   </AlertDescription>
                 </Alert>
               )}
               {submission.isSuccess && (
-                <Alert className="border-green-200 bg-green-50 text-green-700 shadow-md shadow-green-500/15">
+                <Alert className="border-green-200 bg-green-50 text-green-700 shadow-md">
                   <AlertDescription className="font-medium text-sm">
                     {t('email.success')}
                   </AlertDescription>
@@ -333,11 +344,14 @@ export function EmailCapture({
               )}
             </form>
 
-            {/* COMPACT COLORFUL Benefits List */}
-            <div className="mt-4 bg-gradient-to-r from-accent-coral/8 to-primary-warm/8 rounded-lg p-3 border border-accent-coral/15">
+            {/* Benefits List with Tabler Icon */}
+            <div className="mt-4">
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-accent-coral text-lg font-bold">✓</span>
-                <span className="bg-gradient-to-r from-primary-warm-dark to-accent-coral-deep bg-clip-text text-transparent font-semibold">
+                <IconGift 
+                  size={20} 
+                  className="text-primary-warm flex-shrink-0" 
+                />
+                <span className="text-gray-700">
                   <strong>Toți înscrișii</strong> primesc un trial extins la 7 zile!
                 </span>
               </div>

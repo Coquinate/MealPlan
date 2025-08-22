@@ -26,19 +26,21 @@ export function ConfettiEffect({
   const [confetti, setConfetti] = useState<ConfettiPiece[]>([]);
 
   useEffect(() => {
+    console.log('ConfettiEffect trigger:', trigger);
     if (!trigger) {
       setConfetti([]);
       return;
     }
 
+    console.log('Creating confetti with', particleCount, 'particles');
     // Folosim doar design tokens pentru culori
     const colors = [
-      'var(--accent-coral)',
-      'var(--primary-warm)', 
-      'var(--accent-coral-soft)',
-      'var(--warning-500)',
-      'var(--error-500)',
-      'var(--success-500)',
+      '#FF6B6B',  // Red/coral
+      '#FFA500',  // Orange  
+      '#FFD700',  // Gold
+      '#32CD32',  // Green
+      '#4169E1',  // Blue
+      '#9370DB',  // Purple
     ];
 
     const newConfetti: ConfettiPiece[] = [];
@@ -47,7 +49,7 @@ export function ConfettiEffect({
         id: i,
         x: Math.random() * 100, // percentage
         color: colors[Math.floor(Math.random() * colors.length)],
-        size: Math.random() * 8 + 4,
+        size: Math.random() * 12 + 8, // Mărit de la 4-12px la 8-20px
         delay: Math.random() * 0.5,
       });
     }
@@ -67,7 +69,8 @@ export function ConfettiEffect({
     <AnimatePresence>
       {confetti.length > 0 && (
         <div 
-          className="fixed inset-0 pointer-events-none z-50"
+          className="fixed inset-0 pointer-events-none"
+          style={{ zIndex: 9999 }}
           aria-live="polite"
           aria-label="Animație confetti de sărbătoare"
           role="img"
@@ -78,9 +81,10 @@ export function ConfettiEffect({
               className="absolute rounded-sm"
               style={{
                 left: `${piece.x}%`,
-                width: piece.size,
-                height: piece.size,
+                width: `${piece.size}px`,
+                height: `${piece.size}px`,
                 backgroundColor: piece.color,
+                boxShadow: `0 0 6px ${piece.color}`,
               }}
               initial={{ 
                 y: -20,

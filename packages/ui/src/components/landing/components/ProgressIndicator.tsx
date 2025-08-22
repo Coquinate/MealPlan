@@ -82,12 +82,23 @@ export function ProgressIndicator({
   const progressPercentage = ((currentValue / total) * 100).toFixed(1);
   
   return (
-    <div className="bg-gradient-to-r from-accent-coral-soft/10 to-primary-warm/10 border border-accent-coral-soft/20 rounded-xl p-4">
+    <div 
+      className="bg-gradient-to-r from-accent-coral-soft/5 to-primary-warm/5 border border-border-strong rounded-xl p-4 shadow-sm transition-all duration-300"
+      style={{
+        transition: 'all 0.3s ease'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = '0 0 30px oklch(70% 0.18 20 / 0.3), 0 20px 40px oklch(0% 0 0 / 0.15)';
+        e.currentTarget.style.transform = 'translateY(-2px)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = '';
+        e.currentTarget.style.transform = '';
+      }}
+    >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className="bg-accent-coral-soft rounded-full p-1.5">
-            <IconUsers size={16} className="text-accent-coral" />
-          </div>
+          <IconUsers size={20} className="text-accent-coral" />
           <span className="font-semibold text-sm text-text">
             {t('landing:progress.spots_taken', { 
               current: currentValue, 

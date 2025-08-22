@@ -7,12 +7,11 @@
 
 import { 
   HeroSection, 
-  FeaturesSection, 
+  FeaturesSection,
   CTASection,
   ScrollProgress,
   FloatingParticles,
   SoundToggleButton,
-  ShareWidget,
   ConfettiEffect,
   MotionProvider,
   SiteNavigation,
@@ -52,9 +51,6 @@ export function HomepageClient({ domain: _domain, config: _config }: HomepageCli
 
       {/* Final CTA Section - Gradient Background */}
       <CTASection />
-      
-      {/* Share Widget - Positioned near footer */}
-      <ShareWidget />
       
       {/* Site Footer - Legal links and company info */}
       <SiteFooter />

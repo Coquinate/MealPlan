@@ -69,6 +69,7 @@ function HeroSection({
   const { data: subscriberData, refetch } = useSubscriberCount();
 
   const handleEmailSuccess = async (email: string) => {
+    console.log('Email success triggered for:', email);
     setShowConfetti(true);
     setShowShare(true);
     
@@ -76,7 +77,10 @@ function HeroSection({
     await refetch();
     
     // Reset confetti after animation completes
-    setTimeout(() => setShowConfetti(false), 3500);
+    setTimeout(() => {
+      console.log('Resetting confetti');
+      setShowConfetti(false);
+    }, 3500);
   };
   
   return (
@@ -84,7 +88,7 @@ function HeroSection({
       {/* Confetti Effect - Triggered on Email Success */}
       <ConfettiEffect trigger={showConfetti} />
       
-      <section className={`py-24 ${className || ''}`}>
+      <section className={`py-16 ${className || ''}`}>
         <div className="mx-auto max-w-6xl px-8">
           <div className="grid lg:grid-cols-hero-split gap-16 items-center">
             {/* Left Column: Text & Form */}
@@ -97,7 +101,7 @@ function HeroSection({
                 </span>
               </h1>
 
-              <p className="text-xl text-text-secondary mb-10 max-w-content leading-relaxed">
+              <p className="text-xl text-text-secondary mb-10 leading-relaxed">
                 {t('landing:hero.description')}{' '}
                 <strong>{t('landing:hero.description_highlight')}</strong>
               </p>
@@ -117,7 +121,7 @@ function HeroSection({
               </dl>
 
               {/* Progress Indicator - Using real Supabase data - Compact like v0 design */}
-              <div className="mb-6 max-w-content">
+              <div className="mb-6">
                 <ProgressIndicator 
                   current={subscriberData?.current}
                   total={subscriberData?.total}

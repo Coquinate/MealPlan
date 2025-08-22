@@ -33,8 +33,8 @@ export function SiteNavigation({
   return (
     <nav className={`sticky top-0 z-100 transition-all duration-300 relative ${
       scrolled 
-        ? 'bg-surface-white/70 backdrop-blur-xl shadow-hover' 
-        : 'bg-surface-white/70 backdrop-blur-xl shadow-[0_1px_0_oklch(90%_0_0)]'
+        ? 'bg-surface-white/80 backdrop-blur-xl shadow-hover' 
+        : 'bg-white shadow-[0_1px_0_oklch(90%_0_0)]'
     }`}>
       <div className="mx-auto max-w-container px-4 sm:px-6 lg:px-8">
         <div className="flex h-header items-center justify-between py-2 md:py-3">

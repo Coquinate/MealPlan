@@ -31,6 +31,12 @@ export { WorkflowTimeline } from './components/landing/components/workflow/Workf
 export { useSoundPreferences } from './components/landing/components/sound/useSoundPreferences';
 export { useAudioEngine } from './components/landing/components/sound/useAudioEngine';
 
+// Background animation components
+export { MorphingBlobs } from './components/backgrounds/morphing-blobs';
+export { KitchenSteam } from './components/backgrounds/kitchen-steam';
+export { AnimatedSteam } from './components/backgrounds/animated-steam';
+export { FloatingFoodParticles } from './components/backgrounds/floating-food-particles';
+
 // Landing page TypeScript interfaces for reusability
 export type { ProgressIndicatorProps } from './components/landing/components/ProgressIndicator';
 export type { ShareWidgetProps } from './components/landing/components/ShareWidget';

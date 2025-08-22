@@ -595,8 +595,8 @@ export const gridTemplateColumns = {
   // Custom meal grid layouts
   'meal-week': 'repeat(7, minmax(280px, 1fr))', // Desktop week view
   'meal-day': 'repeat(4, 1fr)', // Meals per day
-  // Landing page hero grid (slightly more space for content)
-  'hero-split': '1.1fr 1fr', // Content-focused split for hero section
+  // Landing page hero grid (more space for content)
+  'hero-split': '1.8fr 1fr', // Content-focused split for hero section - increased for better text accommodation
 };
 
 // Grid template rows
