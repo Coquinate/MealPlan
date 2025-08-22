@@ -141,7 +141,11 @@ export default function ComingSoonPage() {
 
       {/* Main Content */}
       <main>
-        <HeroSection />
+        <HeroSection
+          emailCaptureVariant="promo"
+          showWorkflowNodes={true}
+          withShimmer={true}
+        />
         <FeaturesSection />
         <CTASection />
       </main>
