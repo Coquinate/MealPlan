@@ -6,6 +6,7 @@ import { WorkflowTimeline } from "./WorkflowTimeline"
 import { useReducedMotion } from "motion/react"
 import { m } from "../../../../motion/config"
 import { useI18nWithFallback } from "../../../../hooks/useI18nWithFallback"
+import { useTransition, useDeferredValue, useState } from "react"
 
 export interface WorkflowVisualizationProps {
   className?: string
@@ -25,6 +26,17 @@ export function WorkflowVisualization({
 }: WorkflowVisualizationProps) {
   const { t } = useI18nWithFallback("landing" as any)
   const shouldReduceMotion = useReducedMotion()
+  
+  // React 19: Use transition for non-blocking animation updates
+  const [isPending, startTransition] = useTransition()
+  const [activeStep, setActiveStep] = useState(0)
+  
+  // Handle step changes with concurrent rendering
+  const handleStepChange = (step: number) => {
+    startTransition(() => {
+      setActiveStep(step)
+    })
+  }
 
   // Dynamic workflow steps using i18n keys
   const workflowSteps = [
@@ -115,7 +127,9 @@ export function WorkflowVisualization({
   }
 
   return (
-    <div className={`relative w-full ${className}`}>
+    <div 
+      className={`relative w-full ${className}`}
+      style={isPending ? { opacity: 0.7, transition: 'opacity 0.2s' } : {}}>
       {/* Mobile View */}
       <m.div 
         className="block lg:hidden"

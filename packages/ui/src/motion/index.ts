@@ -38,8 +38,50 @@ export {
   useScrollScale,
   useScrollVelocity,
   useStickyHeader,
+  useConcurrentAnimation,
+  useDeferredMotion,
   scrollHooks,
 } from './hooks/useScrollMotion';
+
+// Loading animation components
+export {
+  Skeleton,
+  SkeletonCard,
+  ProgressiveList,
+  LoadingSpinner,
+  MotionLoadingDots,
+  loadingComponents,
+} from './loading';
+
+// Coming-soon page skeleton components
+export {
+  NavigationSkeleton,
+  HeroSectionSkeleton,
+  FeaturesSectionSkeleton,
+  CTASectionSkeleton,
+  FooterSkeleton,
+  ComingSoonPageSkeleton,
+  comingSoonSkeletons,
+} from './coming-soon-skeleton';
+
+// Interaction animation components
+export {
+  MotionInteractiveCard,
+  HoverButton,
+  IconButton,
+  HoverImage,
+  Tooltip,
+  interactionComponents,
+} from './interactions';
+
+// Form validation animation components
+export {
+  ValidatedInput,
+  FormField,
+  PasswordStrength,
+  SubmitButton,
+  validationComponents,
+} from './validation';
 
 // Re-export motion CSS for easy importing
 export const motionStyles = '/styles/motion.css';

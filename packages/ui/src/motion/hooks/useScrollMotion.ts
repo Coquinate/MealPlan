@@ -8,7 +8,7 @@ import {
   useSpring,
   MotionValue 
 } from 'motion/react';
-import { useRef, RefObject, useEffect } from 'react';
+import { useRef, RefObject, useEffect, useDeferredValue, useTransition } from 'react';
 
 /**
  * Hook pentru scroll animations cu Framer Motion v12
@@ -31,15 +31,20 @@ export function useScrollMotion(threshold = 0.1) {
  * Advanced scroll progress hook cu Framer Motion v12 useScroll API
  */
 export function useScrollProgress(
-  container?: RefObject<HTMLElement>
+  container?: RefObject<HTMLElement>,
+  options?: { useDeferred?: boolean }
 ) {
   const { scrollYProgress } = useScroll({
     container: container,
     offset: ['start start', 'end end']
   });
 
+  // React 19: Use deferred value for heavy scroll calculations
+  const deferredProgress = useDeferredValue(scrollYProgress);
+  const activeProgress = options?.useDeferred ? deferredProgress : scrollYProgress;
+
   // Smooth spring animation pentru progress
-  const smoothProgress = useSpring(scrollYProgress, {
+  const smoothProgress = useSpring(activeProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
@@ -48,6 +53,8 @@ export function useScrollProgress(
   return {
     scrollYProgress,
     smoothProgress,
+    deferredProgress,
+    isDeferred: options?.useDeferred
   };
 }
 
@@ -182,6 +189,41 @@ export function useStickyHeader(
 }
 
 /**
+ * React 19 Concurrent Motion Hook
+ * Combines useTransition with motion animations for non-blocking updates
+ */
+export function useConcurrentAnimation() {
+  const [isPending, startTransition] = useTransition();
+  
+  const animateWithTransition = (callback: () => void) => {
+    startTransition(() => {
+      callback();
+    });
+  };
+  
+  return {
+    isPending,
+    animateWithTransition,
+    style: isPending ? { opacity: 0.7, transition: 'opacity 0.2s' } : {}
+  };
+}
+
+/**
+ * Deferred Motion Hook for expensive animations
+ * Uses useDeferredValue to prevent blocking user input
+ */
+export function useDeferredMotion<T>(value: T) {
+  const deferredValue = useDeferredValue(value);
+  const isStale = value !== deferredValue;
+  
+  return {
+    value: deferredValue,
+    isStale,
+    style: isStale ? { opacity: 0.5, transition: 'opacity 0.2s' } : {}
+  };
+}
+
+/**
  * Export all hooks pentru convenience
  */
 export const scrollHooks = {
@@ -192,4 +234,6 @@ export const scrollHooks = {
   useScrollScale,
   useScrollVelocity,
   useStickyHeader,
+  useConcurrentAnimation,
+  useDeferredMotion,
 };

@@ -74,30 +74,8 @@ export function attachRipple(element: HTMLElement): (() => void) | undefined {
   element.classList.add('ripple-container');
 
   const handleClick = (event: MouseEvent) => {
-    const rect = element.getBoundingClientRect();
-    const ripple = document.createElement('span');
-    ripple.className = 'ripple';
-
-    // Calculate position relative to element
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    // Set size based on element dimensions
-    const size = Math.max(rect.width, rect.height) * 2;
-    ripple.style.width = `${size}px`;
-    ripple.style.height = `${size}px`;
-    ripple.style.left = `${x}px`;
-    ripple.style.top = `${y}px`;
-
-    element.appendChild(ripple);
-
-    // Remove ripple after animation
-    const handleAnimationEnd = () => {
-      ripple.remove();
-    };
-
-    ripple.addEventListener('animationend', handleAnimationEnd);
-    ripple.addEventListener('animationcancel', handleAnimationEnd);
+    // Reuse createRipple function instead of duplicating logic
+    createRipple(event, element);
   };
 
   element.addEventListener('click', handleClick);

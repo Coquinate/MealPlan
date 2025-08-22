@@ -23,7 +23,8 @@ import {
   FeaturesSection,
   CTASection,
   ScrollProgress,
-  SoundToggle
+  SoundToggle,
+  ComingSoonPageSkeleton
 } from '@coquinate/ui';
 
 // Dynamic import pentru HeroSection cu ssr: false pentru debug
@@ -50,13 +51,7 @@ export default function ComingSoonPage() {
   const { t, ready } = useTranslation('landing');
 
   if (!ready) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-surface">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-border-focus border-t-transparent rounded-full motion-safe:animate-spin mx-auto"></div>
-        </div>
-      </div>
-    );
+    return <ComingSoonPageSkeleton />;
   }
 
   const structuredData = {

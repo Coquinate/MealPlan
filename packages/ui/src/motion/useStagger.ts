@@ -29,24 +29,37 @@ export function useStagger(
       element.style.setProperty('--stagger-delay', `${startDelay}ms`);
     }
 
-    // Assign stagger indexes to children
-    const children = Array.from(element.children);
-    children.forEach((child, index) => {
-      (child as HTMLElement).style.setProperty('--stagger-index', String(index));
-    });
-
-    // Observe children changes
-    const observer = new MutationObserver(() => {
-      const newChildren = Array.from(element.children);
-      newChildren.forEach((child, index) => {
+    // Helper function to update stagger indexes
+    const updateStaggerIndexes = () => {
+      const children = Array.from(element.children);
+      children.forEach((child, index) => {
         (child as HTMLElement).style.setProperty('--stagger-index', String(index));
       });
-    });
+    };
 
+    // Initial assignment of stagger indexes
+    updateStaggerIndexes();
+
+    // Throttle function to prevent excessive updates
+    let throttleTimeout: NodeJS.Timeout | null = null;
+    const throttledUpdate = () => {
+      if (throttleTimeout) return;
+      
+      throttleTimeout = setTimeout(() => {
+        updateStaggerIndexes();
+        throttleTimeout = null;
+      }, 100); // 100ms throttle delay
+    };
+
+    // Observe children changes with throttled callback
+    const observer = new MutationObserver(throttledUpdate);
     observer.observe(element, { childList: true });
 
     return () => {
       observer.disconnect();
+      if (throttleTimeout) {
+        clearTimeout(throttleTimeout);
+      }
       element.removeAttribute('data-stagger');
       element.style.removeProperty('--stagger-delay');
     };
