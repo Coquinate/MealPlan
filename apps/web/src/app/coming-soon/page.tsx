@@ -14,17 +14,23 @@
  */
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import * as i18nModule from '@coquinate/i18n';
 import type { TranslationNamespace } from '@coquinate/i18n';
 import {
   SiteNavigation,
   SiteFooter,
-  HeroSection,
   FeaturesSection,
   CTASection,
   ScrollProgress,
   SoundToggle
 } from '@coquinate/ui';
+
+// Dynamic import pentru HeroSection cu ssr: false pentru debug
+const HeroSection = dynamic(
+  () => import('@coquinate/ui').then(mod => ({ default: mod.HeroSection })),
+  { ssr: false }
+);
 
 // Robust translation hook with fallback mechanism
 const useTranslation = (namespace?: TranslationNamespace | TranslationNamespace[]) => {
