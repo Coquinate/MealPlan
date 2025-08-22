@@ -3,7 +3,7 @@
 import { IconVolume2, IconVolumeOff } from "@tabler/icons-react"
 import { useSoundPreferences } from "./useSoundPreferences"
 import { useAudioEngine } from "./useAudioEngine"
-import { AnimatePresence } from "framer-motion"
+import { AnimatePresence } from "motion/react"
 import { m } from "../../../../motion/config"
 
 interface SoundToggleButtonProps {

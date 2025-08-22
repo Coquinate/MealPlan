@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { useInView, useAnimation } from "framer-motion"
+import { useInView, useAnimation } from "motion/react"
 import { useEffect } from "react"
 
 interface ScrollAnimationReturn {
@@ -30,4 +30,4 @@ export function useScrollAnimation(threshold = 0.1): ScrollAnimationReturn {
 }
 
 // Export additional scroll utilities for convenience
-export { useScroll, useTransform, useSpring } from "framer-motion"
+export { useScroll, useTransform, useSpring } from "motion/react"

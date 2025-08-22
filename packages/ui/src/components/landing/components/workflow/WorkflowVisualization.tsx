@@ -3,7 +3,7 @@
 import { IconChefHat, IconFileText, IconStack2 } from "@tabler/icons-react"
 import { WorkflowStep } from "./WorkflowStep"
 import { WorkflowTimeline } from "./WorkflowTimeline"
-import { useReducedMotion } from "framer-motion"
+import { useReducedMotion } from "motion/react"
 import { m } from "../../../../motion/config"
 import { useI18nWithFallback } from "../../../../hooks/useI18nWithFallback"
 

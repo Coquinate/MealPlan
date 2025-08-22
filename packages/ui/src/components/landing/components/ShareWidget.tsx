@@ -10,7 +10,7 @@ import {
   IconCopy, 
   IconCheck 
 } from '@tabler/icons-react';
-import { AnimatePresence, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, useReducedMotion } from 'motion/react';
 import { m } from '../../../motion/config';
 
 export interface ShareWidgetProps {

@@ -7,7 +7,7 @@ import {
   useMotionValue,
   useSpring,
   MotionValue 
-} from 'framer-motion';
+} from 'motion/react';
 import { useRef, RefObject, useEffect } from 'react';
 
 /**

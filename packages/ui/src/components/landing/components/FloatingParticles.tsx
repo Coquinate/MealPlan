@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo } from "react"
-import { useReducedMotion } from "framer-motion"
+import { useReducedMotion } from "motion/react"
 import { m } from "../../../motion/config"
 
 interface Particle {

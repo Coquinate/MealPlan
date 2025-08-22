@@ -1,10 +1,10 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import { LazyMotion, domAnimation, domMax, m } from 'framer-motion';
+import { LazyMotion, domAnimation, domMax, m } from 'motion/react';
 
 // Re-export the lazy motion component for use in other components
-export { m } from 'framer-motion';
+export { m } from 'motion/react';
 
 /**
  * Motion Provider pentru basic animations și gestures

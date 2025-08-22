@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import * as i18nModule from '@coquinate/i18n';
 import type { TranslationNamespace } from '@coquinate/i18n';
-import { useMotionValue, useSpring, useTransform, useMotionValueEvent } from 'framer-motion';
+import { useMotionValue, useSpring, useTransform, useMotionValueEvent } from 'motion/react';
 import { m } from '../../../motion/config';
 import { IconUsers, IconTrendingUp } from '@tabler/icons-react';
 
