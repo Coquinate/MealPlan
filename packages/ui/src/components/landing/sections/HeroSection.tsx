@@ -9,6 +9,7 @@ import { WorkflowVisualization } from '../components/workflow/WorkflowVisualizat
 import { ConfettiEffect } from '../effects/ConfettiEffect';
 import { ProgressIndicator } from '../components/ProgressIndicator';
 import { ShareWidget } from '../components/ShareWidget';
+import { ShimmerHeadline } from '../../backgrounds/grain-shimmer';
 
 // Robust useTranslation hook with fallback
 const useTranslation = (namespace?: TranslationNamespace | TranslationNamespace[]) => {
@@ -29,6 +30,7 @@ interface HeroSectionProps {
   className?: string;
   emailCaptureVariant?: 'glass' | 'simple' | 'inline' | 'promo';
   showWorkflowNodes?: boolean;
+  withShimmer?: boolean;
 }
 
 interface TrustStatistic {
@@ -59,7 +61,8 @@ const TRUST_STATISTICS: TrustStatistic[] = [
 function HeroSection({ 
   className,
   emailCaptureVariant = 'promo',
-  showWorkflowNodes = true
+  showWorkflowNodes = true,
+  withShimmer = false
 }: HeroSectionProps = {}) {
   const { t } = useTranslation(['landing', 'common'] as TranslationNamespace[]);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -96,9 +99,15 @@ function HeroSection({
               <h1 className="font-display text-5xl lg:text-6xl font-bold leading-tight tracking-tight mb-6">
                 {t('landing:hero.title_line1')}
                 <br />
-                <span className="bg-gradient-to-r from-primary-600 to-accent-coral bg-clip-text text-transparent">
-                  {t('landing:hero.title_line2')}
-                </span>
+                {withShimmer ? (
+                  <ShimmerHeadline>
+                    {t('landing:hero.title_line2')}
+                  </ShimmerHeadline>
+                ) : (
+                  <span className="bg-gradient-to-r from-primary-600 to-accent-coral bg-clip-text text-transparent">
+                    {t('landing:hero.title_line2')}
+                  </span>
+                )}
               </h1>
 
               <p className="text-xl text-text-secondary mb-10 leading-relaxed">

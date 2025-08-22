@@ -43,6 +43,7 @@ export function HomepageClient({ domain: _domain, config: _config }: HomepageCli
       <HeroSection
         emailCaptureVariant="promo"
         showWorkflowNodes={true}
+        withShimmer={true}
       />
 
 

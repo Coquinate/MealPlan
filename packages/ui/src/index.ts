@@ -36,6 +36,9 @@ export { MorphingBlobs } from './components/backgrounds/morphing-blobs';
 export { KitchenSteam } from './components/backgrounds/kitchen-steam';
 export { AnimatedSteam } from './components/backgrounds/animated-steam';
 export { FloatingFoodParticles } from './components/backgrounds/floating-food-particles';
+export { BackgroundBlobs } from './components/backgrounds/background-blobs';
+export { FlowPath } from './components/backgrounds/flow-path';
+export { GrainShimmer, ShimmerHeadline } from './components/backgrounds/grain-shimmer';
 
 // Landing page TypeScript interfaces for reusability
 export type { ProgressIndicatorProps } from './components/landing/components/ProgressIndicator';
