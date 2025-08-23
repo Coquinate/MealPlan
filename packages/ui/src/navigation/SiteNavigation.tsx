@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { LogoWeeklyRhythmLockup } from '../components/brand';
+import { LogoWeeklyRhythm } from '../components/brand';
+import { cn } from '../utils/cn';
 
 interface SiteNavigationProps {
   showLaunchBadge?: boolean;
@@ -34,24 +35,35 @@ export function SiteNavigation({
   return (
     <nav className={`sticky top-0 z-100 transition-all duration-300 relative ${
       scrolled 
-        ? 'bg-surface/95 backdrop-blur-xl shadow-hover dark:bg-black/90' 
-        : 'bg-surface dark:bg-black border-b border-border-light dark:border-gray-800'
+        ? 'bg-white-60 backdrop-blur-xl shadow-xl border-b border-accent-coral/15 dark:bg-black-60 dark:backdrop-blur-xl dark:border-gray-700/30' 
+        : 'bg-white-95 backdrop-blur-sm border-b border-accent-coral/20 dark:bg-black dark:border-gray-800'
     }`}>
       <div className="mx-auto max-w-container px-4 sm:px-6 lg:px-8">
-        <div className="flex h-header items-center justify-between py-2 md:py-3">
-          {/* Logo with brand lockup */}
+        <div className="flex h-header items-center justify-between py-2 md:py-3 relative">
+          {/* Logo with brand lockup - split layout on mobile, normal on desktop */}
           <a
             href="/"
-            className="no-underline cursor-pointer"
+            className="no-underline cursor-pointer group flex sm:flex items-center sm:gap-4 w-full sm:w-auto"
           >
-            <LogoWeeklyRhythmLockup
-              variant="compact"
-              size="xxs"
-              animated={true}
-            />
+            {/* Icon with rotation on hover - left on mobile, smaller size */}
+            <div className="transition-transform duration-300 group-hover:rotate-12 flex-shrink-0 absolute left-0 sm:relative w-8 h-8 sm:w-auto sm:h-auto">
+              <LogoWeeklyRhythm size="xxs" variant="animated" />
+            </div>
+            
+            {/* Text - centered on mobile, next to icon on desktop */}
+            <span className={cn(
+              'font-display font-bold text-xl sm:text-3xl transition-colors duration-300',
+              'text-primary group-hover:text-accent-coral',
+              'w-full text-center sm:w-auto sm:text-left'
+            )}>
+              Co<span className={cn(
+                'transition-colors duration-300',
+                'text-accent-coral group-hover:text-primary'
+              )}>q</span>uinate
+            </span>
           </a>
 
-          {/* Enhanced Launch Badge - responsive sizes like v0 */}
+          {/* Enhanced Launch Badge - positioned absolutely on mobile */}
           {showLaunchBadge && (
             <>
               {/* Desktop version */}
@@ -62,8 +74,8 @@ export function SiteNavigation({
                 </span>
               </div>
               
-              {/* Mobile version - more compact */}
-              <div className="flex sm:hidden items-center gap-2 px-3 py-1.5 bg-surface-raised dark:bg-gray-900 rounded-full text-xs text-text-medium-contrast dark:text-gray-300 transition-all duration-300 hover:bg-surface-hover dark:hover:bg-gray-800 hover:shadow-hover cursor-pointer">
+              {/* Mobile version - positioned to the right */}
+              <div className="flex sm:hidden items-center gap-2 px-3 py-1.5 bg-surface-raised dark:bg-gray-900 rounded-full text-xs text-text-medium-contrast dark:text-gray-300 transition-all duration-300 hover:bg-surface-hover dark:hover:bg-gray-800 hover:shadow-hover cursor-pointer absolute right-4 sm:relative sm:right-auto">
                 <span className="w-1.5 h-1.5 bg-accent-coral rounded-full animate-[subtle-pulse_3s_ease-in-out_infinite]" />
                 <span className="transition-colors duration-300 hover:text-text dark:hover:text-white">
                   {comingSoonLabel}
@@ -75,7 +87,7 @@ export function SiteNavigation({
       </div>
       
       {/* Enhanced Progress Bar - v0-inspired gradient */}
-      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-border-light/30 dark:bg-gray-700/30">
+      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-border-light/10 dark:bg-gray-700/10">
         <div 
           className="h-full bg-gradient-to-r from-accent-coral to-primary-warm transition-all duration-150 ease-out"
           style={{ width: `${scrollProgress}%` }}

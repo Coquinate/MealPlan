@@ -229,9 +229,9 @@ export function EmailCapture({
   if (variant === 'promo') {
     return (
       <div className={cn('w-full relative', className)}>
-        {/* COMPACT CONTAINER with subtle gray background and enhanced shadow */}
+        {/* COMPACT CONTAINER with subtle highlight background and enhanced shadow */}
         <div 
-          className="bg-surface-secondary backdrop-blur-sm border border-border-strong rounded-xl p-3 sm:p-4 md:p-5 shadow-sm transition-all duration-300 relative overflow-hidden"
+          className="bg-white-80 backdrop-blur-md border-2 border-accent-coral/30 rounded-xl p-3 sm:p-4 md:p-5 shadow-soft transition-all duration-300 relative overflow-hidden"
           style={{
             transition: 'all 0.3s ease'
           }}

@@ -84,9 +84,11 @@ export function ProgressIndicator({
   return (
     <LazyMotion features={domAnimation} strict>
       <div 
-        className="bg-gradient-to-r from-accent-coral-soft/5 to-primary-warm/5 border border-border-strong rounded-xl p-4 shadow-sm transition-all duration-300"
+        className="bg-white-75 backdrop-blur-md rounded-xl p-4 shadow-soft transition-all duration-300 relative overflow-hidden"
         style={{
-          transition: 'all 0.3s ease'
+          transition: 'all 0.3s ease',
+          background: 'linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)) padding-box, linear-gradient(135deg, oklch(70% 0.18 20), oklch(58% 0.08 200)) border-box',
+          border: '2px solid transparent'
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.boxShadow = '0 0 30px oklch(70% 0.18 20 / 0.3), 0 20px 40px oklch(0% 0 0 / 0.15)';

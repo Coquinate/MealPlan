@@ -103,6 +103,11 @@
     --color-surface-raised: var(--color-surface-white); /* 100% 0 0 */
     --color-surface-sunken: var(--color-gray-100); /* 96% 0 0 */
     --color-surface-hover: oklch(94% 0 0); /* Unique hover state */
+    
+    /* Coming Soon Page Surface Variants - Light gray base, no blue tint */
+    --color-surface-section: oklch(99% 0.002 90); /* Ultra light gray - barely visible */
+    --color-surface-highlight: oklch(98.5% 0.003 85); /* Light gray - no blue tint */
+    --color-surface-muted: oklch(98% 0.002 80); /* Soft light gray - very subtle */
 
     /* Dark Surface Variants for Feature Sections */
     --color-dark-surface: oklch(15% 0.01 200);
@@ -226,6 +231,11 @@
       --color-surface-glass-elevated: oklch(25% 0.01 200 / 0.8);
       --color-surface-glass-border: oklch(30% 0.01 200 / 0.3);
       --color-surface-glass-subtle: oklch(18% 0.01 200 / 0.6);
+      
+      /* Coming Soon Page Surface Variants for Dark Mode - Subtle contrast */
+      --color-surface-section: oklch(13% 0.01 210); /* Slightly lighter than base dark */
+      --color-surface-highlight: oklch(15% 0.012 190); /* Gentle highlight in dark */
+      --color-surface-muted: oklch(11% 0.008 150); /* Subtle muted background */
 
       /* Text hierarchy for dark */
       --color-text: oklch(92% 0 0);

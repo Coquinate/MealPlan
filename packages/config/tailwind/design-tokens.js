@@ -97,12 +97,23 @@ export const semanticColors = {
   'surface-raised': 'var(--color-surface-raised)', // Elevated cards
   'surface-sunken': 'var(--color-surface-sunken)', // Inset areas
   'surface-hover': 'var(--color-surface-hover)', // Hover states
+  
+  // Coming Soon Page Surface Variants - Subtle differentiation
+  'surface-section': 'var(--color-surface-section)', // Subtle section background
+  'surface-highlight': 'var(--color-surface-highlight)', // Highlighted sections
+  'surface-muted': 'var(--color-surface-muted)', // Muted gray background
 
   // Modern Hearth Glass Morphism Surfaces (using CSS variables)
   'surface-glass': 'var(--color-surface-glass)', // Glass base
   'surface-glass-elevated': 'var(--color-surface-glass-elevated)', // Elevated glass
   'surface-glass-border': 'var(--color-surface-glass-border)', // Glass borders
   'surface-glass-subtle': 'var(--color-surface-glass-subtle)', // Subtle glass
+  
+  // Glass transparency levels for components
+  'white/95': 'rgba(255, 255, 255, 0.95)', // Almost opaque white
+  'white/80': 'rgba(255, 255, 255, 0.80)', // Email capture background
+  'white/75': 'rgba(255, 255, 255, 0.75)', // Progress indicator background
+  'white/60': 'rgba(255, 255, 255, 0.60)', // Header on scroll
 
   // Text system - Unified CSS variables for theming
   text: 'var(--color-text)', // Primary text
@@ -119,10 +130,25 @@ export const semanticColors = {
   'border-subtle': 'var(--color-border-subtle)', // Subtle dividers
   'border-muted': 'var(--color-border-muted)', // Muted borders
   'border-focus': 'var(--color-border-focus)', // Focus borders - Updated to new primary
+  
+  // Border transparency variants
+  'border-light/60': 'oklch(94% 0 0 / 0.6)', // Header normal state
+  'border-light/50': 'oklch(94% 0 0 / 0.5)', // Semi-transparent
+  'border-light/40': 'oklch(94% 0 0 / 0.4)', // Email capture
+  'border-light/30': 'oklch(94% 0 0 / 0.3)', // Progress indicator
+  'gray-200/30': 'oklch(92% 0 0 / 0.3)', // Gray border 30%
+  'gray-200/20': 'oklch(92% 0 0 / 0.2)', // Gray border 20%
+  'gray-700/50': 'oklch(35% 0 0 / 0.5)', // Dark gray border 50%
+  'gray-700/30': 'oklch(35% 0 0 / 0.3)', // Dark gray border 30%
+  'accent-coral/30': 'oklch(70% 0.18 20 / 0.3)', // Coral border 30%
 
   // Dark surface variants for feature sections - CSS variables for consistency
   'dark-surface': 'var(--color-dark-surface)', // Dark background with subtle teal
   'dark-surface-raised': 'var(--color-dark-surface-raised)', // Elevated dark cards
+  
+  // Dark mode transparency variants
+  'black/70': 'rgba(0, 0, 0, 0.70)', // Header dark mode on scroll 70%
+  'black/60': 'rgba(0, 0, 0, 0.60)', // Header dark mode on scroll 60%
   'text-light': 'var(--color-text-light)', // Light text for dark backgrounds
   
   // Brand colors for social media integrations
@@ -658,6 +684,16 @@ export const designTokens = {
     // Note: Dark mode now handled through CSS variables, no separate dark object needed
     context: contextColors,
     freshness: freshnessColors,
+    
+    // Glass morphism opacity variants for components
+    'white-95': 'rgba(255, 255, 255, 0.95)',
+    'white-80': 'rgba(255, 255, 255, 0.80)',
+    'white-75': 'rgba(255, 255, 255, 0.75)',
+    'white-60': 'rgba(255, 255, 255, 0.60)',
+    
+    // Dark mode opacity variants
+    'black-70': 'rgba(0, 0, 0, 0.70)',
+    'black-60': 'rgba(0, 0, 0, 0.60)',
     workflow: workflowDarkMode,
   },
   fontFamily,

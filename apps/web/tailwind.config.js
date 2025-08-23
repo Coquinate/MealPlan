@@ -83,6 +83,9 @@ export default {
         'surface-raised': designTokens.colors['surface-raised'],
         'surface-sunken': designTokens.colors['surface-sunken'],
         'surface-hover': designTokens.colors['surface-hover'],
+        'surface-section': designTokens.colors['surface-section'],
+        'surface-highlight': designTokens.colors['surface-highlight'],
+        'surface-muted': designTokens.colors['surface-muted'],
 
         // Semantic text colors
         text: {

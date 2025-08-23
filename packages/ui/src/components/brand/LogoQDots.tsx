@@ -509,21 +509,21 @@ export function LogoWeeklyRhythmLockup({
   showTagline?: boolean;
   className?: string;
 }) {
-  // Size configurations for text
+  // Size configurations for text - increased by 20% more
   const sizeConfig = {
-    xxs: 'text-base',
-    xs: 'text-lg',
-    sm: 'text-xl',
-    md: 'text-2xl',
-    lg: 'text-3xl',
-    xl: 'text-4xl',
+    xxs: 'text-2xl',    // increased from text-xl
+    xs: 'text-3xl',     // increased from text-2xl
+    sm: 'text-4xl',     // increased from text-3xl
+    md: 'text-5xl',     // increased from text-4xl
+    lg: 'text-6xl',     // increased from text-5xl
+    xl: 'text-7xl',     // increased from text-6xl
   };
 
   const textSize = sizeConfig[size] || sizeConfig.md;
 
   return (
     <div className={cn(
-      'inline-flex items-center gap-3 group', // Add group for hover effects
+      'inline-flex items-center gap-4 group', // Increased gap from 3 to 4 for more spacing
       className
     )}>
       {/* Logo icon with rotation on hover */}
