@@ -165,19 +165,19 @@ export default function ComingSoonPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      {/* Theme Toggle Button - vizibil în ambele moduri */}
+      {/* Theme Toggle Button - Using only design tokens, no arbitrary values */}
       <button
         onClick={toggleTheme}
-        className="fixed top-6 right-6 z-[150] p-3 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-600 shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl group"
+        className="fixed top-20 right-4 sm:top-4 sm:right-4 lg:top-6 lg:right-6 z-50 p-2 lg:p-2.5 rounded-full bg-white bg-opacity-60 dark:bg-gray-800 dark:bg-opacity-60 backdrop-blur-sm border border-gray-200 border-opacity-50 dark:border-gray-700 dark:border-opacity-50 shadow-sm transition-all duration-300 hover:bg-opacity-80 dark:hover:bg-opacity-80 hover:shadow-md hover:scale-105 group"
         aria-label={theme === 'light' ? 'Activează modul întunecat' : 'Activează modul luminos'}
       >
         {theme === 'light' ? (
           <svg 
-            width="20" 
-            height="20" 
+            width="16" 
+            height="16" 
             viewBox="0 0 24 24" 
             fill="none" 
-            className="text-gray-700 group-hover:text-gray-900 transition-colors"
+            className="text-gray-600 group-hover:text-gray-800 transition-colors lg:w-[18px] lg:h-[18px]"
             stroke="currentColor" 
             strokeWidth="2" 
             strokeLinecap="round" 
@@ -187,11 +187,11 @@ export default function ComingSoonPage() {
           </svg>
         ) : (
           <svg 
-            width="20" 
-            height="20" 
+            width="16" 
+            height="16" 
             viewBox="0 0 24 24" 
             fill="none" 
-            className="text-yellow-400 group-hover:text-yellow-300 transition-colors"
+            className="text-yellow-500 group-hover:text-yellow-400 transition-colors lg:w-[18px] lg:h-[18px]"
             stroke="currentColor" 
             strokeWidth="2" 
             strokeLinecap="round" 

@@ -92,6 +92,30 @@ The app adapts its color palette based on user context:
 
 \*Minimum 18px enforced in kitchen/shopping contexts for usability
 
+## Logo & Brand Mark
+
+### Logo System Architecture
+
+**Primary Logo**: LogoWeeklyRhythm component with Q-dots pattern representing weekly meal rhythm
+- Located in: `packages/ui/src/components/brand/LogoQDots.tsx`
+- Sizes: xxs (48px), xs (64px), sm (96px), md (128px), lg (192px), xl (256px), xxl (384px)
+
+### SVG Sharpness Optimization for Small Sizes
+
+For logos and favicons displayed at ≤48px, we employ a multi-layer optimization technique documented in:
+**[SVG Sharpness Technique Documentation](/packages/ui/docs/SVG-SHARPNESS-TECHNIQUE.md)**
+
+Key techniques applied:
+- **2x Internal Resolution**: Render at double size, display at target size
+- **Dual-Stroke Technique**: Subtle black outlines for edge definition on white backgrounds
+- **Vector-Effect Non-Scaling**: Consistent stroke widths at all scales
+- **CSS Enhancement**: `filter: contrast()` and GPU rendering optimizations
+
+This ensures crisp, sharp rendering of the brand mark across all contexts, particularly important for:
+- Browser favicon (32px)
+- Navigation header (48px)
+- Footer mark (48px)
+
 ## Iconography
 
 ### Primary Icon System

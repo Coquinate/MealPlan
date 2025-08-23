@@ -2,6 +2,7 @@
 
 import { IconArrowDown } from "@tabler/icons-react"
 import { ReactNode } from "react"
+import { LazyMotion, domAnimation } from "motion/react"
 import { m } from "../../../../motion/config"
 
 interface TimelineStep {
@@ -92,12 +93,13 @@ export function WorkflowTimeline({
   }
 
   return (
-    <m.div 
-      className={`relative max-w-xs mx-auto ${className}`}
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
+    <LazyMotion features={domAnimation} strict>
+      <m.div 
+        className={`relative max-w-xs mx-auto ${className}`}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
       {/* Timeline Line with animated height */}
       <m.div 
         className="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-gradient-to-b from-accent-coral-500 via-primary-600 to-accent-coral-500 opacity-30"
@@ -115,33 +117,32 @@ export function WorkflowTimeline({
             <div className={`w-1/2 ${step.alignment === "left" ? "pr-2 text-right" : ""}`}>
               {step.alignment === "left" && (
                 <m.div 
-                  className="bg-white border border-gray-200 rounded-lg p-2 shadow-sm"
+                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 shadow-md hover:shadow-lg transition-shadow"
                   custom="left"
                   variants={stepVariants}
                   whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+                    scale: 1.02,
                     transition: { duration: 0.2 }
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <div className="flex items-center justify-end gap-1.5 mb-0.5">
-                    <span className="font-display font-semibold text-xs">{step.title}</span>
+                  <div className="flex items-center justify-end gap-1.5 mb-1">
+                    <span className="font-display font-semibold text-[10px] xs:text-xs text-gray-800 dark:text-gray-200 text-right line-clamp-2">{step.title}</span>
                     <m.div 
-                      className="bg-accent-coral-100 rounded-md w-6 h-6 flex items-center justify-center"
+                      className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg w-7 h-7 xs:w-8 xs:h-8 flex items-center justify-center shadow-sm flex-shrink-0"
                       whileHover={{ rotate: 360, transition: { duration: 0.5 } }}
                     >
                       {step.icon}
                     </m.div>
                   </div>
-                  <p className="text-xs text-gray-600 text-right">{step.description}</p>
+                  <p className="text-[10px] xs:text-xs text-gray-600 dark:text-gray-400 text-right leading-tight line-clamp-2">{step.description}</p>
                 </m.div>
               )}
             </div>
 
             {/* Timeline Dot */}
             <m.div 
-              className={`absolute left-1/2 transform -translate-x-1/2 w-2.5 h-2.5 ${dotColors[index % dotColors.length]} rounded-full border-2 border-white shadow-sm z-10`}
+              className={`absolute left-1/2 transform -translate-x-1/2 w-3 h-3 ${dotColors[index % dotColors.length]} rounded-full border-2 border-white shadow-lg z-10 ring-2 ring-white/50`}
               variants={dotVariants}
               whileHover={{ 
                 scale: 1.5,
@@ -153,26 +154,25 @@ export function WorkflowTimeline({
             <div className={`w-1/2 ${step.alignment === "right" ? "pl-2" : ""}`}>
               {step.alignment === "right" && (
                 <m.div 
-                  className="bg-white border border-gray-200 rounded-lg p-2 shadow-sm"
+                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 shadow-md hover:shadow-lg transition-shadow"
                   custom="right"
                   variants={stepVariants}
                   whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+                    scale: 1.02,
                     transition: { duration: 0.2 }
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <div className="flex items-center gap-1.5 mb-0.5">
+                  <div className="flex items-center gap-1.5 mb-1">
                     <m.div 
-                      className="bg-accent-coral-100 rounded-md w-6 h-6 flex items-center justify-center"
+                      className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg w-7 h-7 xs:w-8 xs:h-8 flex items-center justify-center shadow-sm flex-shrink-0"
                       whileHover={{ rotate: -360, transition: { duration: 0.5 } }}
                     >
                       {step.icon}
                     </m.div>
-                    <span className="font-display font-semibold text-xs">{step.title}</span>
+                    <span className="font-display font-semibold text-[10px] xs:text-xs text-gray-800 dark:text-gray-200 line-clamp-2">{step.title}</span>
                   </div>
-                  <p className="text-xs text-gray-600">{step.description}</p>
+                  <p className="text-[10px] xs:text-xs text-gray-600 dark:text-gray-400 leading-tight line-clamp-2">{step.description}</p>
                 </m.div>
               )}
             </div>
@@ -185,19 +185,24 @@ export function WorkflowTimeline({
               variants={arrowVariants}
             >
               <m.div 
-                className="bg-gray-100 rounded-full p-1"
+                className="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-full p-1.5 shadow-sm"
                 whileHover={{ 
                   scale: 1.2,
-                  backgroundColor: "rgb(229 231 235)", // gray-200
-                  transition: { duration: 0.2 }
+                  rotate: 180,
+                  transition: { 
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 20
+                  }
                 }}
               >
-                <IconArrowDown size={12} className="text-primary-600" />
+                <IconArrowDown size={14} className="text-primary-600 dark:text-primary-400" />
               </m.div>
             </m.div>
           )}
         </m.div>
       ))}
-    </m.div>
+      </m.div>
+    </LazyMotion>
   )
 }

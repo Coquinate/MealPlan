@@ -1,4 +1,43 @@
-<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <rect width="32" height="32" rx="8" fill="#E11D48"/>
-  <text x="16" y="22" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="white">🥘</text>
+<svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
+  style="shape-rendering: crispEdges; transform: translateZ(0); filter: contrast(1.15); will-change: transform; contain: layout style paint; -webkit-backface-visibility: hidden; backface-visibility: hidden;">
+  
+  <!-- C-shape din bule - Enhanced sharpness version pentru favicon -->
+  <g class="c-shape-static">
+    <!-- Dual-stroke technique: Shadow circles for edge definition -->
+    <!-- Sus - coral vibrant shadow -->
+    <circle cx="32" cy="10" r="5" fill="none" stroke="black" stroke-width="1" opacity="0.2" vector-effect="non-scaling-stroke"/>
+    <!-- Sus-dreapta - teal primary shadow -->  
+    <circle cx="48" cy="16" r="5" fill="none" stroke="black" stroke-width="1" opacity="0.2" vector-effect="non-scaling-stroke"/>
+    <!-- Jos-dreapta - coral shadow -->
+    <circle cx="48" cy="48" r="5" fill="none" stroke="black" stroke-width="1" opacity="0.2" vector-effect="non-scaling-stroke"/>
+    <!-- Jos - teal mediu shadow -->
+    <circle cx="32" cy="54" r="5" fill="none" stroke="black" stroke-width="1" opacity="0.2" vector-effect="non-scaling-stroke"/>
+    <!-- Jos-stânga - coral shadow -->
+    <circle cx="16" cy="48" r="5" fill="none" stroke="black" stroke-width="1" opacity="0.2" vector-effect="non-scaling-stroke"/>
+    <!-- Sus-stânga - teal shadow -->
+    <circle cx="16" cy="16" r="5" fill="none" stroke="black" stroke-width="1" opacity="0.2" vector-effect="non-scaling-stroke"/>
+    
+    <!-- Main colored circles with enhanced saturation -->
+    <!-- Sus - coral vibrant (more saturated) -->
+    <circle cx="32" cy="10" r="4" fill="#FF5555" stroke="#FF5555" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+    <!-- Sus-dreapta - teal primary (more saturated) -->  
+    <circle cx="48" cy="16" r="4" fill="#1A9690" stroke="#1A9690" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+    <!-- Jos-dreapta - coral medium (more saturated) -->
+    <circle cx="48" cy="48" r="4" fill="#FF9999" stroke="#FF9999" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+    <!-- Jos - teal mediu (more saturated) -->
+    <circle cx="32" cy="54" r="4" fill="#3DA69C" stroke="#3DA69C" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+    <!-- Jos-stânga - coral light (more saturated) -->
+    <circle cx="16" cy="48" r="4" fill="#FFB5B5" stroke="#FFB5B5" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+    <!-- Sus-stânga - teal deschis (more saturated) -->
+    <circle cx="16" cy="16" r="4" fill="#6DBBB4" stroke="#6DBBB4" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+    
+    <!-- O bulă în gaura din stânga cu dual-stroke -->
+    <circle cx="10" cy="32" r="3.5" fill="none" stroke="black" stroke-width="1" opacity="0.2" vector-effect="non-scaling-stroke"/>
+    <circle cx="10" cy="32" r="3" fill="#FF6666" stroke="#FF6666" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+    
+    <!-- Punct central cu dual-stroke și contrast ridicat -->
+    <circle cx="32" cy="32" r="3.5" fill="none" stroke="black" stroke-width="1" opacity="0.2" vector-effect="non-scaling-stroke"/>
+    <circle cx="32" cy="32" r="3" fill="#FF7777" stroke="#FF7777" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+    <circle cx="32" cy="32" r="2" fill="white" stroke="white" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+  </g>
 </svg>

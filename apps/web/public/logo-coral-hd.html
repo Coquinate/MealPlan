@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Weekly Rhythm - HD Version</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .logo-row {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-item h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Animații pentru puncte - rotire inversă ceasului */
+        @keyframes dots-reverse-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        /* Animații pentru acele ceasului - rotire normală */
+        @keyframes hands-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .weekly-dots.animated {
+            animation: dots-reverse-spin 12s linear infinite;
+            transform-origin: center;
+        }
+
+        .clock-hands .hand.animated {
+            transform-origin: center;
+        }
+
+        .clock-hands .hand.fast.animated {
+            animation: hands-spin 8s linear infinite;
+        }
+
+        .clock-hands .hand.slow.animated {
+            animation: hands-spin 15s linear infinite;
+        }
+
+        /* Pulse pentru puncte */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
+        }
+
+        .day-dot.pulse {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .lockup {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .lockup .brand-text {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2AA6A0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Logo Weekly Rhythm - HD Version</h1>
+        <p>Versiune high-resolution cu culori coral + teal și limba ceasului mai groasă</p>
+        
+        <div class="logo-section">
+            <div class="logo-row">
+                <!-- Logo Small HD -->
+                <div class="logo-item">
+                    <h3>Small HD (64px)</h3>
+                    <svg width="64" height="64" viewBox="0 0 128 128">
+                        <defs>
+                            <!-- HD Coral gradient -->
+                            <radialGradient id="coralGradientHD1" cx="50%" cy="30%" r="70%">
+                                <stop offset="0%" stop-color="#FFB3B3" stop-opacity="0.95" />
+                                <stop offset="50%" stop-color="#FF8E8E" stop-opacity="0.85" />
+                                <stop offset="100%" stop-color="#FF6B6B" stop-opacity="0.8" />
+                            </radialGradient>
+
+                            <!-- Filter pentru glow HD -->
+                            <filter id="hdGlow1" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- C din bule - ca versiunea animată dar static în poziție C -->
+                        <g class="c-shape-static">
+                            <!-- Sus - coral vibrant -->
+                            <circle cx="64" cy="18" r="7" fill="#FF6B6B" stroke="#FF6B6B" stroke-width="1" filter="url(#hdGlow1)"/>
+                            
+                            <!-- Sus-dreapta - teal primary -->
+                            <circle cx="97" cy="32" r="7" fill="#2AA6A0" stroke="#2AA6A0" stroke-width="1" filter="url(#hdGlow1)"/>
+                            
+                            <!-- Jos-dreapta - coral deschis -->
+                            <circle cx="97" cy="96" r="7" fill="#FFB3B3" stroke="#FFB3B3" stroke-width="1" filter="url(#hdGlow1)"/>
+                            
+                            <!-- Jos - teal mediu -->
+                            <circle cx="64" cy="110" r="7" fill="#4DB6AC" stroke="#4DB6AC" stroke-width="1" filter="url(#hdGlow1)"/>
+                            
+                            <!-- Jos-stânga - coral pastel -->
+                            <circle cx="31" cy="96" r="7" fill="#FFCCCB" stroke="#FFCCCB" stroke-width="1" filter="url(#hdGlow1)"/>
+                            
+                            <!-- Sus-stânga - teal deschis -->
+                            <circle cx="31" cy="32" r="7" fill="#80CBC4" stroke="#80CBC4" stroke-width="1" filter="url(#hdGlow1)"/>
+                            
+                            <!-- O bulă în gaura din stânga -->
+                            <circle cx="18" cy="64" r="6" fill="#FF7F7F" stroke="#FF7F7F" stroke-width="1" filter="url(#hdGlow1)" opacity="0.8"/>
+                            
+                            <!-- Punct central -->
+                            <circle cx="64" cy="64" r="5" fill="#FF8E8E" opacity="0.8"/>
+                            <circle cx="64" cy="64" r="3" fill="white" opacity="0.9"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Logo Medium HD Animat -->
+                <div class="logo-item">
+                    <h3>Medium HD Animat (96px)</h3>
+                    <svg width="96" height="96" viewBox="0 0 192 192">
+                        <defs>
+                            <radialGradient id="coralGradientHD2" cx="50%" cy="30%" r="70%">
+                                <stop offset="0%" stop-color="#FFB3B3" stop-opacity="0.95" />
+                                <stop offset="50%" stop-color="#FF8E8E" stop-opacity="0.85" />
+                                <stop offset="100%" stop-color="#FF6B6B" stop-opacity="0.8" />
+                            </radialGradient>
+
+                            <filter id="hdGlow2" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- Conexiuni subtile HD -->
+                        <g class="connection-lines" opacity="0.2">
+                            <path d="M 96 27 Q 96 96 145.5 48" stroke="#FFCCCB" stroke-width="1" fill="none"/>
+                            <path d="M 145.5 48 Q 96 96 165 96" stroke="#80CBC4" stroke-width="1" fill="none"/>
+                            <path d="M 165 96 Q 96 96 145.5 144" stroke="#FFB3B3" stroke-width="1" fill="none"/>
+                            <path d="M 145.5 144 Q 96 96 96 165" stroke="#4DB6AC" stroke-width="1" fill="none"/>
+                            <path d="M 96 165 Q 96 96 46.5 144" stroke="#FFCCCB" stroke-width="1" fill="none"/>
+                            <path d="M 46.5 144 Q 96 96 27 96" stroke="#80CBC4" stroke-width="1" fill="none"/>
+                            <path d="M 27 96 Q 96 96 46.5 48" stroke="#FF7F7F" stroke-width="1" fill="none"/>
+                            <path d="M 46.5 48 Q 96 96 96 27" stroke="#FF6B6B" stroke-width="1" fill="none"/>
+                        </g>
+
+                        <!-- Punctele zilelor HD cu animație -->
+                        <g class="weekly-dots animated">
+                            <!-- Luni - coral vibrant HD -->
+                            <circle cx="96" cy="27" r="10" fill="#FF6B6B" stroke="#FF6B6B" stroke-width="1.5" filter="url(#hdGlow2)" class="day-dot pulse" style="animation-delay: 0s"/>
+                            <text x="96" y="31" text-anchor="middle" font-size="10px" font-family="Inter" font-weight="700" fill="white">L</text>
+                            
+                            <!-- Marți - teal primary HD -->
+                            <circle cx="145.5" cy="48" r="10" fill="#2AA6A0" stroke="#2AA6A0" stroke-width="1.5" filter="url(#hdGlow2)" class="day-dot pulse" style="animation-delay: 0.2s"/>
+                            <text x="145.5" y="52" text-anchor="middle" font-size="10px" font-family="Inter" font-weight="700" fill="white">M</text>
+                            
+                            <!-- Miercuri - coral deschis HD -->
+                            <circle cx="165" cy="96" r="10" fill="#FFB3B3" stroke="#FFB3B3" stroke-width="1.5" filter="url(#hdGlow2)" class="day-dot pulse" style="animation-delay: 0.4s"/>
+                            <text x="165" y="100" text-anchor="middle" font-size="10px" font-family="Inter" font-weight="700" fill="#333">M</text>
+                            
+                            <!-- Joi - teal mediu HD -->
+                            <circle cx="145.5" cy="144" r="10" fill="#4DB6AC" stroke="#4DB6AC" stroke-width="1.5" filter="url(#hdGlow2)" class="day-dot pulse" style="animation-delay: 0.6s"/>
+                            <text x="145.5" y="148" text-anchor="middle" font-size="10px" font-family="Inter" font-weight="700" fill="white">J</text>
+                            
+                            <!-- Vineri - coral pastel HD -->
+                            <circle cx="96" cy="165" r="10" fill="#FFCCCB" stroke="#FFCCCB" stroke-width="1.5" filter="url(#hdGlow2)" class="day-dot pulse" style="animation-delay: 0.8s"/>
+                            <text x="96" y="169" text-anchor="middle" font-size="10px" font-family="Inter" font-weight="700" fill="#333">V</text>
+                            
+                            <!-- Sâmbătă - teal deschis HD -->
+                            <circle cx="46.5" cy="144" r="10" fill="#80CBC4" stroke="#80CBC4" stroke-width="1.5" filter="url(#hdGlow2)" class="day-dot pulse" style="animation-delay: 1s" opacity="0.85"/>
+                            <text x="46.5" y="148" text-anchor="middle" font-size="10px" font-family="Inter" font-weight="700" fill="#333">S</text>
+                            
+                            <!-- Duminică - coral intens HD -->
+                            <circle cx="46.5" cy="48" r="10" fill="#FF7F7F" stroke="#FF7F7F" stroke-width="1.5" filter="url(#hdGlow2)" class="day-dot pulse" style="animation-delay: 1.2s" opacity="0.85"/>
+                            <text x="46.5" y="52" text-anchor="middle" font-size="10px" font-family="Inter" font-weight="700" fill="white">D</text>
+                        </g>
+
+                        <!-- Clock hands HD SUPER groase pentru vizibilitate -->
+                        <g class="clock-hands">
+                            <!-- Ac rapid HD - foarte gros -->
+                            <line x1="96" y1="96" x2="96" y2="48" stroke="#FF6B6B" stroke-width="5" stroke-linecap="round" opacity="0.7" class="hand fast animated"/>
+                            
+                            <!-- Ac lent HD - și mai gros -->
+                            <line x1="96" y1="96" x2="96" y2="66" stroke="#2AA6A0" stroke-width="6" stroke-linecap="round" opacity="0.6" class="hand slow animated"/>
+                            
+                            <!-- Punct central HD mare -->
+                            <circle cx="96" cy="96" r="8" fill="#FF8E8E" opacity="0.8"/>
+                            <circle cx="96" cy="96" r="5" fill="white" opacity="0.95"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Logo cu Text HD -->
+                <div class="logo-item">
+                    <h3>Cu Text HD</h3>
+                    <div class="lockup">
+                        <svg width="64" height="64" viewBox="0 0 128 128">
+                            <defs>
+                                <radialGradient id="coralGradientHD3" cx="50%" cy="30%" r="70%">
+                                    <stop offset="0%" stop-color="#FFB3B3" stop-opacity="0.95" />
+                                    <stop offset="50%" stop-color="#FF8E8E" stop-opacity="0.85" />
+                                    <stop offset="100%" stop-color="#FF6B6B" stop-opacity="0.8" />
+                                </radialGradient>
+                                <filter id="hdGlow3" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+
+                            <!-- Puncte HD cu animație -->
+                            <g class="weekly-dots animated">
+                                <circle cx="64" cy="22" r="6" fill="#FF6B6B" stroke="#FF6B6B" stroke-width="1" filter="url(#hdGlow3)"/>
+                                <circle cx="92" cy="36" r="6" fill="#2AA6A0" stroke="#2AA6A0" stroke-width="1" filter="url(#hdGlow3)"/>
+                                <circle cx="106" cy="64" r="6" fill="#FFB3B3" stroke="#FFB3B3" stroke-width="1" filter="url(#hdGlow3)"/>
+                                <circle cx="92" cy="92" r="6" fill="#4DB6AC" stroke="#4DB6AC" stroke-width="1" filter="url(#hdGlow3)"/>
+                                <circle cx="64" cy="106" r="6" fill="#FFCCCB" stroke="#FFCCCB" stroke-width="1" filter="url(#hdGlow3)"/>
+                                <circle cx="36" cy="92" r="6" fill="#80CBC4" stroke="#80CBC4" stroke-width="1" filter="url(#hdGlow3)"/>
+                                <circle cx="36" cy="36" r="6" fill="#FF7F7F" stroke="#FF7F7F" stroke-width="1" filter="url(#hdGlow3)"/>
+                            </g>
+
+                            <!-- Clock hands HD groase cu animație -->
+                            <g class="clock-hands">
+                                <line x1="64" y1="64" x2="64" y2="40" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" opacity="0.5" class="hand fast animated"/>
+                                <line x1="64" y1="64" x2="64" y2="50" stroke="#2AA6A0" stroke-width="4" stroke-linecap="round" opacity="0.4" class="hand slow animated"/>
+                                <circle cx="64" cy="64" r="4" fill="#FF8E8E" opacity="0.7"/>
+                                <circle cx="64" cy="64" r="2" fill="white" opacity="0.8"/>
+                            </g>
+                        </svg>
+                        
+                        <span class="brand-text" style="color: #2AA6A0;">
+                            Co<span style="color: #FF6B6B; font-weight: 400;">q</span>uinate
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: rgba(255, 235, 235, 0.3); border-radius: 10px; border: 1px solid rgba(255, 180, 180, 0.2);">
+            <h3 style="margin-top: 0; color: #FF6B6B;">🎨 Îmbunătățiri HD:</h3>
+            <ul style="text-align: left; color: #666; margin: 0;">
+                <li><strong>Viewbox mărit</strong> - de la 48x48 la 128x128+ pentru claritate</li>
+                <li><strong>Acele ceasului groase</strong> - stroke-width de 3-6px în loc de 1px</li>
+                <li><strong>Puncte mari</strong> - radius de 6-10px în loc de 3px</li>
+                <li><strong>Text bold</strong> - font-weight 600-700 pentru lizibilitate</li>
+                <li><strong>Filtre îmbunătățite</strong> - glow mai puternic și mai clar</li>
+                <li><strong>Contraste mai bune</strong> - text alb pe fundal întunecat, negru pe deschis</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

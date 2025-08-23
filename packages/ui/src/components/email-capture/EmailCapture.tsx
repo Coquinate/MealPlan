@@ -231,7 +231,7 @@ export function EmailCapture({
       <div className={cn('w-full relative', className)}>
         {/* COMPACT CONTAINER with subtle gray background and enhanced shadow */}
         <div 
-          className="bg-surface-secondary backdrop-blur-sm border border-border-strong rounded-xl p-5 shadow-sm transition-all duration-300 relative overflow-hidden"
+          className="bg-surface-secondary backdrop-blur-sm border border-border-strong rounded-xl p-3 sm:p-4 md:p-5 shadow-sm transition-all duration-300 relative overflow-hidden"
           style={{
             transition: 'all 0.3s ease'
           }}
@@ -248,13 +248,13 @@ export function EmailCapture({
           {/* Content */}
           <div className="relative z-10">
             {/* TITLE - REVERTING TO GRADIENT TEXT */}
-            <h3 className="font-display text-base font-bold mb-3 bg-gradient-to-r from-primary-warm to-accent-coral bg-clip-text text-transparent leading-tight text-center">
+            <h3 className="font-display text-sm sm:text-base font-bold mb-2 sm:mb-3 bg-gradient-to-r from-primary-warm to-accent-coral bg-clip-text text-transparent leading-tight text-center">
               {PROMO_VARIANT_CONFIG.title}
             </h3>
 
             <form className="space-y-3" onSubmit={handleSubmit}>
-              {/* COMPACT EMAIL FORM - Horizontal layout */}
-              <div className="flex gap-2">
+              {/* COMPACT EMAIL FORM - Responsive layout */}
+              <div className="flex flex-col sm:flex-row gap-2">
                 <div className="relative flex-1">
                   <input
                     type="email"
@@ -262,7 +262,7 @@ export function EmailCapture({
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => validation.setEmail(e.target.value)}
                     placeholder="adresa@email.com"
                     className={cn(
-                      'w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-0 transition-all duration-300 disabled:opacity-60 text-sm font-medium',
+                      'w-full px-2.5 sm:px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-0 transition-all duration-300 disabled:opacity-60 text-xs sm:text-sm font-medium',
                       // SIMPLE CLEAN BACKGROUND
                       'bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 backdrop-blur-sm',
                       // COLORFUL BORDERS and focus states
@@ -298,7 +298,7 @@ export function EmailCapture({
                   type="submit"
                   disabled={!validation.isValid || submission.isLoading || !validation.gdprConsent}
                   className={cn(
-                    'px-5 py-2 font-bold rounded-lg transition-all duration-300 disabled:cursor-not-allowed text-sm shadow-sm whitespace-nowrap',
+                    'px-3 sm:px-4 md:px-5 py-2 font-bold rounded-lg transition-all duration-300 disabled:cursor-not-allowed text-xs sm:text-sm shadow-sm whitespace-nowrap w-full sm:w-auto',
                     // REVERTING TO VIBRANT GRADIENT BACKGROUND
                     'bg-gradient-to-r from-primary-warm to-accent-coral text-white',
                     'hover:shadow-lg hover:scale-[1.02]',
@@ -320,7 +320,7 @@ export function EmailCapture({
               </div>
 
               {/* COMPACT GDPR Consent */}
-              <div className="bg-surface-secondary rounded-lg p-3">
+              <div className="bg-surface-secondary rounded-lg p-2 sm:p-3">
                 <GDPRCheckbox
                   checked={validation.gdprConsent}
                   onChange={validation.setGdprConsent}
@@ -345,13 +345,13 @@ export function EmailCapture({
             </form>
 
             {/* Benefits List with Tabler Icon */}
-            <div className="mt-4">
-              <div className="flex items-center gap-2 text-sm">
+            <div className="mt-3 sm:mt-4">
+              <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 text-xs sm:text-sm">
                 <IconGift 
-                  size={20} 
-                  className="text-primary-warm flex-shrink-0" 
+                  size={16} 
+                  className="text-primary-warm flex-shrink-0 sm:w-5 sm:h-5" 
                 />
-                <span className="text-gray-700">
+                <span className="text-gray-700 leading-tight text-center sm:text-left">
                   <strong>Toți înscrișii</strong> primesc un trial extins la 7 zile!
                 </span>
               </div>

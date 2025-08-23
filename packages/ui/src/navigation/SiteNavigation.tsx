@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { LogoWeeklyRhythmLockup } from '../components/brand';
 
 interface SiteNavigationProps {
   showLaunchBadge?: boolean;
@@ -38,14 +39,16 @@ export function SiteNavigation({
     }`}>
       <div className="mx-auto max-w-container px-4 sm:px-6 lg:px-8">
         <div className="flex h-header items-center justify-between py-2 md:py-3">
-          {/* Logo with v0-inspired animations */}
+          {/* Logo with brand lockup */}
           <a
             href="/"
-            className="font-display text-logo font-bold text-primary-warm no-underline tracking-tight transition-all duration-300 hover:scale-105 hover:text-accent-coral cursor-pointer group"
+            className="no-underline cursor-pointer"
           >
-            <span className="inline-block transition-transform duration-300 group-hover:rotate-3">
-              Coquinate
-            </span>
+            <LogoWeeklyRhythmLockup
+              variant="compact"
+              size="xxs"
+              animated={true}
+            />
           </a>
 
           {/* Enhanced Launch Badge - responsive sizes like v0 */}

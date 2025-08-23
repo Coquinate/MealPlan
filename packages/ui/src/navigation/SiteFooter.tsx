@@ -9,6 +9,7 @@ import {
   IconMail, 
   IconHeart 
 } from '@tabler/icons-react';
+import { LogoWeeklyRhythmLockup } from '../components/brand';
 
 interface SiteFooterProps {
   copyrightText?: string;
@@ -47,35 +48,31 @@ export function SiteFooter({
     { 
       icon: IconBrandFacebook, 
       label: 'Facebook', 
-      hoverColor: 'hover:text-blue-400',
       href: `https://www.facebook.com/sharer/sharer.php?u=${encodedPageUrl}`,
       title: 'Distribuie pe Facebook'
     },
     { 
       icon: IconBrandTwitter, 
       label: 'Twitter / X', 
-      hoverColor: 'hover:text-sky-400',
       href: `https://twitter.com/intent/tweet?url=${encodedPageUrl}&text=${shareText}`,
       title: 'Distribuie pe X'
     },
     { 
       icon: IconBrandLinkedin, 
       label: 'LinkedIn', 
-      hoverColor: 'hover:text-blue-500',
       href: `https://www.linkedin.com/shareArticle?mini=true&url=${encodedPageUrl}`,
       title: 'Distribuie pe LinkedIn'
     },
     {
       icon: IconBrandWhatsapp,
       label: 'WhatsApp',
-      hoverColor: 'hover:text-green-400',
       href: `https://api.whatsapp.com/send?text=${shareText} ${encodedPageUrl}`,
       title: 'Distribuie pe WhatsApp'
     },
   ];
 
   return (
-    <footer className="bg-dark-surface text-text-light py-8 sm:py-12 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
+    <footer className="bg-dark-surface text-white py-8 sm:py-12 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
       {showEasterEgg && (
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-r from-accent-coral via-primary-warm to-accent-coral opacity-20 animate-pulse"></div>
@@ -88,19 +85,25 @@ export function SiteFooter({
       <div className="max-w-6xl mx-auto relative z-10">
         <div
           onClick={handleLogoClick}
-          className={`font-display text-xl sm:text-2xl font-bold text-primary mb-6 sm:mb-8 opacity-80 cursor-pointer transition-all duration-300 hover:opacity-100 hover:scale-105 select-none ${
-            showEasterEgg ? 'animate-bounce text-accent-coral' : ''
+          className={`mb-6 sm:mb-8 inline-flex flex-col items-center cursor-pointer transition-all duration-300 hover:scale-105 select-none ${
+            showEasterEgg ? 'animate-bounce' : ''
           }`}
         >
-          Coquinate
+          <LogoWeeklyRhythmLockup
+            variant="vertical"
+            size="xxs"
+            animated={true}
+            showTagline={true}
+            className="opacity-100"
+          />
           {showEasterEgg && (
-            <div className="text-xs mt-1 text-accent-coral animate-pulse">
+            <div className="text-xs mt-2 text-accent-coral animate-pulse">
               Mulțumim că ne iubești! <IconHeart size={12} className="inline animate-pulse" />
             </div>
           )}
         </div>
 
-        <h4 className="text-lg font-semibold text-text-light opacity-90 mb-4">
+        <h4 className="text-lg font-semibold text-white mb-4">
           Răspândește vestea!
         </h4>
 
@@ -111,18 +114,18 @@ export function SiteFooter({
               href={pageUrl ? social.href : '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className={`p-2 rounded-full bg-surface-white/10 backdrop-blur-sm border border-surface-white/20 transition-all duration-300 hover:bg-surface-white/20 hover:transform hover:-translate-y-1 ${social.hoverColor} group`}
+              className="p-2 rounded-full bg-dark-surface-raised border border-white border-opacity-10 transition-all duration-300 hover:bg-white hover:bg-opacity-10 hover:transform hover:-translate-y-1 hover:text-accent-coral group"
               title={social.title}
               style={{ animationDelay: `${index * 100}ms` }}
               aria-label={social.title}
               onClick={(e) => { if (!pageUrl) e.preventDefault(); }}
             >
-              <social.icon size={18} className="transition-transform duration-300 group-hover:scale-110" />
+              <social.icon size={20} stroke={2} className="text-white opacity-90 transition-transform duration-300 group-hover:scale-110" />
             </a>
           ))}
         </div>
 
-        <p className="opacity-70 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
+        <p className="text-white opacity-70 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
           {copyrightText}
         </p>
 
@@ -131,17 +134,17 @@ export function SiteFooter({
             href="/politica-de-confidentialitate"
             target="_blank"
             rel="noreferrer"
-            className="text-text-light opacity-70 no-underline text-xs sm:text-sm hover:opacity-100 transition-all duration-200 py-1 px-1 inline-block hover:text-accent-coral"
+            className="text-white opacity-70 no-underline text-xs sm:text-sm hover:opacity-100 transition-all duration-200 py-1 px-1 inline-block hover:text-accent-coral"
             aria-label={privacyPolicyLabel}
           >
             {privacyPolicyLabel}
           </a>
           
-          <span className="hidden sm:inline opacity-50">|</span>
+          <span className="hidden sm:inline text-white opacity-50">|</span>
 
           <a
             href="mailto:contact@coquinate.ro"
-            className="text-text-light opacity-70 no-underline text-xs sm:text-sm hover:opacity-100 transition-all duration-200 py-1 px-1 inline-flex items-center gap-2 hover:text-accent-coral"
+            className="text-white opacity-70 no-underline text-xs sm:text-sm hover:opacity-100 transition-all duration-200 py-1 px-1 inline-flex items-center gap-2 hover:text-accent-coral"
             aria-label="Contactează-ne prin email"
           >
             <IconMail size={16} />
@@ -149,7 +152,7 @@ export function SiteFooter({
           </a>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-border/10">
+        <div className="mt-8 pt-6 border-t border-white border-opacity-10">
           <p className="text-base font-semibold text-white flex items-center justify-center gap-1">
             Făcut cu 
             <span className="inline-block mx-1 relative">

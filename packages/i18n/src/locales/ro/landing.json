@@ -129,10 +129,12 @@
   "workflow": {
     "title": "Cum funcționează Coquinate?",
     "subtitle": "Transformă felul în care gătești cu doar 3 pași simpli",
-    "cook": {
-      "title": "Gătești Duminică",
-      "description": "Pregătești 2-3 rețete pentru întreaga săptămână"
-    },
+    "plan": "Planifică",
+    "plan_desc": "Alege rețetele săptămânii",
+    "shop": "Cumpără",
+    "shop_desc": "Lista optimizată de ingrediente",
+    "cook": "Gătește",
+    "cook_desc": "Pregătește totul într-o zi",
     "reuse": {
       "title": "Refolosești Luni",
       "description": "Combini inteligent ingredientele pregătite"
@@ -143,7 +145,7 @@
     },
     "cook_sunday": {
       "title": "Gătești Duminică",
-      "description": "Prepari o masă principală."
+      "description": "Pregătești 2-3 rețete pentru întreaga săptămână"
     },
     "reuse_monday": {
       "title": "Refolosești Luni",

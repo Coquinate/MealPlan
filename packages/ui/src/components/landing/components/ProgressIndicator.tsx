@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import * as i18nModule from '@coquinate/i18n';
 import type { TranslationNamespace } from '@coquinate/i18n';
-import { useMotionValue, useSpring, useTransform, useMotionValueEvent } from 'motion/react';
+import { LazyMotion, domAnimation, useMotionValue, useSpring, useTransform, useMotionValueEvent } from 'motion/react';
 import { m } from '../../../motion/config';
 import { IconUsers, IconTrendingUp } from '@tabler/icons-react';
 
@@ -82,55 +82,57 @@ export function ProgressIndicator({
   const progressPercentage = ((currentValue / total) * 100).toFixed(1);
   
   return (
-    <div 
-      className="bg-gradient-to-r from-accent-coral-soft/5 to-primary-warm/5 border border-border-strong rounded-xl p-4 shadow-sm transition-all duration-300"
-      style={{
-        transition: 'all 0.3s ease'
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = '0 0 30px oklch(70% 0.18 20 / 0.3), 0 20px 40px oklch(0% 0 0 / 0.15)';
-        e.currentTarget.style.transform = 'translateY(-2px)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = '';
-        e.currentTarget.style.transform = '';
-      }}
-    >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <IconUsers size={20} className="text-accent-coral" />
-          <span className="font-semibold text-sm text-text">
-            {t('landing:progress.spots_taken', { 
-              current: currentValue, 
-              total 
-            })}
-          </span>
-        </div>
-        <div className="flex items-center gap-1 text-accent-coral text-xs font-medium">
-          <IconTrendingUp size={12} />
-          <span>{t('landing:progress.spots_remaining', { remaining: remainingValue })}</span>
-        </div>
-      </div>
-
+    <LazyMotion features={domAnimation} strict>
       <div 
-        className="w-full bg-border-light rounded-full h-2 mb-2"
-        role="progressbar" 
-        aria-valuenow={currentValue}
-        aria-valuemin={0}
-        aria-valuemax={total}
-        aria-labelledby="progress-label"
-        aria-describedby="progress-description"
+        className="bg-gradient-to-r from-accent-coral-soft/5 to-primary-warm/5 border border-border-strong rounded-xl p-4 shadow-sm transition-all duration-300"
+        style={{
+          transition: 'all 0.3s ease'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow = '0 0 30px oklch(70% 0.18 20 / 0.3), 0 20px 40px oklch(0% 0 0 / 0.15)';
+          e.currentTarget.style.transform = 'translateY(-2px)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.boxShadow = '';
+          e.currentTarget.style.transform = '';
+        }}
       >
-        <m.div 
-          className="bg-gradient-to-r from-accent-coral to-primary-warm h-2 rounded-full transition-all duration-1000 ease-out"
-          style={{ width: percentageWidth }}
-          initial={false}
-        />
-      </div>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <IconUsers size={20} className="text-accent-coral" />
+            <span className="font-semibold text-sm text-text">
+              {t('landing:progress.spots_taken', { 
+                current: currentValue, 
+                total 
+              })}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 text-accent-coral text-xs font-medium">
+            <IconTrendingUp size={12} />
+            <span>{t('landing:progress.spots_remaining', { remaining: remainingValue })}</span>
+          </div>
+        </div>
 
-      <p className="text-xs text-text-muted text-center" id="progress-description">
-        <strong className="text-accent-coral">{Math.round(Number(progressPercentage))}%</strong> {t('landing:progress.percentage_reserved')}
-      </p>
-    </div>
+        <div 
+          className="w-full bg-border-light rounded-full h-2 mb-2"
+          role="progressbar" 
+          aria-valuenow={currentValue}
+          aria-valuemin={0}
+          aria-valuemax={total}
+          aria-labelledby="progress-label"
+          aria-describedby="progress-description"
+        >
+          <m.div 
+            className="bg-gradient-to-r from-accent-coral to-primary-warm h-2 rounded-full transition-all duration-1000 ease-out"
+            style={{ width: percentageWidth }}
+            initial={false}
+          />
+        </div>
+
+        <p className="text-xs text-text-muted text-center" id="progress-description">
+          <strong className="text-accent-coral">{Math.round(Number(progressPercentage))}%</strong> {t('landing:progress.percentage_reserved')}
+        </p>
+      </div>
+    </LazyMotion>
   );
 }

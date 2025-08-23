@@ -3,6 +3,9 @@
  * @module components
  */
 
+// Brand components
+export * from './brand';
+
 // Base components
 export * from './button';
 export * from './card';
