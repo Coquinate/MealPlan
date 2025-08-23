@@ -183,8 +183,7 @@
   }
 
   /* Modern Hearth Dark Mode Support - Full Implementation */
-  @media (prefers-color-scheme: dark) {
-    :root {
+  .dark {
       /* Primary warm teal in dark mode */
       --color-primary: var(--color-primary-500); /* Reference 500 variant to avoid duplication */
       --color-primary-50: oklch(25% 0.06 200);
@@ -297,7 +296,6 @@
       --color-gray-700: oklch(70% 0 0);
       --color-gray-800: oklch(80% 0 0);
       --color-gray-900: oklch(92% 0 0);
-    }
   }
 
   /* High Contrast Mode Support */

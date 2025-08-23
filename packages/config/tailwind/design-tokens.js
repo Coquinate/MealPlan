@@ -206,6 +206,26 @@ export const freshnessColors = {
   expired: 'var(--color-error)', // 0 days - references main error color
 };
 
+// Workflow Dark Mode Specific Colors - Manual Control
+export const workflowDarkMode = {
+  // Card styling
+  'workflow-card-bg-dark': '#000000', // Pure black to match page background
+  'workflow-card-border-dark': 'oklch(70% 0.15 20)', // Bright coral-tinted border
+  'workflow-card-shadow-dark': '0 0 20px oklch(70% 0.18 20 / 0.3)', // Glowing shadow
+  
+  // Text colors
+  'workflow-title-dark': '#ffffff', // Pure white for maximum contrast
+  'workflow-description-dark': 'oklch(85% 0 0)', // Bright gray (gray-300 equivalent)
+  
+  // Icon styling
+  'workflow-icon-color-dark': 'oklch(75% 0.18 20)', // Bright coral (accent-coral-400)
+  'workflow-icon-bg-dark': 'oklch(35% 0.15 20)', // Dark coral background
+  
+  // Timeline and connectors
+  'workflow-line-dark': 'oklch(70% 0.15 20)', // Bright coral line
+  'workflow-dot-dark': 'oklch(75% 0.18 20)', // Bright coral dots
+};
+
 // Modern Hearth Font Families (Shared Design System)
 export const fontFamily = {
   // Primary body font - Inter with Romanian support
@@ -593,10 +613,9 @@ export const gridTemplateColumns = {
   7: 'repeat(7, minmax(0, 1fr))', // Week view
   12: 'repeat(12, minmax(0, 1fr))',
   // Custom meal grid layouts
+  'hero-split': '2fr 1fr', // Hero section main + sidebar with workflow. must leave it as 1.8fr
   'meal-week': 'repeat(7, minmax(280px, 1fr))', // Desktop week view
   'meal-day': 'repeat(4, 1fr)', // Meals per day
-  // Landing page hero grid (more space for content)
-  'hero-split': '1.8fr 1fr', // Content-focused split for hero section - increased for better text accommodation
 };
 
 // Grid template rows
@@ -639,6 +658,7 @@ export const designTokens = {
     // Note: Dark mode now handled through CSS variables, no separate dark object needed
     context: contextColors,
     freshness: freshnessColors,
+    workflow: workflowDarkMode,
   },
   fontFamily,
   fontSize,

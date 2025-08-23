@@ -97,8 +97,7 @@ function HeroSection({
             {/* Left Column: Text & Form */}
             <div>
               <h1 className="font-display text-5xl lg:text-6xl font-bold leading-tight tracking-tight mb-6">
-                {t('landing:hero.title_line1')}
-                <br />
+                {t('landing:hero.title_line1')}{' '}
                 {withShimmer ? (
                   <ShimmerHeadline>
                     {t('landing:hero.title_line2')}
@@ -129,20 +128,20 @@ function HeroSection({
                 ))}
               </dl>
 
+              {/* Email Capture - Promo Design */}
+              <div id="email-capture" role="region" aria-label="Email signup" className="mb-6">
+                <EmailCapture 
+                  variant={emailCaptureVariant} 
+                  onSuccess={handleEmailSuccess}
+                />
+              </div>
+
               {/* Progress Indicator - Using real Supabase data - Compact like v0 design */}
-              <div className="mb-6">
+              <div>
                 <ProgressIndicator 
                   current={subscriberData?.current}
                   total={subscriberData?.total}
                   showAnimation={true} 
-                />
-              </div>
-
-              {/* Email Capture - Promo Design */}
-              <div id="email-capture" role="region" aria-label="Email signup">
-                <EmailCapture 
-                  variant={emailCaptureVariant} 
-                  onSuccess={handleEmailSuccess}
                 />
               </div>
 

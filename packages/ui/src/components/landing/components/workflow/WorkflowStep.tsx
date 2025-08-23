@@ -91,11 +91,11 @@ export function WorkflowStep({
   return (
     <m.div
       className={`
-        bg-white 
-        border border-gray-200
+        bg-white dark:bg-black
+        border-2 border-gray-200 dark:border-accent-coral-400
         rounded-lg ${sizes.container}
-        shadow-sm
-        ${isActive ? "border-primary-600 bg-primary-50" : ""}
+        shadow-sm dark:shadow-xl dark:shadow-accent-coral-400/30
+        ${isActive ? "border-primary-600 bg-primary-50 dark:bg-gray-950 dark:border-accent-coral-300" : ""}
         ${className}
       `}
       variants={containerVariants}
@@ -104,7 +104,7 @@ export function WorkflowStep({
       whileHover={{ 
         scale: 1.03,
         y: -8,
-        boxShadow: "0 0 30px oklch(70% 0.18 20 / 0.3), 0 20px 40px oklch(0% 0 0 / 0.15)",
+        boxShadow: "0 0 40px oklch(70% 0.18 20 / 0.4), 0 20px 40px oklch(0% 0 0 / 0.2)",
         transition: { duration: 0.3 }
       }}
       whileTap={{ scale: 0.98 }}
@@ -112,7 +112,7 @@ export function WorkflowStep({
       <div className={`flex items-center ${sizes.gap} ${alignmentClasses[alignment]}`}>
         <m.div 
           className={`
-            bg-accent-coral-100 
+            bg-accent-coral-100 dark:bg-accent-coral-900/40
             rounded-lg ${sizes.iconWrapper} 
             flex items-center justify-center
           `}
@@ -129,10 +129,10 @@ export function WorkflowStep({
           {icon}
         </m.div>
         <div className={alignment === "center" ? "" : "flex-1"}>
-          <h4 className={`font-display font-semibold ${sizes.title} text-gray-900 mb-0.5`}>
+          <h4 className={`font-display font-semibold ${sizes.title} text-gray-900 dark:text-white mb-0.5`}>
             {title}
           </h4>
-          <p className={`${sizes.description} text-gray-600`}>
+          <p className={`${sizes.description} text-gray-600 dark:text-gray-300`}>
             {description}
           </p>
         </div>

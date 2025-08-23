@@ -1,5 +1,6 @@
 'use client';
 
+import { LazyMotion, domAnimation } from 'motion/react';
 import { m } from '../../motion/config';
 import { ReactNode } from 'react';
 
@@ -39,26 +40,28 @@ interface ShimmerHeadlineProps {
 
 export function ShimmerHeadline({ children, className = '' }: ShimmerHeadlineProps) {
   return (
-    <m.span
-      className={`inline-block ${className}`}
-      style={{
-        // Gradient mai pronunțat cu culori compatibile cross-browser
-        backgroundImage: "linear-gradient(90deg, #2aa6a0, #e96e68, #2aa6a0, #e96e68, #2aa6a0)",
-        WebkitBackgroundClip: "text",
-        backgroundClip: "text",
-        color: "transparent",
-        backgroundSize: "300% 100%", // Gradient mai mare pentru efect mai dramatic
-      }}
-      animate={{ 
-        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
-      }}
-      transition={{ 
-        duration: 12, // Puțin mai rapid pentru mai multă vitalitate
-        repeat: Infinity, 
-        ease: "easeInOut" // Easing mai smooth
-      }}
-    >
-      {children}
-    </m.span>
+    <LazyMotion features={domAnimation} strict>
+      <m.span
+        className={`inline-block ${className}`}
+        style={{
+          // Gradient mai pronunțat cu culori compatibile cross-browser
+          backgroundImage: "linear-gradient(90deg, #2aa6a0, #e96e68, #2aa6a0, #e96e68, #2aa6a0)",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          color: "transparent",
+          backgroundSize: "300% 100%", // Gradient mai mare pentru efect mai dramatic
+        }}
+        animate={{ 
+          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
+        }}
+        transition={{ 
+          duration: 12, // Puțin mai rapid pentru mai multă vitalitate
+          repeat: Infinity, 
+          ease: "easeInOut" // Easing mai smooth
+        }}
+      >
+        {children}
+      </m.span>
+    </LazyMotion>
   );
 }

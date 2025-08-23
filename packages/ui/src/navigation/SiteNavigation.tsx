@@ -33,8 +33,8 @@ export function SiteNavigation({
   return (
     <nav className={`sticky top-0 z-100 transition-all duration-300 relative ${
       scrolled 
-        ? 'bg-surface-white/80 backdrop-blur-xl shadow-hover' 
-        : 'bg-white shadow-[0_1px_0_oklch(90%_0_0)]'
+        ? 'bg-surface/95 backdrop-blur-xl shadow-hover dark:bg-black/90' 
+        : 'bg-surface dark:bg-black border-b border-border-light dark:border-gray-800'
     }`}>
       <div className="mx-auto max-w-container px-4 sm:px-6 lg:px-8">
         <div className="flex h-header items-center justify-between py-2 md:py-3">
@@ -52,17 +52,17 @@ export function SiteNavigation({
           {showLaunchBadge && (
             <>
               {/* Desktop version */}
-              <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-surface-eggshell rounded-full text-sm text-text-medium-contrast transition-all duration-300 hover:bg-surface-white/80 hover:shadow-hover cursor-pointer">
+              <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-surface-raised dark:bg-gray-900 rounded-full text-sm text-text-medium-contrast dark:text-gray-300 transition-all duration-300 hover:bg-surface-hover dark:hover:bg-gray-800 hover:shadow-hover cursor-pointer">
                 <span className="w-2 h-2 bg-accent-coral rounded-full animate-[subtle-pulse_3s_ease-in-out_infinite]" />
-                <span className="transition-colors duration-300 hover:text-text-primary">
+                <span className="transition-colors duration-300 hover:text-text dark:hover:text-white">
                   {comingSoonLabel}
                 </span>
               </div>
               
               {/* Mobile version - more compact */}
-              <div className="flex sm:hidden items-center gap-2 px-3 py-1.5 bg-surface-eggshell rounded-full text-xs text-text-medium-contrast transition-all duration-300 hover:bg-surface-white/80 hover:shadow-hover cursor-pointer">
+              <div className="flex sm:hidden items-center gap-2 px-3 py-1.5 bg-surface-raised dark:bg-gray-900 rounded-full text-xs text-text-medium-contrast dark:text-gray-300 transition-all duration-300 hover:bg-surface-hover dark:hover:bg-gray-800 hover:shadow-hover cursor-pointer">
                 <span className="w-1.5 h-1.5 bg-accent-coral rounded-full animate-[subtle-pulse_3s_ease-in-out_infinite]" />
-                <span className="transition-colors duration-300 hover:text-text-primary">
+                <span className="transition-colors duration-300 hover:text-text dark:hover:text-white">
                   {comingSoonLabel}
                 </span>
               </div>
@@ -72,7 +72,7 @@ export function SiteNavigation({
       </div>
       
       {/* Enhanced Progress Bar - v0-inspired gradient */}
-      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-border-light/30">
+      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-border-light/30 dark:bg-gray-700/30">
         <div 
           className="h-full bg-gradient-to-r from-accent-coral to-primary-warm transition-all duration-150 ease-out"
           style={{ width: `${scrollProgress}%` }}

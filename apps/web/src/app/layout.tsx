@@ -85,10 +85,28 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ro" className={`${inter.variable} ${lexend.variable}`} data-motion="subtle">
+    <html lang="ro" className={`${inter.variable} ${lexend.variable}`} data-motion="subtle" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Forțează light theme ca default pentru coming soon page
+              if (window.location.pathname === '/' || window.location.pathname === '/coming-soon') {
+                const savedTheme = localStorage.getItem('coming-soon-theme');
+                if (savedTheme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.style.colorScheme = 'dark';
+                } else {
+                  // Default to light theme
+                  document.documentElement.classList.remove('dark');
+                  document.documentElement.style.colorScheme = 'light';
+                }
+              }
+            `,
+          }}
+        />
       </head>
       <body className="font-primary antialiased">
         <GlassMorphismInit />

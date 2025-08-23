@@ -3,7 +3,7 @@
 import { IconChefHat, IconFileText, IconStack2 } from "@tabler/icons-react"
 import { WorkflowStep } from "./WorkflowStep"
 import { WorkflowTimeline } from "./WorkflowTimeline"
-import { useReducedMotion } from "motion/react"
+import { LazyMotion, domAnimation, useReducedMotion } from "motion/react"
 import { m } from "../../../../motion/config"
 import { useI18nWithFallback } from "../../../../hooks/useI18nWithFallback"
 import { useTransition, useDeferredValue, useState } from "react"
@@ -127,16 +127,17 @@ export function WorkflowVisualization({
   }
 
   return (
-    <div 
-      className={`relative w-full ${className}`}
-      style={isPending ? { opacity: 0.7, transition: 'opacity 0.2s' } : {}}>
-      {/* Mobile View */}
-      <m.div 
-        className="block lg:hidden"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+    <LazyMotion features={domAnimation} strict>
+      <div 
+        className={`relative w-full ${className}`}
+        style={isPending ? { opacity: 0.7, transition: 'opacity 0.2s' } : {}}>
+        {/* Mobile View */}
+        <m.div 
+          className="block lg:hidden"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
         {showTitle && (
           <m.div 
             className="text-center mb-4"
@@ -171,7 +172,7 @@ export function WorkflowVisualization({
         >
           <m.path
             d="M 110 40 C 40 100, 40 150, 85 175 C 130 200, 180 240, 210 280"
-            className="stroke-gray-200"
+            className="stroke-gray-200 dark:stroke-accent-coral-400"
             fill="transparent"
             strokeWidth="2"
             strokeDasharray="4 4"
@@ -218,5 +219,6 @@ export function WorkflowVisualization({
         ))}
       </m.div>
     </div>
+    </LazyMotion>
   )
 }
