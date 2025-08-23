@@ -32,25 +32,25 @@ export function LogoLockup({
   const sizeConfig = {
     sm: {
       logo: 'w-6 h-6',
-      text: 'text-lg',
+      text: 'text-xl',
       tagline: 'text-xs',
       gap: 'gap-2',
     },
     md: {
       logo: 'w-8 h-8',
-      text: 'text-xl',
+      text: 'text-2xl',
       tagline: 'text-sm',
       gap: 'gap-3',
     },
     lg: {
       logo: 'w-12 h-12',
-      text: 'text-2xl',
+      text: 'text-3xl',
       tagline: 'text-base',
       gap: 'gap-4',
     },
     xl: {
       logo: 'w-16 h-16',
-      text: 'text-3xl',
+      text: 'text-4xl',
       tagline: 'text-lg',
       gap: 'gap-4',
     },
@@ -60,10 +60,10 @@ export function LogoLockup({
   const isVertical = variant === 'vertical';
   const isCompact = variant === 'compact';
 
-  // Gradient text classes matching logo colors
+  // Gradient text classes matching logo colors - removed as we handle it inline now
   const textGradientClass = gradient
     ? 'bg-gradient-to-r from-[#2AA6A0] to-[#E96E68] bg-clip-text text-transparent'
-    : 'text-primary-warm';
+    : '';
 
   const containerClass = cn(
     'inline-flex items-center',
@@ -91,9 +91,15 @@ export function LogoLockup({
   );
 
   return (
-    <div className={containerClass}>
+    <div className={cn(
+      containerClass,
+      'group' // Add group class for hover effects
+    )}>
       {/* Logo */}
-      <div className={logoWrapperClass}>
+      <div className={cn(
+        logoWrapperClass,
+        'transition-transform duration-300 group-hover:rotate-12' // Add rotation on hover
+      )}>
         <LogoQ 
           gradient={gradient} 
           className="w-full h-full"
@@ -107,9 +113,34 @@ export function LogoLockup({
         isVertical ? 'flex-col items-center' : 'flex-col justify-center',
         isCompact && 'hidden sm:flex'
       )}>
-        <span className={textClass}>
-          Coquinate
-        </span>
+        {gradient ? (
+          // Gradient version with hover color inversion
+          <span className={cn(
+            'font-display font-bold tracking-tight transition-all duration-300',
+            config.text,
+            textGradientClass,
+            // On hover, change gradient direction for inversion effect
+            'group-hover:from-[#E96E68] group-hover:to-[#2AA6A0]'
+          )}>
+            Coquinate
+          </span>
+        ) : (
+          // Non-gradient version with explicit color inversion
+          <span className={cn(
+            'font-display font-bold tracking-tight transition-colors duration-300',
+            config.text,
+            // Normal state: teal with coral q
+            'text-primary',
+            // Hover state: inverted colors
+            'group-hover:text-accent-coral'
+          )}>
+            Co<span className={cn(
+              'transition-colors duration-300',
+              'text-accent-coral', // Normal: coral
+              'group-hover:text-primary' // Hover: teal
+            )}>q</span>uinate
+          </span>
+        )}
         
         {showTagline && (
           <span className={taglineClass}>
@@ -120,8 +151,17 @@ export function LogoLockup({
 
       {/* Mobile-only compact text */}
       {isCompact && (
-        <span className={cn(textClass, 'sm:hidden')}>
-          CQ
+        <span className={cn(
+          'font-display font-bold tracking-tight transition-colors duration-300 sm:hidden',
+          config.text,
+          'text-primary',
+          'group-hover:text-accent-coral'
+        )}>
+          C<span className={cn(
+            'transition-colors duration-300',
+            'text-accent-coral',
+            'group-hover:text-primary'
+          )}>Q</span>
         </span>
       )}
     </div>

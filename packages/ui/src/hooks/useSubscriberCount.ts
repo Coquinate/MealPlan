@@ -27,10 +27,14 @@ export function useSubscriberCount(): UseSubscriberCountResult {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCount = async () => {
+  const fetchCount = async (forceRefresh = false) => {
     try {
       setError(null);
-      const response = await fetch('/api/subscribers/count');
+      const url = forceRefresh 
+        ? `/api/subscribers/count?t=${Date.now()}` 
+        : '/api/subscribers/count';
+      
+      const response = await fetch(url);
       
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -66,6 +70,6 @@ export function useSubscriberCount(): UseSubscriberCountResult {
     data,
     loading,
     error,
-    refetch: fetchCount,
+    refetch: () => fetchCount(true),
   };
 }

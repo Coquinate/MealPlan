@@ -112,6 +112,9 @@ function HeroSection({
               </h1>
 
               <p className="text-sm xs:text-base sm:text-lg md:text-xl text-text-secondary mb-4 sm:mb-6 md:mb-8 lg:mb-10 leading-relaxed text-center sm:text-left">
+                <span className="text-primary">
+                  Co<span className="text-accent-coral">q</span>uinate
+                </span>{' '}
                 {t('landing:hero.description')}{' '}
                 <strong className="block xs:inline">{t('landing:hero.description_highlight')}</strong>
               </p>

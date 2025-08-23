@@ -484,7 +484,7 @@ export function LogoQDotsLockup({
   return (
     <div className={cn('inline-flex items-center gap-3', className)}>
       <LogoQDots size={size} />
-      <span className="font-display font-bold text-xl text-primary-warm">
+      <span className="font-display font-bold text-2xl text-primary-warm">
         <span className="font-thin">Co</span>
         <span className="font-bold">Q</span>
         <span className="font-normal">uinate</span>
@@ -509,13 +509,42 @@ export function LogoWeeklyRhythmLockup({
   showTagline?: boolean;
   className?: string;
 }) {
+  // Size configurations for text
+  const sizeConfig = {
+    xxs: 'text-base',
+    xs: 'text-lg',
+    sm: 'text-xl',
+    md: 'text-2xl',
+    lg: 'text-3xl',
+    xl: 'text-4xl',
+  };
+
+  const textSize = sizeConfig[size] || sizeConfig.md;
+
   return (
-    <div className={cn('inline-flex items-center gap-3', className)}>
-      <LogoWeeklyRhythm size={size} variant={animated ? 'animated' : 'static'} />
-      <span className="font-display text-lg" style={{ color: '#2AA6A0', fontWeight: 600 }}>
-        <span style={{ fontWeight: 300 }}>Co</span>
-        <span style={{ color: '#FF6B6B', fontWeight: 600 }}>q</span>
-        <span style={{ fontWeight: 600 }}>uinate</span>
+    <div className={cn(
+      'inline-flex items-center gap-3 group', // Add group for hover effects
+      className
+    )}>
+      {/* Logo icon with rotation on hover */}
+      <div className="transition-transform duration-300 group-hover:rotate-12">
+        <LogoWeeklyRhythm size={size} variant={animated ? 'animated' : 'static'} />
+      </div>
+      
+      {/* Text with color inversion on hover */}
+      <span className={cn(
+        'font-display font-bold tracking-tight transition-colors duration-300',
+        textSize,
+        // Normal state: teal with coral q
+        'text-primary',
+        // Hover state: coral text
+        'group-hover:text-accent-coral'
+      )}>
+        Co<span className={cn(
+          'transition-colors duration-300',
+          'text-accent-coral', // Normal: coral
+          'group-hover:text-primary' // Hover: teal
+        )}>q</span>uinate
       </span>
     </div>
   );

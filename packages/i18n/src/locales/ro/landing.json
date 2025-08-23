@@ -1,21 +1,21 @@
 {
   "hero": {
-    "title": "Gata cu 'Ce gătim azi?'",
+    "title": "Spune adio întrebării \"Ce gătim azi?\"",
     "subtitle": "Economisește 3+ ore săptămânal cu planificarea automată a meselor",
     "cta": "Anunță-mă când lansăm",
     "title_full": "Spune adio întrebării \"Ce mâncăm azi?\"",
     "title_line1": "Spune adio întrebării",
     "title_line2": "\"Ce mâncăm azi?\"",
-    "description": "Primește săptămânal un plan de mese inteligent, conceput special pentru a elimina stresul planificării și a reduce risipa alimentară. Vei descoperi rețete creative și ingenioase unde ",
-    "description_highlight": "gătești o singură dată și mănânci de trei ori, transformând resturile în mese complet noi."
+    "description": "îți oferă un meniu săptămânal inteligent cu listă de cumpărături: gătești de 2–3 ori, apoi mănânci rapid și variat toată săptămâna.",
+    "description_highlight": "Recâștigă-ți serile și bucură-te de mese delicioase fără stres zilnic."
   },
   "trust": {
-    "hours_saved": "Până la 5 Ore",
-    "hours_saved_desc": "economisiți săptămânal",
-    "waste_reduced": "Până la 50%",
-    "waste_reduced_desc": "risipă alimentară redusă",
-    "money_saved": "Până la 400",
-    "money_saved_desc": "RON economisiți lunar"
+    "hours_saved": "3+ Ore",
+    "hours_saved_desc": "economisești săptămânal",
+    "waste_reduced": "Zero Risipă",
+    "waste_reduced_desc": "prin planificare inteligentă",
+    "money_saved": "300+ RON",
+    "money_saved_desc": "economisești lunar"
   },
   "nav": {
     "coming_soon": "În curând"
@@ -23,27 +23,27 @@
   "features": {
     "title": "Tot ce ai nevoie, într-un singur loc",
     "local": {
-      "title": "Gătești cu Ingrediente Locale",
-      "description": "Folosim doar ingrediente comune, ușor de găsit în orice magazin din România. Gătitul devine simplu și fără stres."
+      "title": "Ingrediente Locale Verificate",
+      "description": "Ingrediente obișnuite, ușor de găsit în orice magazin din România. Listele sunt verificate prin OpenFoodFacts România."
     },
     "shopping": {
-      "title": "Listă de Cumpărături Interactivă",
-      "description": "Primești o listă optimizată, organizată pe categorii. Ai nevoie de mai puțin? Modifici cifrele direct în listă."
+      "title": "Listă de Cumpărături Inteligentă",
+      "description": "Lista optimizată, organizată pe categorii. Cantitățile se ajustează automat la nevoile tale."
     },
     "zero_waste": {
       "title": "Zero Risipă, Zero Stres",
-      "description": "Fiecare ingredient este folosit la maximum. Planul este special gândit pentru a refolosi creativ orice surplus."
+      "description": "Principiul \"gătește o dată, mănâncă de trei ori\" – fiecare ingredient este folosit inteligent în multiple preparate."
     },
     "chef_ai": {
       "title": "Fă cunoștință cu Chef AI",
-      "description": "Acum ai propriul tău asistent bucătar, ",
+      "description": "Întreabă orice despre rețete și preparare. ",
       "description_highlight": "Chef AI",
-      "description_end": "! Poartă o conversație naturală, în limba română, pentru a te ghida."
+      "description_end": " îți răspunde în limba română, simplu și clar."
     }
   },
   "cta": {
-    "title": "Gata să transformi haosul din bucătărie în armonie?",
-    "subtitle": "Înscrie-te acum pe lista de așteptare. Locurile pentru acces beta sunt limitate!",
+    "title": "Gata să scapi de întrebarea \"Ce gătim azi?\"",
+    "subtitle": "Înscrie-te pe lista de așteptare. Primii 500 primesc o lună gratuită!",
     "button": "Prinde oferta!"
   },
   "footer": {
@@ -54,19 +54,19 @@
     "title": "De ce Coquinate?",
     "save_time": {
       "title": "Economisește 3+ ore pe săptămână",
-      "description": "Nu mai pierzi timp gândindu-te ce să gătești"
+      "description": "Gătești o singură dată pentru 2–3 mese. Mai puțin timp în bucătărie, mai mult timp pentru tine."
     },
     "save_money": {
       "title": "Reduce costurile cu 300 RON lunar",
-      "description": "Elimină risipa și cumpărăturile impulsive"
+      "description": "Elimină risipa și cumpărăturile impulsive prin planificare inteligentă."
     },
     "eat_healthy": {
-      "title": "Mâncare sănătoasă pentru familie",
-      "description": "Rețete echilibrate, porții calculate"
+      "title": "Mâncare echilibrată pentru familie",
+      "description": "Rețete variate, porții calculate, ingrediente verificate local."
     },
     "reduce_waste": {
       "title": "Zero risipă alimentară",
-      "description": "Folosește tot ce cumperi, inteligent"
+      "description": "Folosește tot ce cumperi prin metoda \"gătește o dată, mănâncă de trei ori\"."
     }
   },
   "email": {
@@ -84,10 +84,10 @@
     "rate_limit": "Prea multe încercări. Reîncearcă în câteva minute.",
     "already_exists": "Această adresă de email este deja înregistrată.",
     "early_bird_badge": "🌟 Early Bird - Primii 500!",
-    "early_bird_message": "Felicitări! Ești printre primii 500 de utilizatori și vei primi beneficii exclusive!",
+    "early_bird_message": "Felicitări! Ești printre primii 500 de utilizatori și vei primi o lună gratuită!",
     "regular_message": "Mulțumim pentru înregistrare! Te vom anunța când lansăm platforma.",
     "share_prompt": "Împărtășește cu prietenii:",
-    "share_text": "Tocmai m-am înscris pe Coquinate - platforma care îți planifică mesele automat!",
+    "share_text": "Tocmai m-am înscris pe Coquinate - platforma care îți elimină stresul \"Ce gătim azi?\"!",
     "phase_info": "În curând - Implementare Faza 3",
     "aria_labels": {
       "email_input": "Introdu adresa ta de email",
@@ -128,7 +128,7 @@
   },
   "workflow": {
     "title": "Cum funcționează Coquinate?",
-    "subtitle": "Transformă felul în care gătești cu doar 3 pași simpli",
+    "subtitle": "Principiul \"Gătește o dată, mănâncă de trei ori\": gătești de 2–3 ori preparate de bază, apoi le combini în mese noi pe parcursul săptămânii.",
     "plan": "Planifică",
     "plan_desc": "Alege rețetele săptămânii",
     "shop": "Cumpără",
@@ -144,16 +144,16 @@
       "description": "Transformi resturile în mese complet noi"
     },
     "cook_sunday": {
-      "title": "Gătești Duminică",
-      "description": "Pregătești 2-3 rețete pentru întreaga săptămână"
+      "title": "Gătești Eficient",
+      "description": "Pregătești 2-3 preparate de bază pentru întreaga săptămână."
     },
     "reuse_monday": {
-      "title": "Refolosești Luni",
-      "description": "Transformi într-un prânz rapid."
+      "title": "Combini Luni",
+      "description": "Transformi într-un prânz rapid și delicios."
     },
     "reinvent_tuesday": {
       "title": "Reinventezi Marți",
-      "description": "Creezi o cină nouă."
+      "description": "Creezi o cină complet nouă din aceleași ingrediente."
     }
   }
 }

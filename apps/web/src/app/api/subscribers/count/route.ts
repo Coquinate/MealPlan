@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 
+export const revalidate = 30;
+
 /**
  * API Route: GET /api/subscribers/count
  * Returns real-time count of email signups from Supabase
@@ -48,6 +50,3 @@ export async function GET() {
     );
   }
 }
-
-// Cache for 30 seconds to reduce database load
-export const revalidate = 30;
