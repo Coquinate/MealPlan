@@ -1,6 +1,12 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { 
+  FrontendEmailValidationSchema, 
+  MAX_EMAIL_LENGTH, 
+  EMAIL_REGEX,
+  sanitizeEmail 
+} from '@coquinate/shared';
 
 interface EmailValidationState {
   email: string;
@@ -26,17 +32,20 @@ export function useEmailValidation(): EmailValidationReturn {
   const [email, setEmailValue] = useState('');
   const [gdprConsent, setGdprConsentValue] = useState(false);
 
-  // Validare simplă pentru format email
+  // Validare email cu schema partajată
   const isValidEmail = useCallback((emailValue: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(emailValue.trim());
+    if (!emailValue || emailValue.length === 0) return false;
+    if (emailValue.length > MAX_EMAIL_LENGTH) return false;
+    return EMAIL_REGEX.test(emailValue.trim());
   }, []);
 
   const isValid = email.length > 0 && isValidEmail(email);
   const hasError = email.length > 0 && !isValidEmail(email);
 
   const setEmail = useCallback((newEmail: string) => {
-    setEmailValue(newEmail);
+    // Sanitize email input
+    const sanitized = sanitizeEmail(newEmail);
+    setEmailValue(sanitized);
   }, []);
 
   const setGdprConsent = useCallback((consent: boolean) => {

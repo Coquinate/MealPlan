@@ -117,7 +117,7 @@ export function WorkflowTimeline({
             <div className={`w-1/2 ${step.alignment === "left" ? "pr-2 text-right" : ""}`}>
               {step.alignment === "left" && (
                 <m.div 
-                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 shadow-md hover:shadow-lg transition-shadow"
+                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3.5 xs:p-2.5 shadow-md hover:shadow-lg transition-shadow"
                   custom="left"
                   variants={stepVariants}
                   whileHover={{ 
@@ -127,7 +127,7 @@ export function WorkflowTimeline({
                   whileTap={{ scale: 0.98 }}
                 >
                   <div className="flex items-center justify-end gap-1.5 mb-1">
-                    <span className="font-display font-semibold text-[10px] xs:text-xs text-gray-800 dark:text-gray-200 text-right line-clamp-2">{step.title}</span>
+                    <span className="font-display font-semibold text-[10px] xs:text-xs text-gray-800 dark:text-gray-200 text-right line-clamp-3 xs:line-clamp-2">{step.title}</span>
                     <m.div 
                       className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg w-7 h-7 xs:w-8 xs:h-8 flex items-center justify-center shadow-sm flex-shrink-0"
                       whileHover={{ rotate: 360, transition: { duration: 0.5 } }}
@@ -135,7 +135,7 @@ export function WorkflowTimeline({
                       {step.icon}
                     </m.div>
                   </div>
-                  <p className="text-[10px] xs:text-xs text-gray-600 dark:text-gray-400 text-right leading-tight line-clamp-2">{step.description}</p>
+                  <p className="text-[10px] xs:text-xs text-gray-600 dark:text-gray-400 text-right leading-tight line-clamp-3 xs:line-clamp-2">{step.description}</p>
                 </m.div>
               )}
             </div>
@@ -154,7 +154,7 @@ export function WorkflowTimeline({
             <div className={`w-1/2 ${step.alignment === "right" ? "pl-2" : ""}`}>
               {step.alignment === "right" && (
                 <m.div 
-                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 shadow-md hover:shadow-lg transition-shadow"
+                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3.5 xs:p-2.5 shadow-md hover:shadow-lg transition-shadow"
                   custom="right"
                   variants={stepVariants}
                   whileHover={{ 
@@ -170,9 +170,9 @@ export function WorkflowTimeline({
                     >
                       {step.icon}
                     </m.div>
-                    <span className="font-display font-semibold text-[10px] xs:text-xs text-gray-800 dark:text-gray-200 line-clamp-2">{step.title}</span>
+                    <span className="font-display font-semibold text-[10px] xs:text-xs text-gray-800 dark:text-gray-200 line-clamp-3 xs:line-clamp-2">{step.title}</span>
                   </div>
-                  <p className="text-[10px] xs:text-xs text-gray-600 dark:text-gray-400 leading-tight line-clamp-2">{step.description}</p>
+                  <p className="text-[10px] xs:text-xs text-gray-600 dark:text-gray-400 leading-tight line-clamp-3 xs:line-clamp-2">{step.description}</p>
                 </m.div>
               )}
             </div>

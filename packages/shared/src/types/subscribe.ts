@@ -1,13 +1,13 @@
 import { z } from 'zod';
+import { EmailValidationSchema } from '../utils/email-validation';
 
 /**
  * Subscribe API contract types
  */
 
-export const SubscribeRequest = z.object({
-  email: z.string().email('Email invalid'),
-  gdprConsent: z.boolean().refine((val) => val === true, 'GDPR consent is required'),
-});
+export const SubscribeRequest = EmailValidationSchema.extend({
+  // Allow additional fields for honeypot and other anti-bot measures
+}).passthrough();
 export type SubscribeRequest = z.infer<typeof SubscribeRequest>;
 
 export const SubscribeResponse = z.object({

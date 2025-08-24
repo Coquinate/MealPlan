@@ -40,3 +40,8 @@ export * from './ai-warmup';
 export { default as CacheWarmupService } from './ai-warmup';
 export * from './cache-compression';
 export * from './constants';
+
+// Security utilities
+export * from './email-validation';
+export * from './fetch-with-timeout';
+export * from './anti-bot';

@@ -1,5 +1,6 @@
 import type { SubscribeRequest, SubscribeResponse, SubscribeErrorCode } from '../types/subscribe';
 import { SubscribeResult } from '../types/subscribe';
+import { fetchWithTimeout, FetchTimeoutError } from './fetch-with-timeout';
 
 /**
  * Subscribe API client
@@ -24,11 +25,12 @@ export class SubscribeApiError extends Error {
  * @throws SubscribeApiError for API errors
  */
 export async function subscribe(
-  req: SubscribeRequest,
-  signal?: AbortSignal
+  req: SubscribeRequest & Record<string, any>,
+  signal?: AbortSignal,
+  timeout?: number
 ): Promise<SubscribeResponse> {
   try {
-    const response = await fetch('/api/email-signup', {
+    const response = await fetchWithTimeout('/api/email-signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,6 +38,7 @@ export async function subscribe(
       },
       body: JSON.stringify(req),
       signal,
+      timeout: timeout || 8000,
     });
 
     const rawData = await response.json();

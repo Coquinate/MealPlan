@@ -15,3 +15,8 @@ export * from './components/RecipeImage';
 
 // Utilities
 export * from './utils';
+
+// Security utilities
+export * from './utils/email-validation';
+export * from './utils/fetch-with-timeout';
+export * from './utils/anti-bot';

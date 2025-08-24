@@ -8,6 +8,7 @@ export { useEmailValidation } from './useEmailValidation';
 export { useEmailSubmission } from './useEmailSubmission';
 export { useFloatingElements } from './useFloatingElements';
 export { useSubscriberCount } from './useSubscriberCount';
+export { useAntiBotProtection } from './useAntiBotProtection';
 
 export type { EmailValidationReturn } from './useEmailValidation';
 export type { EmailSubmissionReturn, EmailSubmissionStatus } from './useEmailSubmission';

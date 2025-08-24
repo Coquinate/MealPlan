@@ -3,6 +3,12 @@ import { z } from 'zod';
 import { createServerClient } from '@/lib/supabase/server';
 import { emailSignupLimiter } from '@/lib/rate-limit';
 import { apiLogger, emailLogger } from '@/lib/logger';
+import { 
+  EmailValidationSchema, 
+  validateEmail,
+  MAX_EMAIL_LENGTH,
+  generateHoneypotField
+} from '@coquinate/shared/security';
 
 /**
  * Extended NextRequest type with ip property
@@ -13,12 +19,113 @@ interface NextRequestWithIp extends NextRequest {
 }
 
 /**
- * Validation schema for email signup
+ * Enhanced validation schema with comprehensive security checks
+ * Uses the shared EmailValidationSchema and adds anti-bot measures
  */
-const emailSignupSchema = z.object({
-  email: z.string().email().max(255),
-  gdprConsent: z.boolean().refine((val) => val === true),
-});
+const emailSignupSchema = EmailValidationSchema.extend({
+  gdprConsent: z.boolean().refine(val => val === true, {
+    message: 'Consimțământul GDPR este necesar'
+  }),
+  // Anti-bot honeypot fields - multiple field names for security
+  company_website: z.string().optional(),
+  website: z.string().optional(),
+  url: z.string().optional(),
+  phone: z.string().optional(),
+}).passthrough(); // Allow unknown fields for additional honeypot fields
+
+/**
+ * Comprehensive bot detection validation with multiple security layers
+ */
+function validateBotDetection(body: Record<string, any>): {
+  isBot: boolean;
+  reasons: string[];
+  confidence: number;
+} {
+  const reasons: string[] = [];
+  let isBot = false;
+  let confidence = 0;
+
+  // Configurable honeypot fields for better security
+  const primaryHoneypotField = process.env.HONEYPOT_FIELD_NAME || 'company_website';
+  const honeypotFields = [primaryHoneypotField, 'website', 'url', 'phone'];
+  const knownFields = ['email', 'gdprConsent', ...honeypotFields];
+  
+  // Check all honeypot fields
+  for (const field of honeypotFields) {
+    const value = body[field];
+    if (value && value.trim() !== '') {
+      reasons.push(`Honeypot field '${field}' filled`);
+      isBot = true;
+      confidence += 0.9; // High confidence for honeypot
+    }
+  }
+
+  // Check for suspicious patterns in request body using literal string matching
+  // Note: These are literal patterns, not regex - using includes() for safety
+  const suspiciousPatterns = [
+    'bot', 'crawl', 'spider', 'scrape', 'automated', 'script',
+    'selenium', 'playwright', 'puppeteer', 'test', 'headless'
+  ];
+  const bodyStr = JSON.stringify(body).toLowerCase();
+  
+  // Use literal string matching to avoid regex injection vulnerabilities
+  for (const pattern of suspiciousPatterns) {
+    // Validate pattern contains only safe characters (defensive programming)
+    if (!/^[a-zA-Z0-9_-]+$/.test(pattern)) {
+      console.warn(`Potentially unsafe pattern detected: ${pattern}`);
+      continue;
+    }
+    
+    if (bodyStr.includes(pattern)) {
+      reasons.push(`Suspicious pattern: ${pattern}`);
+      isBot = true;
+      confidence += 0.3;
+    }
+  }
+
+  // Check for excessive unknown fields
+  const extraFields = Object.keys(body).filter(key => !knownFields.includes(key));
+  if (extraFields.length > 5) {
+    reasons.push(`Too many extra fields: ${extraFields.length}`);
+    isBot = true;
+    confidence += 0.4;
+  }
+
+  // Check for missing required fields (unusual for legitimate users)
+  if (!body.email || !body.gdprConsent) {
+    reasons.push('Missing required fields');
+    confidence += 0.2;
+  }
+
+  // Check for suspicious email patterns using literal string matching
+  if (body.email && typeof body.email === 'string') {
+    const email = body.email.toLowerCase();
+    // Note: These are literal patterns, not regex - using includes() for safety
+    const suspiciousEmailPatterns = ['test', 'spam', 'bot', 'fake', 'dummy'];
+    
+    // Use literal string matching to avoid regex injection vulnerabilities
+    for (const pattern of suspiciousEmailPatterns) {
+      // Validate pattern contains only safe characters (defensive programming)
+      if (!/^[a-zA-Z0-9_-]+$/.test(pattern)) {
+        console.warn(`Potentially unsafe email pattern detected: ${pattern}`);
+        continue;
+      }
+      
+      if (email.includes(pattern)) {
+        reasons.push(`Suspicious email pattern: ${pattern}`);
+        confidence += 0.3;
+      }
+    }
+  }
+
+  // Configurable confidence threshold for bot detection
+  const confidenceThreshold = parseFloat(process.env.ANTI_BOT_MAX_CONFIDENCE_THRESHOLD || '0.7');
+  if (confidence >= confidenceThreshold) {
+    isBot = true;
+  }
+
+  return { isBot, reasons, confidence };
+}
 
 /**
  * Get client IP address from request
@@ -122,9 +229,43 @@ export async function POST(request: NextRequestWithIp) {
     } catch (error) {
       return NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 });
     }
+
+    // Comprehensive bot detection before validation
+    const botCheck = validateBotDetection(body);
+    if (botCheck.isBot) {
+      // Enhanced logging with confidence score
+      apiLogger.warn('Bot submission attempt blocked', {
+        reasons: botCheck.reasons,
+        confidence: botCheck.confidence,
+        ip: anonymizeIp(clientIp),
+        userAgent: request.headers.get('user-agent')?.substring(0, 100) || 'unknown',
+        timestamp: new Date().toISOString(),
+      });
+      
+      // Rate limit aggressive bot attempts by forcing immediate rate limit check
+      // Since our rate limiter doesn't support multipliers, we'll manually trigger the limit
+      const botRateLimitMultiplier = parseInt(process.env.ANTI_BOT_RATE_LIMIT_MULTIPLIER || '3');
+      for (let i = 0; i < botRateLimitMultiplier; i++) {
+        emailSignupLimiter.isRateLimited(clientIp); // This increments the counter
+      }
+      
+      // Return generic error to not reveal detection methods
+      return NextResponse.json(
+        { error: 'Invalid request data' },
+        { status: 400 }
+      );
+    }
+
+    // Comprehensive validation with security checks
     const validation = emailSignupSchema.safeParse(body);
 
     if (!validation.success) {
+      // Log validation failure
+      apiLogger.warn('Validation failed for email signup', {
+        errors: validation.error.errors.map(e => ({ path: e.path.join('.'), message: e.message })),
+        ip: anonymizeIp(clientIp),
+      });
+      
       return NextResponse.json(
         { error: 'Invalid request data', details: validation.error.errors },
         { status: 400 }
@@ -132,6 +273,28 @@ export async function POST(request: NextRequestWithIp) {
     }
 
     const { email, gdprConsent } = validation.data;
+
+    // Additional server-side email validation (complementary to Zod schema)
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.isValid) {
+      // Enhanced logging for security analysis
+      apiLogger.warn('Email failed comprehensive server validation', {
+        errors: emailValidation.errors,
+        isDisposable: emailValidation.isDisposable,
+        isMalicious: emailValidation.isMalicious,
+        emailLength: email.length,
+        emailDomain: email.split('@')[1]?.toLowerCase() || 'unknown',
+        ip: anonymizeIp(clientIp),
+        timestamp: new Date().toISOString(),
+      });
+      
+      // Return user-friendly error in Romanian
+      const userFriendlyError = emailValidation.errors[0] || 'Adresa de email nu este validă';
+      return NextResponse.json(
+        { error: userFriendlyError },
+        { status: 400 }
+      );
+    }
 
     // Normalize email to lowercase for consistency
     const normalizedEmail = email.trim().toLowerCase();
@@ -145,11 +308,17 @@ export async function POST(request: NextRequestWithIp) {
     // Insert new signup with anonymized IP
     const anonymizedIp = anonymizeIp(clientIp);
 
-    // Debug logging for development
-    emailLogger.debug('Email signup attempt', {
-      originalIp: clientIp,
+    // Comprehensive security logging
+    emailLogger.info('Legitimate email signup attempt', {
       anonymizedIp,
-      email: normalizedEmail.replace(/(.{2}).*(@.*)/, '$1***$2'), // Partially mask email
+      emailDomain: normalizedEmail.split('@')[1],
+      emailLength: normalizedEmail.length,
+      isDisposable: emailValidation.isDisposable,
+      isMalicious: emailValidation.isMalicious,
+      botConfidence: botCheck.confidence,
+      hasAnyHoneypot: ['company_website', 'website', 'url', 'phone'].some(field => !!body[field]),
+      userAgent: request.headers.get('user-agent')?.substring(0, 50) || 'unknown',
+      timestamp: new Date().toISOString(),
     });
 
     const { data: newSignup, error: insertError } = await supabase
@@ -163,10 +332,16 @@ export async function POST(request: NextRequestWithIp) {
       .single();
 
     if (insertError) {
-      // Log error without PII
-      emailLogger.error('Failed to insert email signup', insertError, {
+      // Log error without PII - sanitize error message and details
+      const sanitizedMessage = insertError.message?.replace(normalizedEmail, '[EMAIL_REDACTED]') || 'Unknown error';
+      const sanitizedDetails = insertError.details?.replace(normalizedEmail, '[EMAIL_REDACTED]') || 'No details';
+      
+      emailLogger.error('Failed to insert email signup', {
         code: insertError.code,
-        details: insertError.details,
+        message: sanitizedMessage,
+        details: sanitizedDetails,
+        hint: insertError.hint,
+        timestamp: new Date().toISOString(),
       });
 
       // Check if it's a unique constraint violation
@@ -227,9 +402,15 @@ export async function POST(request: NextRequestWithIp) {
         emailLogger.warn('WELCOME_EMAIL_FN_SECRET not configured - email not sent');
       }
     } catch (emailError) {
-      // Don't fail the signup if email fails
+      // Don't fail the signup if email fails - sanitize error before logging
       if (process.env.NODE_ENV !== 'production') {
-        emailLogger.warn('Failed to send welcome email (non-blocking)', emailError instanceof Error ? emailError : new Error(String(emailError)));
+        const errorMessage = emailError instanceof Error ? emailError.message : String(emailError);
+        const sanitizedErrorMessage = errorMessage.replace(normalizedEmail, '[EMAIL_REDACTED]');
+        
+        emailLogger.warn('Failed to send welcome email (non-blocking)', {
+          error: sanitizedErrorMessage,
+          timestamp: new Date().toISOString(),
+        });
       }
     }
 

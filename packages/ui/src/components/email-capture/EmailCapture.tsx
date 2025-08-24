@@ -4,6 +4,8 @@ import React from 'react';
 import { IconGift } from '@tabler/icons-react';
 import { FloatingElements, FloatingOrbPresets } from '../floating-elements';
 import { useI18nWithFallback, useEmailValidation, useEmailSubmission, useFloatingElements } from '../../hooks';
+import { useAntiBotProtection } from '../../hooks/useAntiBotProtection';
+import { MAX_EMAIL_LENGTH } from '@coquinate/shared';
 import { Button } from '../button';
 import { Input } from '../input';
 import { Alert, AlertDescription } from '../ui/alert';
@@ -71,6 +73,12 @@ export function EmailCapture({
   const validation = useEmailValidation();
   const submission = useEmailSubmission();
   const floating = useFloatingElements();
+  const antiBot = useAntiBotProtection({
+    onBotDetected: (detection) => {
+      console.warn('Bot detection triggered:', detection);
+      // În producție, putem loga această informație
+    }
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,15 +94,31 @@ export function EmailCapture({
     // Guard pentru validare email
     if (!validation.isValid) return;
 
-    await submission.submit(validation.email, validation.gdprConsent, {
-      onSuccess: (email) => {
-        floating.trigger();
-        onSuccess?.(email);
+    // Anti-bot verification
+    const botCheck = antiBot.submitCheck();
+    if (!botCheck.isAllowed) {
+      console.warn('Submission blocked due to bot detection:', botCheck.botDetection);
+      return;
+    }
+
+    await submission.submit(
+      validation.email, 
+      validation.gdprConsent, 
+      {
+        onSuccess: (email) => {
+          floating.trigger();
+          antiBot.resetState();
+          onSuccess?.(email);
+        },
+        onError: (error) => {
+          onError?.(error as SubscribeApiError);
+        },
       },
-      onError: (error) => {
-        onError?.(error);
-      },
-    });
+      {
+        timeout: 10000, // 10 second timeout
+        honeypot: antiBot.honeypotValue
+      }
+    );
   };
 
   // Glass variant - cu floating elements și styling special
@@ -131,18 +155,25 @@ export function EmailCapture({
                   type="email"
                   value={validation.email}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => validation.setEmail(e.target.value)}
+                  onFocus={antiBot.onInputFocus}
+                  onBlur={antiBot.onInputBlur}
+                  onKeyDown={antiBot.onInputKeyDown}
                   placeholder={placeholder ?? t('email.placeholder')}
                   disabled={submission.isLoading}
+                  maxLength={MAX_EMAIL_LENGTH}
                   required
                   className="glass-input focus-glass text-text placeholder:text-text-muted placeholder:opacity-60"
                   aria-describedby="email-glass-status"
                   aria-invalid={submission.hasError}
                 />
+                
+                {/* Honeypot field */}
+                <input {...antiBot.honeypotFieldProps} />
               </div>
 
               <Button
                 type="submit"
-                disabled={!validation.isValid || submission.isLoading}
+                disabled={!validation.isValid || submission.isLoading || !antiBot.canSubmit}
                 className="w-full bg-gradient-to-r from-primary-warm to-primary-warm-light hover:shadow-sm"
                 aria-busy={submission.isLoading}
               >
@@ -185,9 +216,13 @@ export function EmailCapture({
             type="email"
             value={validation.email}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => validation.setEmail(e.target.value)}
+            onFocus={antiBot.onInputFocus}
+            onBlur={antiBot.onInputBlur}
+            onKeyDown={antiBot.onInputKeyDown}
             placeholder={placeholder ?? t('email.placeholder')}
             className="focus:ring-primary-warm focus:border-primary-warm"
             disabled={submission.isLoading}
+            maxLength={MAX_EMAIL_LENGTH}
             required
             aria-invalid={submission.hasError}
             aria-describedby={
@@ -195,11 +230,14 @@ export function EmailCapture({
               undefined
             }
           />
+          
+          {/* Honeypot field */}
+          <input {...antiBot.honeypotFieldProps} />
         </div>
 
         <Button
           type="submit"
-          disabled={!validation.isValid || submission.isLoading}
+          disabled={!validation.isValid || submission.isLoading || !antiBot.canSubmit}
           className="w-full"
           aria-busy={submission.isLoading}
         >
@@ -260,7 +298,11 @@ export function EmailCapture({
                     type="email"
                     value={validation.email}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => validation.setEmail(e.target.value)}
+                    onFocus={antiBot.onInputFocus}
+                    onBlur={antiBot.onInputBlur}
+                    onKeyDown={antiBot.onInputKeyDown}
                     placeholder="adresa@email.com"
+                    maxLength={MAX_EMAIL_LENGTH}
                     className={cn(
                       'w-full px-2.5 sm:px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-0 transition-all duration-300 disabled:opacity-60 text-xs sm:text-sm font-medium',
                       // SIMPLE CLEAN BACKGROUND
@@ -277,6 +319,9 @@ export function EmailCapture({
                     required
                     aria-invalid={submission.hasError}
                   />
+                  
+                  {/* Honeypot field */}
+                  <input {...antiBot.honeypotFieldProps} />
                   {/* COMPACT validation icons */}
                   {(submission.hasError || (validation.isValid && validation.email.length > 0)) && (
                     <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
@@ -296,7 +341,7 @@ export function EmailCapture({
                 {/* BUTTON - REVERTING TO GRADIENT BACKGROUND */}
                 <button
                   type="submit"
-                  disabled={!validation.isValid || submission.isLoading || !validation.gdprConsent}
+                  disabled={!validation.isValid || submission.isLoading || !validation.gdprConsent || !antiBot.canSubmit}
                   className={cn(
                     'px-3 sm:px-4 md:px-5 py-2 font-bold rounded-lg transition-all duration-300 disabled:cursor-not-allowed text-xs sm:text-sm shadow-sm whitespace-nowrap w-full sm:w-auto',
                     // REVERTING TO VIBRANT GRADIENT BACKGROUND
@@ -375,9 +420,13 @@ export function EmailCapture({
             type="email"
             value={validation.email}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => validation.setEmail(e.target.value)}
+            onFocus={antiBot.onInputFocus}
+            onBlur={antiBot.onInputBlur}
+            onKeyDown={antiBot.onInputKeyDown}
             placeholder={placeholder ?? t('email.placeholder')}
             className="focus:ring-primary-warm focus:border-primary-warm"
             disabled={submission.isLoading}
+            maxLength={MAX_EMAIL_LENGTH}
             required
             aria-invalid={submission.hasError}
             aria-describedby={
@@ -385,11 +434,14 @@ export function EmailCapture({
               undefined
             }
           />
+          
+          {/* Honeypot field */}
+          <input {...antiBot.honeypotFieldProps} />
         </div>
 
         <Button
           type="submit"
-          disabled={!validation.isValid || submission.isLoading}
+          disabled={!validation.isValid || submission.isLoading || !antiBot.canSubmit}
           size="sm"
           className="whitespace-nowrap"
           aria-busy={submission.isLoading}
