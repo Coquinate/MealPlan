@@ -10,6 +10,7 @@ export type EmailSubmissionStatus =
   | { kind: 'idle' }
   | { kind: 'loading' }
   | { kind: 'success' }
+  | { kind: 'pending_confirmation'; message?: string } // Double opt-in: așteaptă confirmarea emailului
   | {
       kind: 'error';
       code: 'invalid_email' | 'already_subscribed' | 'rate_limited' | 'server_error';
@@ -24,6 +25,7 @@ interface EmailSubmissionState {
   status: EmailSubmissionStatus;
   isLoading: boolean;
   isSuccess: boolean;
+  isPendingConfirmation: boolean;
   hasError: boolean;
   error: SubscribeApiError | FetchTimeoutError | null;
 }
@@ -86,11 +88,22 @@ export function useEmailSubmission(): EmailSubmissionReturn {
       
       // Use configurable timeout or default from environment
       const timeout = options?.timeout || parseInt(process.env.NEXT_PUBLIC_EMAIL_SIGNUP_TIMEOUT_MS || '8000');
-      await subscribe(submitData, abortRef.current.signal, timeout);
+      const response = await subscribe(submitData, abortRef.current.signal, timeout);
 
       if (isMountedRef.current) {
-        setStatus({ kind: 'success' });
-        callbacks?.onSuccess?.(email);
+        // Check if this is a double opt-in flow requiring confirmation
+        if (response.pendingConfirmation) {
+          setStatus({ 
+            kind: 'pending_confirmation',
+            message: response.message || 'Verifică emailul pentru a confirma înscrierea.'
+          });
+          // Still call onSuccess because the submission was successful, just pending confirmation
+          callbacks?.onSuccess?.(email);
+        } else {
+          // Traditional immediate success (for existing subscribers)
+          setStatus({ kind: 'success' });
+          callbacks?.onSuccess?.(email);
+        }
       }
     } catch (submissionError) {
       // Handle AbortError (user cancelled)
@@ -136,6 +149,7 @@ export function useEmailSubmission(): EmailSubmissionReturn {
     status,
     isLoading: status.kind === 'loading',
     isSuccess: status.kind === 'success',
+    isPendingConfirmation: status.kind === 'pending_confirmation',
     hasError: status.kind === 'error',
     error,
     submit,

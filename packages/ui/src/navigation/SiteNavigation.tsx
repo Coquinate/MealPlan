@@ -35,8 +35,8 @@ export function SiteNavigation({
   return (
     <nav className={`sticky top-0 z-100 transition-all duration-300 relative ${
       scrolled 
-        ? 'bg-white-60 backdrop-blur-xl shadow-xl border-b border-accent-coral/15 dark:bg-black-60 dark:backdrop-blur-xl dark:border-gray-700/30' 
-        : 'bg-white-95 backdrop-blur-sm border-b border-accent-coral/20 dark:bg-black dark:border-gray-800'
+        ? 'bg-surface-eggshell bg-opacity-60 backdrop-blur-xl shadow-xl border-b border-accent-coral/15 dark:bg-black-60 dark:backdrop-blur-xl dark:border-gray-700/30' 
+        : 'bg-surface-eggshell bg-opacity-95 backdrop-blur-sm border-b border-accent-coral/20 dark:bg-black dark:border-gray-800'
     }`}>
       <div className="mx-auto max-w-container px-4 sm:px-6 lg:px-8">
         <div className="flex h-header items-center justify-between py-2 md:py-3 relative">

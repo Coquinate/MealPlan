@@ -8,6 +8,8 @@ export {
   EmailValidationSchema,
   FrontendEmailValidationSchema,
   validateEmail,
+  validateEmailWithDNS,
+  validateDomainDNS,
   sanitizeEmail,
   MAX_EMAIL_LENGTH,
   MAX_LOCAL_PART_LENGTH,

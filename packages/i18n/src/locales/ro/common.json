@@ -124,6 +124,7 @@
     "button": "Înscrie-te",
     "loading": "Se trimite...",
     "success": "Te-ai înscris cu succes! Ești în grupul primilor 500 utilizatori!",
+    "pending_confirmation": "Verifică emailul pentru a confirma înscrierea.",
     "phase_info": "În curând - Implementare Faza 3",
     "errors": {
       "invalid_email": "Te rugăm să introduci o adresă de email validă",

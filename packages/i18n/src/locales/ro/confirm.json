@@ -1,0 +1,9 @@
+{
+  "success": {
+    "title": "Email confirmat cu succes!",
+    "subtitle": "Vei primi notificări când lansăm platforma.",
+    "early_bird_message": "Felicitări! Ești printre primii 500 de utilizatori înscriși și vei beneficia de o lună de acces gratuit.",
+    "cta": "Înapoi la pagina principală",
+    "redirect_message": "Vei fi redirecționat în {{count}} secunde."
+  }
+}

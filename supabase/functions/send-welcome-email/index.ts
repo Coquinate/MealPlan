@@ -1,8 +1,6 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-const RESEND_FROM_EMAIL = Deno.env.get('RESEND_FROM_EMAIL') || 'notify@coquinate.com';
-const WELCOME_EMAIL_FN_SECRET = Deno.env.get('WELCOME_EMAIL_FN_SECRET');
 const ALLOWED_ORIGINS = Deno.env.get('ALLOWED_ORIGINS')?.split(',') || ['https://coquinate.ro', 'https://coquinate.com'];
 
 /**
@@ -58,7 +56,9 @@ serve(async (req) => {
     }
 
     // Verify function secret for security using constant-time comparison
+    // Read the secret at request time to avoid stale values after rotations
     const provided = req.headers.get('x-function-secret');
+    const WELCOME_EMAIL_FN_SECRET = Deno.env.get('WELCOME_EMAIL_FN_SECRET');
 
     if (!WELCOME_EMAIL_FN_SECRET || !provided || !timingSafeEqual(provided, WELCOME_EMAIL_FN_SECRET)) {
       console.error('Unauthorized edge function access attempt', {
@@ -105,6 +105,7 @@ serve(async (req) => {
     }
 
     // Prepare email content based on user type
+    const RESEND_FROM_EMAIL = Deno.env.get('RESEND_FROM_EMAIL') || 'notify@coquinate.com';
     const subject = isEarlyBird
       ? '🌟 Bine ai venit în familia Coquinate - Early Bird!'
       : 'Bine ai venit la Coquinate!';

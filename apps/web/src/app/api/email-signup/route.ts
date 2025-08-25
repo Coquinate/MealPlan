@@ -5,7 +5,7 @@ import { emailSignupLimiter } from '@/lib/rate-limit';
 import { apiLogger, emailLogger } from '@/lib/logger';
 import { 
   EmailValidationSchema, 
-  validateEmail,
+  validateEmailWithDNS,
   MAX_EMAIL_LENGTH,
   generateHoneypotField
 } from '@coquinate/shared/security';
@@ -274,14 +274,16 @@ export async function POST(request: NextRequestWithIp) {
 
     const { email, gdprConsent } = validation.data;
 
-    // Additional server-side email validation (complementary to Zod schema)
-    const emailValidation = validateEmail(email);
+    // Comprehensive server-side email validation with DNS verification
+    const emailValidation = await validateEmailWithDNS(email);
     if (!emailValidation.isValid) {
-      // Enhanced logging for security analysis
+      // Enhanced logging for security analysis including DNS info
       apiLogger.warn('Email failed comprehensive server validation', {
         errors: emailValidation.errors,
         isDisposable: emailValidation.isDisposable,
         isMalicious: emailValidation.isMalicious,
+        domainHasDNS: emailValidation.domainHasDNS,
+        dnsError: emailValidation.dnsError,
         emailLength: email.length,
         emailDomain: email.split('@')[1]?.toLowerCase() || 'unknown',
         ip: anonymizeIp(clientIp),
@@ -305,16 +307,18 @@ export async function POST(request: NextRequestWithIp) {
     // Skip the duplicate check - let the database handle it with unique constraint
     // This reduces one round-trip and the database will enforce uniqueness anyway
 
-    // Insert new signup with anonymized IP
+    // Insert new signup with anonymized IP - STATUS IS PENDING for double opt-in
     const anonymizedIp = anonymizeIp(clientIp);
 
-    // Comprehensive security logging
-    emailLogger.info('Legitimate email signup attempt', {
+    // Comprehensive security logging with DNS validation results
+    emailLogger.info('Legitimate email signup attempt - pending confirmation', {
       anonymizedIp,
       emailDomain: normalizedEmail.split('@')[1],
       emailLength: normalizedEmail.length,
       isDisposable: emailValidation.isDisposable,
       isMalicious: emailValidation.isMalicious,
+      domainHasDNS: emailValidation.domainHasDNS,
+      dnsError: emailValidation.dnsError,
       botConfidence: botCheck.confidence,
       hasAnyHoneypot: ['company_website', 'website', 'url', 'phone'].some(field => !!body[field]),
       userAgent: request.headers.get('user-agent')?.substring(0, 50) || 'unknown',
@@ -327,6 +331,7 @@ export async function POST(request: NextRequestWithIp) {
         email: normalizedEmail,
         gdpr_consent: gdprConsent,
         ip_address: anonymizedIp,
+        confirmed: false, // Double opt-in: starts as unconfirmed
       })
       .select('id, signup_order, is_early_bird')
       .single();
@@ -361,10 +366,38 @@ export async function POST(request: NextRequestWithIp) {
       isEarlyBird: newSignup.is_early_bird,
     });
 
-    // Trigger Edge Function to send welcome email with timeout
+    // Create confirmation token and send confirmation email
+    const confirmationToken = crypto.randomUUID() + crypto.randomUUID().replace(/-/g, ''); // 64 character crypto-secure token
+    const expiryTime = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
+    
+    // Store confirmation token in database
+    const { error: confirmationError } = await supabase
+      .from('email_confirmations')
+      .insert({
+        email_signup_id: newSignup.id,
+        token: confirmationToken,
+        expires_at: expiryTime.toISOString(),
+      });
+
+    if (confirmationError) {
+      emailLogger.error('Failed to create confirmation token', {
+        error: confirmationError.message,
+        timestamp: new Date().toISOString(),
+      });
+      
+      // Clean up the signup since we can't send confirmation
+      await supabase.from('email_signups').delete().eq('id', newSignup.id);
+      
+      return NextResponse.json(
+        { error: 'Failed to process signup. Please try again.' },
+        { status: 500 }
+      );
+    }
+
+    // Trigger Edge Function to send confirmation email with timeout
     try {
-      const edgeFunctionUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-welcome-email`;
-      const functionSecret = process.env.WELCOME_EMAIL_FN_SECRET;
+      const edgeFunctionUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-confirmation-email`;
+      const functionSecret = process.env.CONFIRMATION_EMAIL_FN_SECRET;
 
       if (functionSecret) {
         // Create abort controller for timeout management
@@ -376,30 +409,38 @@ export async function POST(request: NextRequestWithIp) {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              // Required by Supabase Edge Functions gateway
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+              apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
               'x-function-secret': functionSecret,
             },
             body: JSON.stringify({
               email: normalizedEmail,
-              isEarlyBird: newSignup.is_early_bird,
+              confirmationToken: confirmationToken,
             }),
             signal: controller.signal,
           });
 
           clearTimeout(timeoutId);
 
-          if (!response.ok) {
-            emailLogger.warn(`Welcome email function returned status ${response.status}`);
+          if (response.ok) {
+            emailLogger.info('Confirmation email sent successfully', {
+              isEarlyBird: newSignup.is_early_bird,
+              timestamp: new Date().toISOString(),
+            });
+          } else {
+            emailLogger.warn(`Confirmation email function returned status ${response.status}`);
           }
         } catch (fetchError) {
           clearTimeout(timeoutId);
           if (fetchError instanceof Error && fetchError.name === 'AbortError') {
-            emailLogger.warn('Welcome email function timed out after 10 seconds');
+            emailLogger.warn('Confirmation email function timed out after 10 seconds');
           } else {
             throw fetchError; // Re-throw other errors to be caught by outer catch
           }
         }
       } else if (process.env.NODE_ENV !== 'production') {
-        emailLogger.warn('WELCOME_EMAIL_FN_SECRET not configured - email not sent');
+        emailLogger.warn('CONFIRMATION_EMAIL_FN_SECRET not configured - confirmation email not sent');
       }
     } catch (emailError) {
       // Don't fail the signup if email fails - sanitize error before logging
@@ -407,7 +448,7 @@ export async function POST(request: NextRequestWithIp) {
         const errorMessage = emailError instanceof Error ? emailError.message : String(emailError);
         const sanitizedErrorMessage = errorMessage.replace(normalizedEmail, '[EMAIL_REDACTED]');
         
-        emailLogger.warn('Failed to send welcome email (non-blocking)', {
+        emailLogger.warn('Failed to send confirmation email (non-blocking)', {
           error: sanitizedErrorMessage,
           timestamp: new Date().toISOString(),
         });
@@ -418,6 +459,8 @@ export async function POST(request: NextRequestWithIp) {
       success: true,
       isEarlyBird: newSignup.is_early_bird,
       signupOrder: newSignup.signup_order,
+      pendingConfirmation: true, // Double opt-in: confirmation required
+      message: 'Verificați emailul pentru confirmare', // Romanian message for frontend
     });
   } catch (error) {
     apiLogger.error('Unexpected error in email signup', error instanceof Error ? error : new Error(String(error)));

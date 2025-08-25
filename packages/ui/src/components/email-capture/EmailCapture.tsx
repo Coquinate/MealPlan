@@ -106,7 +106,7 @@ export function EmailCapture({
       validation.gdprConsent, 
       {
         onSuccess: (email) => {
-          floating.trigger();
+          // floating.trigger(); // Confetti removed, will be triggered on confirmation page
           antiBot.resetState();
           onSuccess?.(email);
         },
@@ -189,10 +189,13 @@ export function EmailCapture({
                   </AlertDescription>
                 </Alert>
               )}
-              {submission.isSuccess && (
+              {(submission.isSuccess || submission.isPendingConfirmation) && (
                 <Alert className="border-success-600 text-success-600" id="email-glass-status">
                   <AlertDescription>
-                    {t('email.success')}
+                    {submission.isPendingConfirmation 
+                      ? (submission.status.kind === 'pending_confirmation' ? submission.status.message : t('email.pending_confirmation'))
+                      : t('email.success')
+                    }
                   </AlertDescription>
                 </Alert>
               )}
@@ -252,10 +255,13 @@ export function EmailCapture({
             </AlertDescription>
           </Alert>
         )}
-        {submission.isSuccess && (
+        {(submission.isSuccess || submission.isPendingConfirmation) && (
           <Alert className="border-success-600 text-success-600" id="success-simple">
             <AlertDescription>
-              {t('email.success')}
+              {submission.isPendingConfirmation 
+                ? (submission.status.kind === 'pending_confirmation' ? submission.status.message : t('email.pending_confirmation'))
+                : t('email.success')
+              }
             </AlertDescription>
           </Alert>
         )}
@@ -380,10 +386,13 @@ export function EmailCapture({
                   </AlertDescription>
                 </Alert>
               )}
-              {submission.isSuccess && (
+              {(submission.isSuccess || submission.isPendingConfirmation) && (
                 <Alert className="border-green-200 bg-green-50 text-green-700 shadow-md">
                   <AlertDescription className="font-medium text-sm">
-                    {t('email.success')}
+                    {submission.isPendingConfirmation 
+                      ? (submission.status.kind === 'pending_confirmation' ? submission.status.message : t('email.pending_confirmation'))
+                      : t('email.success')
+                    }
                   </AlertDescription>
                 </Alert>
               )}
@@ -457,9 +466,12 @@ export function EmailCapture({
               {t(`email.errors.${submission.status.code}`)}
             </p>
           )}
-          {submission.isSuccess && (
+          {(submission.isSuccess || submission.isPendingConfirmation) && (
             <p id="inline-success" role="status" className="text-success-600">
-              {t('email.success')}
+              {submission.isPendingConfirmation 
+                ? (submission.status.kind === 'pending_confirmation' ? submission.status.message : t('email.pending_confirmation'))
+                : t('email.success')
+              }
             </p>
           )}
         </div>

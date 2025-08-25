@@ -1,5 +1,14 @@
 import { z } from 'zod';
 
+// Global type declaration for Deno (optional)
+declare global {
+  var Deno: {
+    env: {
+      get: (key: string) => string | undefined;
+    };
+  } | undefined;
+}
+
 /**
  * RFC 5321 compliant email validation
  * Max email length: 254 characters
@@ -171,7 +180,14 @@ export const FrontendEmailValidationSchema = z.object({
 });
 
 /**
- * Validate email with comprehensive checks
+ * Validate email with comprehensive checks (synchronous version)
+ * 
+ * Implementation follows industry best practices:
+ * - Uses ReDoS-safe regex patterns for security
+ * - Avoids restrictive domain pattern matching that blocks legitimate custom domains
+ * - Focuses on obviously fake domains and common typos only
+ * - Allows all legitimate custom domains (like alex@ere.com)
+ * - For DNS validation, use validateEmailWithDNS() for async verification
  */
 export function validateEmail(email: string): {
   isValid: boolean;
@@ -193,8 +209,8 @@ export function validateEmail(email: string): {
     isValid = false;
   }
   
-  // Email format validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Email format validation with ReDoS-safe regex
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailRegex.test(email)) {
     errors.push('Adresa de email nu este validă');
     isValid = false;
@@ -222,12 +238,128 @@ export function validateEmail(email: string): {
     isValid = false;
   }
   
+  // Basic domain format validation only - no restrictive pattern matching
+  if (domain) {
+    // Check for obviously invalid formats
+    if (domain.startsWith('.') || domain.endsWith('.') || domain.includes('..')) {
+      errors.push('Domeniul email-ului nu este valid.');
+      isValid = false;
+    }
+    
+    // Check for domains that are obviously test/fake
+    const obviousTestPatterns = [
+      /^test$/,                    // Just "test" domain
+      /^example\.(com|org|net)$/,  // Example domains from RFC
+      /^localhost$/,               // Localhost
+      /^fake$/,                    // Just "fake" domain
+      /^spam$/,                    // Just "spam" domain
+    ];
+    
+    for (const pattern of obviousTestPatterns) {
+      if (pattern.test(domain)) {
+        errors.push('Acest domeniu de email pare să fie fictiv. Te rugăm să folosești o adresă de email validă.');
+        isValid = false;
+        break;
+      }
+    }
+    
+    // Warn about common typos in popular domains
+    const popularDomainTypos = [
+      { typo: 'gmai.com', correct: 'gmail.com' },
+      { typo: 'gmial.com', correct: 'gmail.com' },  
+      { typo: 'yahooo.com', correct: 'yahoo.com' },
+      { typo: 'hotmial.com', correct: 'hotmail.com' },
+      { typo: 'outlok.com', correct: 'outlook.com' },
+    ];
+    
+    for (const { typo, correct } of popularDomainTypos) {
+      if (domain === typo) {
+        errors.push(`Ai vrut să scrii "${correct}" în loc de "${typo}"?`);
+        isValid = false;
+        break;
+      }
+    }
+  }
+  
   return {
     isValid,
     errors,
     isDisposable,
     isMalicious
   };
+}
+
+/**
+ * Validate email with comprehensive checks including DNS/MX validation (async version)
+ * 
+ * This function provides complete email validation including:
+ * - All synchronous validations from validateEmail()
+ * - DNS/MX record validation for domain verification
+ * - Industry-standard approach used by Stripe, Gmail, Mailchimp
+ * 
+ * Use this for final validation before accepting email addresses.
+ */
+export async function validateEmailWithDNS(email: string): Promise<{
+  isValid: boolean;
+  errors: string[];
+  isDisposable: boolean;
+  isMalicious: boolean;
+  domainHasDNS: boolean;
+  dnsError?: string;
+}> {
+  // Start with synchronous validation
+  const syncResult = validateEmail(email);
+  
+  // If sync validation fails, no need to check DNS
+  if (!syncResult.isValid) {
+    return {
+      ...syncResult,
+      domainHasDNS: false,
+    };
+  }
+  
+  // Extract domain for DNS validation
+  const domain = email.split('@')[1]?.toLowerCase();
+  
+  if (!domain) {
+    return {
+      ...syncResult,
+      isValid: false,
+      errors: [...syncResult.errors, 'Email domain could not be extracted'],
+      domainHasDNS: false,
+    };
+  }
+  
+  // Perform DNS validation
+  try {
+    const domainHasDNS = await validateDomainDNS(domain);
+    
+    // If domain doesn't exist in DNS, mark as invalid
+    if (!domainHasDNS) {
+      return {
+        ...syncResult,
+        isValid: false,
+        errors: [...syncResult.errors, 'Domeniul email-ului nu există sau nu poate primi email-uri'],
+        domainHasDNS: false,
+      };
+    }
+    
+    return {
+      ...syncResult,
+      domainHasDNS: true,
+    };
+    
+  } catch (error) {
+    console.warn('DNS validation error in validateEmailWithDNS:', error);
+    
+    // On DNS validation errors, we default to valid but flag the error
+    // This prevents temporary DNS issues from blocking legitimate emails
+    return {
+      ...syncResult,
+      domainHasDNS: false,
+      dnsError: error instanceof Error ? error.message : 'DNS validation failed',
+    };
+  }
 }
 
 /**
@@ -265,3 +397,55 @@ export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
  * Strict RFC 5322 compliant regex (use for final validation)
  */
 export const STRICT_EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+/**
+ * DNS/MX record validation for domain verification
+ * 
+ * Implements industry best practices:
+ * - Check if domain has valid MX or A records
+ * - Used by major platforms like Stripe, Gmail, Mailchimp
+ * - Prevents false positives on legitimate custom domains
+ * - Works in conjunction with double opt-in verification
+ * 
+ * @param domain - Domain to validate
+ * @returns Promise<boolean> - True if domain has valid DNS records
+ */
+export async function validateDomainDNS(domain: string): Promise<boolean> {
+  try {
+    // Get the Supabase URL from environment variables
+    const supabaseUrl = typeof window !== 'undefined' 
+      ? (window as any).ENV?.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
+      : process.env.NEXT_PUBLIC_SUPABASE_URL || (globalThis.Deno?.env?.get?.('SUPABASE_URL'));
+      
+    if (!supabaseUrl) {
+      console.warn('Supabase URL not found, skipping DNS validation');
+      return true; // Default to valid when environment is not configured
+    }
+    
+    // Call the Edge Function for DNS validation
+    const response = await fetch(`${supabaseUrl}/functions/v1/validate-email-domain`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-function-secret': typeof window !== 'undefined'
+          ? '' // Client-side calls don't include secret (handled by RLS)
+          : process.env.VALIDATE_DOMAIN_SECRET || (globalThis.Deno?.env?.get?.('VALIDATE_DOMAIN_SECRET')) || '',
+      },
+      body: JSON.stringify({ domain }),
+    });
+    
+    if (!response.ok) {
+      console.warn('DNS validation request failed:', response.status);
+      return true; // Default to valid on API errors for resilience
+    }
+    
+    const result = await response.json();
+    return result.isValid;
+    
+  } catch (error) {
+    console.warn('DNS validation error:', error);
+    // Default to valid on errors to prevent blocking legitimate domains
+    // This matches the behavior of major email platforms
+    return true;
+  }
+}

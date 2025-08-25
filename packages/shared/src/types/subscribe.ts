@@ -14,6 +14,8 @@ export const SubscribeResponse = z.object({
   success: z.literal(true),
   isEarlyBird: z.boolean(),
   signupOrder: z.number(),
+  pendingConfirmation: z.boolean().optional(), // Double opt-in: true când e nevoie de confirmare
+  message: z.string().optional(), // Mesaj românesc pentru frontend
 });
 export type SubscribeResponse = z.infer<typeof SubscribeResponse>;
 
